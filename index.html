@@ -407,7 +407,7 @@ textarea{width:100%;min-height:200px;background:var(--paper2) repeating-linear-g
 
 <script>
 /* ===================== CONTENUTI ===================== */
-const IM=k=>"img/"+k+".jpg";
+const IM=k=>""+k+".jpg";
 const ph=(k,cap)=>`<figure class="ph framed"><img src="${IM(k)}" alt="${cap||"Foto"}" data-a="zoom" data-v="${k}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:""}</figure>`;
 
 const TESS=()=>`<img src="${IM("tessera_retro")}" alt="Retro della tessera"><span class="nmw">ORLANDO CECCARELLI</span>`;
@@ -648,7 +648,7 @@ const SUS=[
 ];
 
 const CAR={"p_cec_acc": 0.8514, "p_cec_dif": 0.8042, "p_cec_sem": 0.8583, "p_cec_amm": 1.05, "p_danila_acc": 0.6833, "p_danila_sem": 0.6639, "p_danila_amm": 0.8236, "p_danila_dif": 0.6056, "p_luca_amm": 0.9417, "p_luca_sem": 0.8097, "p_luca_dif": 0.7556, "p_luca_acc": 0.7056, "p_arch_dif": 0.6472, "p_arch_sem": 0.6556, "p_arch_acc": 0.6958, "p_arch_amm": 0.8569, "p_rolando_sem": 0.7278, "p_rolando_amm": 0.9458, "p_rolando_dif": 0.7222, "p_rolando_acc": 0.8403, "p_giulia_acc": 0.6764, "p_giulia_sem": 0.6681, "p_giulia_dif": 0.6639, "p_giulia_amm": 0.7514, "p_josef_sem": 0.7056, "p_josef_acc": 0.7167, "p_josef_dif": 0.7694, "p_josef_amm": 0.6875};
-function confHTML(s,i){const d=s.d[i],src="img/c_"+s.k+"_"+d.po+".webp";return `<div class="conf" id="d${i}"><img class="fig" src="${src}" alt="${s.n}" style="shape-outside:url(${src})"><div class="who">${s.n} · dichiarazione ${i+1}</div><p class="tx2">«${d.x}»</p></div>`}
+function confHTML(s,i){const d=s.d[i],src="c_"+s.k+"_"+d.po+".webp";return `<div class="conf" id="d${i}"><img class="fig" src="${src}" alt="${s.n}" style="shape-outside:url(${src})"><div class="who">${s.n} · dichiarazione ${i+1}</div><p class="tx2">«${d.x}»</p></div>`}
 const WEAPS=[["w1","il portafiltro","k_lavello"],["w2","la bottiglia di Tennent's","m_vuoti"],["w4","il Guerriero Pisano","x_guerriero"],["w5","la stecca da biliardo","s_stecca"],["w6","il salvadanaio delle mance","p_bidone"],["w7","il quadro","c_quadro"],["w9","il sacco di ghiaccio","o_scaletta"]];
 const SOL={s:"arch",w:"w9"};
 const REACT={josef:"Io?! Mi tremano le mani anche per alzare il bicchiere. Hic. Andate a disturbare qualcun altro.",danila:"Questa sarebbe la vostra indagine? Io ho un circolo da mandare avanti, non tempo da perdere con voi.",luca:"Ecco, il solito Luca. Quando sparisce qualcosa, o qualcuno, è sempre colpa mia.",arch:"Io non spendo un euro, figuriamoci una vita. Avete sbagliato conto, detective.",cec:"Se avessi voluto farlo fuori, l'avrei fatto davanti a tutti, con una stecca intera. Sbagliato.",giulia:"Io? Io stavo servendo spritz mentre voi giocavate ai detective. Riprovate.",rolando:"Ero chiuso in bagno! Volete i dettagli? No, fidatevi, non li volete."};
@@ -734,7 +734,7 @@ function sfx(n){if(S.sfx===false)return;if(!acx())return;try{SFX[n]()}catch(e){}
 
 /* ===================== MUSICA ===================== */
 const VOL=.16;let AC=null,GN=null,SRC=null,MUS_LOADING=false,TRACK="tema";const BUFS={};
-async function loadTrack(n){if(BUFS[n])return BUFS[n];const buf=await AC.decodeAudioData(await (await fetch("audio/"+n+".mp3")).arrayBuffer());const d=buf.getChannelData(0),sr=buf.sampleRate;let a=0,b=d.length-1;while(a<sr&&Math.abs(d[a])<1e-4)a++;while(b>d.length-sr&&Math.abs(d[b])<1e-4)b--;BUFS[n]={buf,ls:a/sr,le:(b+1)/sr};return BUFS[n]}
+async function loadTrack(n){if(BUFS[n])return BUFS[n];const buf=await AC.decodeAudioData(await (await fetch(""+n+".mp3")).arrayBuffer());const d=buf.getChannelData(0),sr=buf.sampleRate;let a=0,b=d.length-1;while(a<sr&&Math.abs(d[a])<1e-4)a++;while(b>d.length-sr&&Math.abs(d[b])<1e-4)b--;BUFS[n]={buf,ls:a/sr,le:(b+1)/sr};return BUFS[n]}
 async function musicStart(){
   if(S.music===false)return;
   try{
@@ -886,7 +886,7 @@ function vTime(){
 function vAcc(){
   if(S.fin)return vFin();
   const pk=S.pk||{},ws=WEAPS.filter(w=>has(w[2])&&(S.bag||[]).includes(w[0]));if(pk.w&&!ws.some(w=>w[0]===pk.w))pk.w=null;
-  const sus=SUS.map(x=>`<button class="pick${pk.s===x.k?" sel":""}" data-a="pks" data-v="${x.k}" aria-pressed="${pk.s===x.k}"><img src="img/c_${x.k}_dif.webp" alt=""><span>${x.n}</span></button>`).join("");
+  const sus=SUS.map(x=>`<button class="pick${pk.s===x.k?" sel":""}" data-a="pks" data-v="${x.k}" aria-pressed="${pk.s===x.k}"><img src="c_${x.k}_dif.webp" alt=""><span>${x.n}</span></button>`).join("");
   const wp=ws.length?ws.map(w=>`<button class="pick wpn${pk.w===w[0]?" sel":""}" data-a="pkw" data-v="${w[0]}" aria-pressed="${pk.w===w[0]}"><img src="${IM(w[0])}" alt=""><span>${w[1][0].toUpperCase()+w[1].slice(1)}</span></button>`).join(""):`<p class="mut">Non hai ancora sigillato nessun reperto. Quando trovi un oggetto che potrebbe essere l'arma, aprilo e tocca «Metti in busta».</p>`;
   return topbar()+`<div class="stack acc2" style="gap:18px"><h2>Accusa finale</h2><p class="mut">Scegli chi ha ucciso il presidente Fabiano e con che cosa. Puoi cambiare idea finché non confermi.</p>
   <h3>1 · Il colpevole o la colpevole</h3><div class="pgrid">${sus}</div>
@@ -933,9 +933,9 @@ function vlOpen(pages,done){
     if(tg){tg.scrollIntoView({block:"center"});const r=tg.getBoundingClientRect();top=r.top+r.height/2>innerHeight*.5;ring=`<span class="vlring" style="left:${r.left-6}px;top:${r.top-6}px;width:${r.width+12}px;height:${r.height+12}px"></span>`}
     const side=pg[3]||"l";
     md.className="vl"+(tg?" spot":"")+(top?" top":"");
-    let fig=`<img class="vlimg" src="img/${pose}.webp" alt="Vlady">`;
+    let fig=`<img class="vlimg" src="${pose}.webp" alt="Vlady">`;
     if(tg&&TIP[pose]&&pg[4]){const r=tg.getBoundingClientRect(),[ax,ay]=pg[4],px=r.left+r.width*ax,py=r.top+r.height*ay,h=Math.min(innerHeight*.26,210),w=h*TIP[pose][2];
-      fig="";ring+=`<img class="vlpt" src="img/${pose}.webp" alt="Vlady" style="height:${h}px;left:${Math.min(px-TIP[pose][0]*w,innerWidth-w*.6)}px;top:${py-TIP[pose][1]*h}px">`}
+      fig="";ring+=`<img class="vlpt" src="${pose}.webp" alt="Vlady" style="height:${h}px;left:${Math.min(px-TIP[pose][0]*w,innerWidth-w*.6)}px;top:${py-TIP[pose][1]*h}px">`}
     md.innerHTML=`${ring}<div class="vlin side-${side}${fig?"":" nofig"}">${fig}<div class="vlbox"><div class="who">Vlady</div><p class="tx2" id="vltx">${t}</p><button class="btn" data-a="vlnext">${i<pages.length-1?"Avanti":"Ho capito"}</button></div></div>`;
     md.hidden=false;typeStart(document.getElementById("vltx"))};
   VLNEXT=()=>{if(TY){typeStop();return}i++;if(i<pages.length)show();else{md.hidden=true;md.className="vl";VLNEXT=null;if(done)done()}};
@@ -968,7 +968,7 @@ function prefetch(){const go=()=>{ROOMS.filter(r=>isOpen(r.id)).forEach(r=>r.sc.
 function showFasc(){
   let f=document.getElementById("fasc");if(f)f.remove();
   f=document.createElement("div");f.id="fasc";f.className="fasc";
-  f.innerHTML=`<button class="fcov" data-a="fasc" aria-label="Apri il fascicolo CIF-1951"><img src="img/fascicolo.webp" alt="Fascicolo d'indagine CIF-1951, Circolo Il Fortino, riservato"></button><p class="fhint">Tocca il fascicolo per aprirlo</p>`;
+  f.innerHTML=`<button class="fcov" data-a="fasc" aria-label="Apri il fascicolo CIF-1951"><img src="fascicolo.webp" alt="Fascicolo d'indagine CIF-1951, Circolo Il Fortino, riservato"></button><p class="fhint">Tocca il fascicolo per aprirlo</p>`;
   document.body.appendChild(f);
 }
 function openFasc(){
@@ -993,7 +993,7 @@ function openRev(){const md=document.getElementById("md");md.innerHTML=`<div cla
 function openModal(){
   const pk=S.pk,s=SUS.find(x=>x.k===pk.s),w=wOf(pk.w);
   const md=document.getElementById("md");
-  md.innerHTML=`<div class="mdin" role="dialog" aria-modal="true" aria-labelledby="mdt"><div class="mdimg"><img src="img/c_${s.k}_dif.webp" alt="${s.n}"><img src="${IM(w[0])}" alt="${w[1]}"></div>
+  md.innerHTML=`<div class="mdin" role="dialog" aria-modal="true" aria-labelledby="mdt"><div class="mdimg"><img src="c_${s.k}_dif.webp" alt="${s.n}"><img src="${IM(w[0])}" alt="${w[1]}"></div>
   <p id="mdt" class="mdtx">Stai accusando <b>${s.n}</b> di aver ucciso il presidente Fabiano con <b>${w[1]}</b>. Sei sicuro? Confermando concluderai l'indagine e scoprirai l'esito.</p>
   <div class="row2"><button class="btn ghost" data-a="mdno">Torna a indagare</button><button class="btn" data-a="mdyes">Conferma l'accusa</button></div></div>`;
   md.hidden=false;md.querySelector("[data-a=mdno]").focus();
@@ -1005,7 +1005,7 @@ function vFin(){
   const who=ok?SOL.s:f.s,s=SUS.find(x=>x.k===who),pose=ok?"amm":"acc",txt=ok?CONFESS:REACT[who];
   return `<div class="finv" ${bg}><div class="fin-in"><h2 class="fh ${ok?"ok":"ko"}">${ok?"Caso risolto":"Accusa errata"}</h2>
   ${ok?`<p class="mut">Hai accusato ${s.n}, con ${wOf(f.w)[1]}.</p>`:""}
-  <div class="conf fin-conf"><img class="fig" src="img/c_${s.k}_${pose}.webp" alt="${s.n}" style="shape-outside:url(img/c_${s.k}_${pose}.webp)"><div class="who">${s.n}</div><p class="tx2" id="fintx">«${txt}»</p></div>
+  <div class="conf fin-conf"><img class="fig" src="c_${s.k}_${pose}.webp" alt="${s.n}" style="shape-outside:url(c_${s.k}_${pose}.webp)"><div class="who">${s.n}</div><p class="tx2" id="fintx">«${txt}»</p></div>
   ${ok?`<button class="btn" data-a="blackgo">Scopri come è andata</button>`:`<button class="btn" data-a="blackgo">Ascolta come sono andati i fatti</button>`}</div></div>`;
 }
 function vBlack(){return `<div class="blackv"><p class="bl1">Il caso è chiuso.</p><p class="bl2">Che tu abbia visto giusto oppure no, ora chi ha seguito l'indagine dall'inizio ti racconterà come sono andati davvero i fatti.</p><button class="btn ghost" data-a="film">Ascolta</button></div>`}
@@ -1033,7 +1033,7 @@ function filmScene(){
   const lu=box.querySelector(".luc"),ev=box.querySelector(".ev"),tx=box.querySelector(".ftx"),nm=box.querySelector(".lname");
   box.querySelectorAll(".fdot").forEach((d,i)=>d.classList.toggle("on",i<=FI));
   const ff=box.querySelector(".ffull");box.classList.toggle("isfull",!!sc.full);if(sc.full){ff.classList.remove("in");void ff.offsetWidth;ff.src=IM(sc.full);ff.hidden=false;ff.classList.add("in")}else ff.hidden=true;
-  if(sc.p&&!sc.full){if(lu.dataset.p!==sc.p){lu.classList.remove("in");void lu.offsetWidth;lu.src="img/"+sc.p+".webp";lu.dataset.p=sc.p;lu.classList.add("in")}lu.hidden=false}else lu.hidden=true;
+  if(sc.p&&!sc.full){if(lu.dataset.p!==sc.p){lu.classList.remove("in");void lu.offsetWidth;lu.src=""+sc.p+".webp";lu.dataset.p=sc.p;lu.classList.add("in")}lu.hidden=false}else lu.hidden=true;
   nm.hidden=!sc.name;
   if(sc.i){ev.classList.remove("in");void ev.offsetWidth;ev.querySelector("img").src=IM(sc.i);ev.hidden=false;ev.classList.add("in")}else ev.hidden=true;
   tx.textContent=sc.t;typeStart(tx);
@@ -1041,14 +1041,14 @@ function filmScene(){
 }
 function filmNext(){typeStop();if(FI<FILM.length-1){FI++;filmScene()}else{clearTimeout(FT);V.tab="end";render()}}
 function vFilm(){return `<div class="film" id="film" style="--bg:url(${IM("s_salone")})"><div class="fbg"></div>
-  <div class="lineup">${SUS.map(x=>`<img src="img/c_${x.k}_dif.webp" alt="">`).join("")}</div>
+  <div class="lineup">${SUS.map(x=>`<img src="c_${x.k}_dif.webp" alt="">`).join("")}</div>
   <figure class="ev pol" hidden><img alt="Prova"></figure>
   <img class="ffull" alt="L'Architetto portato via in manette" hidden>
   <img class="luc" alt="L'investigatore" hidden>
   <div class="lname" hidden>Luciano<small>l'investigatore</small></div>
   <div class="fbox"><p class="ftx tx2"></p></div>
   <div class="fctl"><div class="fdots">${FILM.map(()=>`<i class="fdot"></i>`).join("")}</div><button data-a="fpause">${FP?"Riprendi":"Pausa"}</button><button data-a="fnext">Avanti</button><button data-a="fskip">Salta</button></div></div>`}
-function vEnd(){const ok=S.fin&&S.fin.ok;return `<div class="blackv thx"><p class="bl1">Grazie per aver giocato</p><p class="ttl2">Morto un presidente se ne fa un altro</p><p class="bl2">${ok?"Hai risolto il caso: l'Architetto, con il sacchetto del ghiaccio.":"Il caso è chiuso. Questa volta la verità l'ha raccontata Luciano."}</p><p class="bl2" style="font-size:.95rem">Acqua in bocca: non svelare a nessuno chi è l'assassino.</p><img class="vlbye" src="img/vl_bye.webp" alt="Vlady che saluta"><p class="by2">Created by Vlady</p>
+function vEnd(){const ok=S.fin&&S.fin.ok;return `<div class="blackv thx"><p class="bl1">Grazie per aver giocato</p><p class="ttl2">Morto un presidente se ne fa un altro</p><p class="bl2">${ok?"Hai risolto il caso: l'Architetto, con il sacchetto del ghiaccio.":"Il caso è chiuso. Questa volta la verità l'ha raccontata Luciano."}</p><p class="bl2" style="font-size:.95rem">Acqua in bocca: non svelare a nessuno chi è l'assassino.</p><img class="vlbye" src="vl_bye.webp" alt="Vlady che saluta"><p class="by2">Created by Vlady</p>
   <div class="stack" style="gap:10px;width:100%;max-width:300px"><button class="btn ghost" data-a="film">Rivedi il racconto</button><button class="btn ghost" data-a="cover">Torna alla copertina</button><button class="btn ghost" data-a="newgame">Ricomincia da capo</button></div></div>`}
 
 /* ===================== FOGLIO INDIZIO ===================== */

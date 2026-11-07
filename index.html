@@ -145,8 +145,43 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
   .demo{width:400px}
 }
 </style>
+<link rel="preload" as="image" href="intro_on.webp">
+<style id="intro-css">
+/* Ingresso: il Circolo di notte. Si tocca l'insegna, si fulmina, si entra dalla porta, dentro si accende la luce. */
+#intro{position:fixed;inset:0;z-index:9999;background:#020718;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#intro.dentro{background:transparent}
+#intro .scena{position:relative;width:min(108vw,88svh);aspect-ratio:1;cursor:pointer;flex:none;transform-origin:50.4% 67%;
+  transition:transform 1.7s cubic-bezier(.6,0,.9,.45)}
+#intro.entra .scena{transform:scale(9)}
+#intro.dentro .scena{visibility:hidden}
+#intro .scena img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#intro .spento{opacity:0}
+#intro .scintilla{position:absolute;left:50%;top:44%;width:34%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,#fff 0 6%,rgba(255,240,200,.85) 14%,rgba(255,120,200,.35) 34%,transparent 62%);mix-blend-mode:screen}
+#intro .scintilla.via{animation:scintilla .38s ease-out}
+@keyframes scintilla{0%{opacity:1;scale:.2}40%{opacity:.9;scale:1}100%{opacity:0;scale:1.4}}
+#intro .buio{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .6s ease-in 1.15s}
+#intro.entra .buio{opacity:1}
+#intro.dentro .buio{transition:none}
+#intro .invito{margin-top:min(2svh,14px);font:500 clamp(15px,4vw,20px)/1 Oswald,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#f2c14e;
+  text-shadow:0 0 12px rgba(242,193,78,.55);animation:invito 1.8s ease-in-out infinite;transition:opacity .3s}
+#intro.tocco .invito{opacity:0;animation:none}
+@keyframes invito{50%{opacity:.35}}
+html.intro-on,html.intro-on body{overflow:hidden}
+</style>
 </head>
 <body>
+<div id="intro" role="button" tabindex="0" aria-label="Entra nel Circolo Il Fortino Games: tocca l'insegna">
+  <div class="scena">
+    <img src="intro_on.webp" alt="Il Circolo Il Fortino di notte, con l'insegna accesa">
+    <img class="spento" src="intro_off.webp" alt="">
+    <div class="scintilla"></div>
+  </div>
+  <div class="invito">Tocca l'insegna</div>
+  <div class="buio"></div>
+</div>
+
 <div class="wrap">
   <header class="top">
     <img class="vernice" src="vernice.webp" alt="">
@@ -244,6 +279,79 @@ function braces(){const p=document.querySelector(".pont");if(!p)return;const w=p
 braces();addEventListener("resize",braces);
 
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+})();
+</script>
+<script>
+/* Ingresso. Ricompare solo se non si entra nel sito da più di un giorno. ?intro nel link lo forza. */
+(function(){
+  var el=document.getElementById("intro");if(!el)return;
+  var K="fortino-ultima-visita",GIORNO=864e5,SEMPRE=false,ultima=0;
+  try{ultima=+localStorage.getItem(K)||0}catch(e){}
+  function segna(){try{localStorage.setItem(K,Date.now())}catch(e){}}
+  segna();addEventListener("pagehide",segna);document.addEventListener("visibilitychange",segna);
+  if(!SEMPRE&&Date.now()-ultima<GIORNO&&!/[?&]intro/.test(location.search)){el.remove();return}
+  var root=document.documentElement;root.classList.add("intro-on");
+  var spento=el.querySelector(".spento"),sc=el.querySelector(".scintilla"),scena=el.querySelector(".scena"),buio=el.querySelector(".buio");
+  var fatto=false,ctx=null,out=null,ronzio=null;
+
+  /* ---- suoni, a volume moderato ---- */
+  function avvia(){
+    try{ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+    out=ctx.createGain();out.gain.value=.45;out.connect(ctx.destination);
+    // il ronzio del neon: rete a 50 Hz e armoniche, un po' sporco
+    var lp=ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2200;
+    ronzio=ctx.createGain();ronzio.gain.value=0;lp.connect(ronzio).connect(out);
+    [[100,"sawtooth",.10],[50,"sine",.25],[150,"square",.025]].forEach(function(v){
+      var o=ctx.createOscillator(),g=ctx.createGain();o.type=v[1];o.frequency.value=v[0];g.gain.value=v[2];o.connect(g).connect(lp);o.start()});
+  }
+  function rumore(dur,tipo,freq,q,vol,t){
+    if(!ctx)return;var n=Math.max(1,ctx.sampleRate*dur|0),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.5);
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type=tipo;f.frequency.value=freq;f.Q.value=q;g.gain.value=vol;
+    s.connect(f).connect(g).connect(out);s.start(ctx.currentTime+(t||0));
+  }
+  function crepitio(){rumore(.03,"highpass",2500,.7,.5);rumore(.015,"bandpass",5000,2,.4,.02)}
+  function luce(on){if(!ronzio)return;var t=ctx.currentTime;ronzio.gain.cancelScheduledValues(t);ronzio.gain.setTargetAtTime(on?1:0,t,.008)}
+  function rottura(){
+    if(!ctx)return;var t=ctx.currentTime;
+    rumore(.18,"bandpass",2600,.9,1.1);                                // lo schiocco del tubo
+    var o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+.25);
+    g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(out);o.start(t);o.stop(t+.32);
+    for(var i=0;i<9;i++){                                              // i vetrini che cadono
+      var p=ctx.createOscillator(),h=ctx.createGain(),ti=t+.06+Math.random()*.55;
+      p.type="sine";p.frequency.value=3200+Math.random()*4200;h.gain.setValueAtTime(.12*Math.random()+.04,ti);h.gain.exponentialRampToValueAtTime(.0005,ti+.09);
+      p.connect(h).connect(out);p.start(ti);p.stop(ti+.1)}
+    luce(false);
+  }
+  function interruttore(){rumore(.025,"highpass",1800,.7,.7)}
+  function tubo(){rumore(.04,"bandpass",1200,3,.35)}                    // il "tic" del tubo che si accende
+
+  /* ---- il neon tremola da solo finché non lo tocchi ---- */
+  var blip=setTimeout(function giro(){if(fatto)return;spento.style.opacity=".55";
+    setTimeout(function(){if(!fatto)spento.style.opacity="0"},70);blip=setTimeout(giro,2200+Math.random()*3500)},2500);
+
+  function seq(passi,fn){var t=0;passi.forEach(function(p,i){setTimeout(function(){fn(p,i)},t);t+=p[1]});return t}
+  function via(){
+    if(fatto)return;fatto=true;clearTimeout(blip);el.classList.add("tocco");avvia();luce(true);
+    try{navigator.vibrate&&navigator.vibrate([15,70,15,120,60])}catch(e){}
+    // 1. l'insegna sfarfalla, ronza, crepita e si rompe  [opacità versione spenta, ms]
+    var passi=[[0,260],[1,70],[0,90],[1,45],[.35,130],[0,60],[1,60],[0,70],[1,40],[0,220],[1,0]];
+    var t=seq(passi,function(p,i){spento.style.opacity=p[0];
+      if(i===passi.length-1){sc.classList.add("via");rottura();return}
+      luce(p[0]<.5);if(p[0]>0)crepitio()});
+    // 2. si entra dalla porta
+    setTimeout(function(){el.classList.add("entra")},t+600);
+    // 3. dentro è buio: click dell'interruttore, il tubo si accende a scatti e appare il sito
+    setTimeout(function(){
+      el.classList.add("dentro");interruttore();
+      seq([[.15,90],[1,120],[.5,70],[1,180],[0,0]],function(p,i){
+        buio.style.opacity=p[0];if(p[0]<1)tubo();
+        if(i===4){buio.style.transition="opacity .35s";setTimeout(chiudi,400)}});
+    },t+600+1900);
+  }
+  function chiudi(){segna();root.classList.remove("intro-on");el.remove();if(ctx)setTimeout(function(){try{ctx.close()}catch(e){}},800)}
+  scena.addEventListener("click",via);
+  el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();via()}});
 })();
 </script>
 </body>

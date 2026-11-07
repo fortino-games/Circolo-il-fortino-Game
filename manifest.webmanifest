@@ -1,6 +1,6 @@
 {
- "name": "Morto un presidente se ne fa un altro",
- "short_name": "Fortino",
+ "name": "Circolo Il Fortino Games",
+ "short_name": "Fortino Games",
  "lang": "it",
  "start_url": "./",
  "scope": "./",
@@ -20,5 +20,6 @@
    "type": "image/png",
    "purpose": "any maskable"
   }
- ]
+ ],
+ "description": "I giochi investigativi del Circolo Il Fortino"
 }

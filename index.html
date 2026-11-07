@@ -2,1277 +2,238 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circolo Il Fortino Games</title>
+<meta name="description" content="I giochi investigativi del Circolo Il Fortino. Sito in costruzione, casi già aperti.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0b0c0f">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#6b3e2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fortino">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Morto un presidente se ne fa un altro</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Architects+Daughter&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Yellowtail&family=Special+Elite&family=Caveat:wght@700&family=Inter:wght@400;600;700&display=swap">
 <style>
-
-/* Layout: un fascicolo d'indagine scuro; carte, scontrini e polaroid chiare appoggiate sopra; i segnalini gialli della scientifica sono l'unico gesto vivace */
+/* Un cantiere vero: muro di mattoni, una parete appena passata a rullo, un ponteggio,
+   e Vlady fermo al lavoro accanto a ogni segno. Le schede dei giochi sono avvitate al muro. */
 :root{
-  color-scheme:dark;
-  --bg:#15171c; --panel:#1f222a; --line:#343944; --text:#ebe4d4; --mut:#a29c8f;
-  --paper:#efe6d2; --paper2:#f7f3ea; --ink:#1f1d1a; --inkmut:#5f584c;
-  --red:#b9322e; --tag:#f3c234; --tagink:#1b1a16; --ok:#7fb48a;
+  color-scheme:light;
+  --card:#17191f; --cline:#2c3039; --ctext:#efeae0; --cmut:#a49e92;
+  --sign:#f2c94c; --signink:#1c1a14; --neon:#ff5fa2; --ok:#7fc59a; --todo:#f2c94c;
+  --f-sign:"Oswald","Arial Narrow",Impact,sans-serif;
+  --f-neon:"Yellowtail","Brush Script MT",cursive;
   --f-disp:"Special Elite","Courier New",monospace;
-  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --f-hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
-  --f-mono:"Courier Prime","Courier New",monospace;
+  --f-hand:"Caveat","Segoe Print",cursive;
+  --f-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --shadow:drop-shadow(10px 14px 9px rgba(20,8,4,.5));
 }
 *{box-sizing:border-box}
-[hidden]{display:none!important}
-html,body{background:var(--bg)}
-body{color:var(--text);font:17px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
-button{font:inherit;color:inherit}
-button:focus-visible,textarea:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--tag);outline-offset:2px}
-#app{max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 104px}
-h1,h2,h3{font-family:var(--f-disp);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
-h2{font-size:1.6rem}
-h3{font-size:1.15rem}
-p{margin:0}
-.mut{color:var(--mut)}
-.small{font-size:.85rem}
-.stack{display:flex;flex-direction:column;gap:14px}
+html{background:#6b3e2e;overflow-x:clip}
+body{margin:0;color:#2a241d;font:16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:clip;
+  background:radial-gradient(ellipse at 50% 35%,rgba(0,0,0,0) 45%,rgba(25,12,6,.35) 100%),url("muro.webp") 0 0/440px auto #6b3e2e}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sign);outline-offset:3px}
+img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+.vl{position:absolute;display:block;height:auto;pointer-events:none;filter:var(--shadow)}
+.wrap{max-width:1040px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 18px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 
-/* barra in alto */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.top .case{font-family:var(--f-disp);font-size:.95rem;background:none;border:1px solid var(--line);border-radius:3px;padding:8px 12px;min-height:44px;cursor:pointer}
-.top .count{font-family:var(--f-mono);font-size:.85rem;color:var(--mut);font-variant-numeric:tabular-nums}
-.top .count b{color:var(--tag);font-weight:700}
+/* ---------- 1. parete passata a rullo, con l'insegna ---------- */
+.top{--pw:min(100vw,640px);--gw:110px;position:relative;width:var(--pw);left:50%;margin-left:calc(var(--pw) / -2);
+  height:calc(var(--pw) * .818 + var(--gw) * 1.659 * .62)}
+.vernice{position:absolute;left:0;top:0;width:100%;height:auto}
+.title{position:absolute;left:0;right:0;top:calc(var(--pw) * .07);display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
+.sign{background:var(--sign);color:var(--signink);border:3px solid #6b5418;border-radius:4px;padding:10px 22px 8px;
+  font:700 clamp(1.45rem,6.6vw,2.5rem)/1 var(--f-sign);letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 16px rgba(60,40,10,.3)}
+.sign small{display:block;font-size:.42em;letter-spacing:.32em;font-weight:500;margin-bottom:4px}
+.neonbox{margin-top:10px;background:#1c1d22;border-radius:8px;padding:2px 18px 8px;box-shadow:0 8px 16px rgba(30,20,10,.35)}
+.neon{font:clamp(2rem,8.6vw,3rem)/1 var(--f-neon);color:#ffe9f3;text-shadow:0 0 4px #fff,0 0 12px var(--neon),0 0 26px var(--neon)}
+.tagline{margin:14px 0 0;max-width:26ch;font:1.02rem/1.35 var(--f-disp);color:#2a241d}
+/* il rullo tocca la fine della passata in corso (75% della larghezza, 81% dell'altezza della vernice) */
+.v-scala{width:var(--gw);left:calc(var(--pw) * .755 - var(--gw) * .9);top:calc(var(--pw) * .818 * .81 - var(--gw) * 1.659 * .02 - var(--gw) * .12)}
 
-/* navigazione */
-nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:#0f1114;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-nav button{flex:1;background:none;border:0;padding:14px 2px 13px;min-height:54px;font-family:var(--f-disp);font-size:.82rem;color:var(--mut);cursor:pointer;border-top:3px solid transparent}
-nav button[aria-current="true"]{color:var(--text);border-top-color:var(--red)}
+/* ---------- 2. ponteggio ---------- */
+.pont{--h:400px;--d1:178px;--d2:362px;position:relative;height:calc(var(--h) + 14px);margin:6px auto 30px;max-width:760px}
+.tube{position:absolute;background:linear-gradient(90deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43);border-radius:2px}
+.tube.h{height:9px;left:0;right:0;background:linear-gradient(180deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43)}
+.std{width:10px;top:0;bottom:14px}
+.std.a{left:3%}.std.b{left:50%}.std.c{right:3%}
+.base{position:absolute;bottom:4px;width:34px;height:10px;margin-left:-12px;background:linear-gradient(#9aa0a6,#50555a);border-radius:2px}
+.cpl{position:absolute;width:20px;height:16px;margin:-4px 0 0 -5px;border-radius:3px;background:radial-gradient(circle at 35% 35%,#d7dbe0,#6d7379 60%,#3a3e42);box-shadow:0 2px 3px rgba(0,0,0,.5);z-index:5}
+.brace{position:absolute;height:8px;transform-origin:0 50%;background:linear-gradient(180deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43);border-radius:2px}
+.plank{position:absolute;left:1%;right:1%;height:16px;background:url("tavola.webp") 0 0/auto 100%;border-radius:2px;box-shadow:0 6px 8px rgba(0,0,0,.45);z-index:2}
+.rail{z-index:6;box-shadow:0 4px 6px rgba(0,0,0,.35)}
+.v-assi{width:170px;left:30%;top:calc(var(--d1) - 170px * 1.066 + 3px);z-index:3}
+.v-cazz{width:128px;left:7%;top:calc(var(--d2) - 128px * 1.138 + 3px);z-index:3}
+.stucco{position:absolute;z-index:1;left:calc(7% + 92px);top:calc(var(--d2) - 190px);width:min(250px,58%);height:auto}
+.casi{position:absolute;z-index:1;left:calc(7% + 92px);top:calc(var(--d2) - 190px);width:min(250px,58%);aspect-ratio:900/420;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#3b342c}
+.casi h2{margin:0;font:700 2.3rem/1 var(--f-hand)}
+.casi span{font:1rem/1.1 var(--f-hand);opacity:.85}
 
-/* copertina */
-.cover{position:fixed;inset:0;background:#0b0c0f;z-index:20;overflow:hidden}
-.cvbox{position:absolute;top:0;left:50%;height:100%;aspect-ratio:941/1670;transform:translateX(-50%)}
-.cvbox img{display:block;width:100%;height:100%;max-width:none}
-.ttl{position:absolute;left:22%;top:62%;width:58%;height:23%;background:transparent;border:0;cursor:pointer;border-radius:6px}
-.hint{position:absolute;left:50%;top:86%;transform:translateX(-50%);background:rgba(11,12,15,.85);color:var(--text);font-family:var(--f-disp);font-size:.85rem;padding:5px 14px;border-radius:14px;white-space:nowrap;pointer-events:none}
-@media (prefers-reduced-motion:no-preference){.hint{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.55}}}
-.credbtn{position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));background:rgba(11,12,15,.85);border:1px solid var(--text);border-radius:3px;padding:0 16px;min-height:44px;font-family:var(--f-disp);cursor:pointer;z-index:2}
+/* ---------- 3. schede avvitate al muro ---------- */
+.grid{display:grid;gap:34px;grid-template-columns:1fr;align-items:start}
+@media (min-width:700px){.grid{grid-template-columns:repeat(auto-fit,minmax(300px,360px));justify-content:center}}
+.game{position:relative;z-index:2;display:flex;flex-direction:column;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;overflow:hidden;text-decoration:none;
+  box-shadow:10px 18px 26px rgba(20,8,4,.55);transition:transform .18s}
+.game:hover{transform:translateY(-3px)}
+.screw{position:absolute;z-index:3;width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e8e8e8,#8c8c8c 60%,#5c5c5c);box-shadow:1px 2px 2px rgba(0,0,0,.6)}
+.screw::after{content:"";position:absolute;left:2px;right:2px;top:5.5px;height:2px;background:#4a4a4a;transform:rotate(35deg)}
+.screw.tl{top:8px;left:8px}.screw.tr{top:8px;right:8px}.screw.bl{bottom:8px;left:8px}.screw.br{bottom:8px;right:8px}
+.cv{position:relative;aspect-ratio:4/5;overflow:hidden;background:#000}
+.cv img{width:100%;height:100%;object-fit:cover;object-position:center 12%;display:block}
+.cv::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,rgba(23,25,31,.95))}
+.badges{position:absolute;left:28px;right:28px;top:12px;display:flex;justify-content:space-between;gap:8px;z-index:1}
+.b{font:700 .72rem/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:7px 9px;border-radius:999px}
+.b.new{background:var(--sign);color:var(--signink)}
+.b.st{margin-left:auto;background:rgba(11,12,15,.82);border:1px solid currentColor}
+.b.st.ok{color:var(--ok)}.b.st.todo{color:var(--todo)}
+.body{padding:4px 18px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.genre{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cmut)}
+.game h3{margin:0;font:700 1.45rem/1.15 var(--f-sign);text-wrap:balance}
+.where{margin:0;font-size:.95rem}
+.where::before{content:"📍 "}
+.desc{margin:0;color:var(--cmut);font-size:.93rem}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.88rem;color:var(--cmut)}
+.dots{display:inline-flex;gap:4px;vertical-align:middle;margin-left:6px}
+.dots i{width:9px;height:9px;border-radius:50%;background:#3a3f4b}
+.dots i.on{background:var(--sign)}
+.play{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:10px;
+  background:var(--sign);color:var(--signink);font:700 1rem/1 var(--f-sign);letter-spacing:.1em;text-transform:uppercase}
+/* Vlady col trapano sotto la prima scheda: la punta finisce sul primo foro */
+.trap{position:relative;height:150px}
+.v-trap{width:126px;left:4px;top:4px}
+.fori{position:absolute;width:210px;height:auto;left:calc(4px + 126px * .80 - 30px);top:calc(4px + 126px * 1.16 * .66 - 30px)}
 
-/* bottoni */
-.btn{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:3px;padding:14px 16px;min-height:50px;font-family:var(--f-disp);font-size:1.05rem;cursor:pointer}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-.back{background:none;border:0;color:var(--mut);font-family:var(--f-disp);padding:8px 0;min-height:44px;cursor:pointer}
+/* ---------- 4. in fondo: muro da abbattere e prossimo caso sotto il telo ---------- */
+.finale{position:relative;margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.demo{position:relative;width:min(100%,400px);height:270px}
+.v-mazza{width:150px;left:0;top:30px;z-index:3}
+.breccia{position:absolute;width:200px;height:auto;left:118px;top:0;z-index:1}
+.calc{position:absolute;width:210px;height:auto;left:110px;top:178px;z-index:2}
+.coperto{position:relative;width:340px;max-width:100%;height:462px}
+.next{position:absolute;left:30px;right:30px;top:0;height:370px;background:linear-gradient(160deg,#2a2d36,#15171c 60%);border:1px solid var(--cline);border-radius:12px;overflow:hidden;
+  box-shadow:10px 18px 26px rgba(20,8,4,.55)}
+.next .b{position:absolute;top:14px;left:26px;background:var(--sign);color:var(--signink)}
+.next h3{position:absolute;left:0;right:0;top:48px;margin:0;text-align:center;color:var(--ctext);font:700 1.5rem/1.1 var(--f-sign);padding:0 24px}
+.next .q{position:absolute;inset:auto 0 30px;text-align:center;font:700 6rem/1 var(--f-sign);color:rgba(255,255,255,.06)}
+.v-telo{width:340px;max-width:100%;left:0;top:44px;z-index:3}
+.floor{position:relative;height:120px;margin-top:-34px;background:url("pavimento.webp") 0 0/auto 100%;
+  box-shadow:inset 0 14px 18px -8px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
+.floor p{margin:16px 0 0;font:1.25rem/1 var(--f-disp);color:#e7e1d6;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 
-/* polaroid e scene */
-.pol{background:#f4f1e9;padding:10px 10px 34px;box-shadow:0 10px 28px rgba(0,0,0,.55);transform:rotate(var(--rot,-.8deg))}
-.pol.framed{background:none;padding:0;box-shadow:0 10px 28px rgba(0,0,0,.55)}
-.scene{position:relative;line-height:0}
-.scene img{width:100%;height:auto;display:block}
-.mk{position:absolute;transform:translate(-50%,-100%);width:34px;height:30px;padding:0;border:0;background:none;cursor:pointer}
-.mk::before{content:"";position:absolute;inset:0;background:var(--tag);clip-path:polygon(12% 100%,50% 0,88% 100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
-.mk span{position:relative;display:block;padding-top:9px;font:700 .9rem/1 var(--f-mono);color:var(--tagink)}
-.mk.done::before{background:#9c968a}
-.mk.new::after{content:"";position:absolute;left:50%;top:-6px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--bg)}
-@media (prefers-reduced-motion:no-preference){.mk:not(.done)::before{animation:glow 2.8s ease-in-out infinite}@keyframes glow{50%{filter:drop-shadow(0 0 7px rgba(243,194,52,.85))}}}
-.mklist{display:grid;gap:8px}
-.mkrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:10px 12px;min-height:48px;cursor:pointer}
-.mkrow .n{flex:none;width:26px;height:23px;background:var(--tag);color:var(--tagink);clip-path:polygon(12% 100%,50% 0,88% 100%);font:700 .78rem/1 var(--f-mono);display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px}
-.mkrow.done .n{background:#9c968a}
-.mkrow .t{flex:1;min-width:0}
-.mkrow .s{font-size:.8rem;color:var(--mut);font-family:var(--f-mono)}
-.thumbs{display:flex;gap:12px;flex-wrap:wrap}
-.thumbs button{background:none;border:0;padding:0;cursor:zoom-in;width:120px}
-.thumbs img{width:120px;height:120px;object-fit:cover;display:block;border:1px solid var(--line)}
-.thumbs span{display:block;font-size:.75rem;color:var(--mut);margin-top:4px;text-align:left;line-height:1.3}
-
-/* piantina */
-.rmap{position:relative;line-height:0}
-.rmap img{width:100%;height:auto;display:block}
-.hs{position:absolute;background:transparent;border:2px solid transparent;padding:0;cursor:pointer}
-.hs:hover,.hs:active{border-color:var(--tag);background:rgba(243,194,52,.14)}
-.rooms{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.rooms button{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:10px 12px;min-height:48px;cursor:pointer}
-.rooms .c{font-family:var(--f-mono);font-size:.78rem;color:var(--mut);font-variant-numeric:tabular-nums;white-space:nowrap}
-.rooms .c.all{color:var(--ok)}
-.rooms .c.nw{color:var(--tag)}
-
-/* fogli di carta */
-.paper{background:var(--paper);color:var(--ink);padding:18px 18px 20px;box-shadow:0 8px 22px rgba(0,0,0,.5);font-family:var(--f-mono);font-size:.92rem;line-height:1.5;position:relative}
-.paper h4{font-family:var(--f-disp);font-weight:400;font-size:1.05rem;margin:0 0 2px}
-.paper .hd{font-size:.75rem;color:var(--inkmut);margin-bottom:12px;border-bottom:1px solid #c9bea6;padding-bottom:8px}
-.paper dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0}
-.paper dt{color:var(--inkmut)}
-.paper dd{margin:0;min-width:0}
-.paper table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-.paper td,.paper th{text-align:left;padding:3px 4px;border-bottom:1px dotted #b9ad94;font-weight:400;vertical-align:top}
-.paper th{color:var(--inkmut);font-size:.78rem}
-.paper .r{text-align:right}
-.paper .ft{font-size:.72rem;color:var(--inkmut);margin-top:12px}
-.paper .hw{font-family:var(--f-hand);font-size:1.35rem;line-height:1.2;color:#1d3a8a;margin-top:10px}
-.paper s{color:var(--inkmut)}
-.paper .ins{font-family:var(--f-hand);font-size:1.2rem;color:#1d3a8a}
-.stampr{position:absolute;right:14px;top:14px;border:2px solid var(--red);color:var(--red);font-family:var(--f-disp);padding:2px 8px;transform:rotate(8deg);font-size:.85rem;background:rgba(239,230,210,.6)}
-.note{background:#fbf8ef repeating-linear-gradient(#fbf8ef 0 29px,#b8cde6 29px 30px);color:#1d2f6b;font-family:var(--f-hand);font-size:1.38rem;line-height:30px;padding:14px 18px 18px 46px;box-shadow:0 8px 22px rgba(0,0,0,.5);position:relative;border-left:0}
-.note::before{content:"";position:absolute;left:34px;top:0;bottom:0;width:2px;background:#e3a3a3}
-.note p+p{margin-top:0}
-.note b{font-weight:700;color:var(--red)}
-.rc{background:var(--paper2);color:var(--ink);font-family:var(--f-mono);font-size:.84rem;line-height:1.45;padding:16px 14px 22px;max-width:340px;margin:0 auto;box-shadow:0 8px 22px rgba(0,0,0,.5);position:relative;font-variant-numeric:tabular-nums}
-.rc::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;background:linear-gradient(-45deg,transparent 6px,var(--paper2) 0) 0 0/12px 8px,linear-gradient(45deg,transparent 6px,var(--paper2) 0) 0 0/12px 8px}
-.rc .c{text-align:center}
-.rc .row{display:grid;grid-template-columns:46px 34px 1fr auto;gap:6px}
-.rc .row.gap{color:var(--red);grid-template-columns:1fr;text-align:center;border-block:1px dashed var(--red);padding-block:2px;margin-block:3px}
-.rc hr{border:0;border-top:1px dashed #999;margin:8px 0}
-.rc .st{display:inline-block;border:2px solid var(--red);color:var(--red);font-family:var(--f-disp);padding:2px 8px;transform:rotate(-6deg);margin-top:8px}
-.phone{background:#0d1018;border:8px solid #2a2d35;border-radius:30px;max-width:300px;margin:0 auto;padding:22px 12px 28px;color:#f2f2f2;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 10px 26px rgba(0,0,0,.6);background-image:radial-gradient(circle at 30% 20%,#3a2a4a,transparent 60%),radial-gradient(circle at 80% 80%,#21344a,transparent 55%)}
-.phone .tm{text-align:center;font-size:3.4rem;font-weight:300;line-height:1}
-.phone .dt{text-align:center;font-size:.9rem;opacity:.8;margin:4px 0 18px}
-.phone .nf{background:rgba(255,255,255,.14);border-radius:14px;padding:9px 12px;margin-top:8px;font-size:.84rem;line-height:1.35}
-.phone .nf small{display:flex;justify-content:space-between;opacity:.7;font-size:.72rem;margin-bottom:2px}
-.ph{margin:0}
-.ph img{width:100%;height:auto;display:block;cursor:zoom-in}
-.ph figcaption{font-family:var(--f-hand);font-size:1.25rem;color:#3a3125;line-height:1.1;padding-top:8px}
-.ph.pol figcaption{position:absolute;left:12px;right:12px;bottom:6px;padding:0}
-.ph.pol{position:relative}
-.ph.framed figcaption{color:var(--mut);font-family:var(--f-body);font-size:.85rem;padding-top:6px}
-
-/* foglio indizio */
-.sheet{position:fixed;inset:0;z-index:30;background:rgba(5,6,8,.78);display:flex;align-items:flex-end;justify-content:center}
-.sheet .in{background:var(--bg);width:100%;max-width:680px;max-height:92vh;max-height:92dvh;overflow:auto;border-top:3px solid var(--tag);padding:20px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
-.sheet .hdr{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
-.sheet .x{background:none;border:1px solid var(--line);border-radius:3px;min-width:44px;min-height:44px;cursor:pointer;font-family:var(--f-disp)}
-.sheet .tx{font-size:1.02rem}
-.sheet .row2{display:flex;gap:10px;flex-wrap:wrap}
-.sheet .row2 .btn{flex:1;min-width:150px}
-.star[aria-pressed="true"]{border-color:var(--tag);color:var(--tag)}
-.lb{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.95);overflow:auto}
-.lb img{width:100%;display:block;cursor:zoom-in;max-width:none}
-.lb.z img{width:240%;cursor:zoom-out}
-#lbx{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));z-index:41;background:var(--paper);color:var(--ink);border:0;border-radius:3px;padding:0 16px;min-height:44px;font-family:var(--f-disp);cursor:pointer}
-.toast{pointer-events:none;position:fixed;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));width:min(440px,calc(100% - 32px));text-align:center;z-index:45;background:var(--tag);color:var(--tagink);font-family:var(--f-disp);padding:10px 16px;border-radius:3px;box-shadow:0 6px 18px rgba(0,0,0,.6);max-width:calc(100% - 32px);font-size:.92rem}
-
-/* sospettati */
-.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.scard{background:none;border:0;padding:0;text-align:left;cursor:pointer}
-.scard .pol{padding:7px 7px 10px}
-.scard img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;max-width:100%}
-.scard .nm{font-family:var(--f-hand);font-size:1.4rem;color:#2b241b;line-height:1;padding-top:6px}
-.scard .nk{font-size:.78rem;color:#6a604f;font-family:var(--f-body)}
-.scard .bdg{display:inline-block;margin-top:4px;background:var(--tag);color:var(--tagink);font-family:var(--f-mono);font-size:.72rem;padding:1px 6px}
-.vic .pol{position:relative}
-.vic .pol::after{content:"";position:absolute;inset:7px 7px 46px;background:linear-gradient(to top right,transparent 47%,var(--red) 48%,var(--red) 52%,transparent 53%)}
-.shead{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:start}
-.shead img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
-.blk{border-left:3px solid var(--line);padding-left:12px}
-.blk h3{font-size:.95rem;color:var(--mut);margin-bottom:4px}
-.quote{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 14px}
-.quote .w{font-family:var(--f-mono);font-size:.75rem;color:var(--mut);margin-bottom:4px}
-.locked{border-style:dashed;color:var(--mut);font-size:.9rem}
-
-/* prove */
-.seg{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
-.seg button{flex:1;background:none;border:0;padding:10px;min-height:44px;font-family:var(--f-disp);cursor:pointer;color:var(--mut)}
-.seg button[aria-pressed="true"]{background:var(--panel);color:var(--text)}
-.chk{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--mut);min-height:44px}
-.chk input{width:20px;height:20px;accent-color:var(--tag)}
-.grp h3{font-size:1rem;color:var(--mut);margin:6px 0 8px}
-.bags{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.bags button{background:none;border:0;padding:0;cursor:zoom-in;text-align:left}
-.bags img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;max-width:100%;box-shadow:0 6px 16px rgba(0,0,0,.5)}
-.bags span{display:block;font-size:.85rem;margin-top:6px}
-
-/* taccuino */
-textarea{width:100%;min-height:200px;background:var(--paper2) repeating-linear-gradient(var(--paper2) 0 29px,#cfdcec 29px 30px);color:#1d2f6b;font:1.3rem/30px var(--f-hand);padding:4px 14px;border:0;border-radius:2px;resize:vertical}
-.tl{list-style:none;margin:0;padding:0;display:grid;gap:0}
-.tl li{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.95rem}
-.tl .h{font-family:var(--f-mono);color:var(--tag);font-variant-numeric:tabular-nums}
-
-/* accusa */
-.acc label{display:block;font-family:var(--f-disp);margin:0 0 6px}
-.acc select{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:3px;padding:12px;min-height:48px;font:inherit}
-.err{color:#ff8f86}
-.verdict{border:2px solid var(--red);padding:16px}
-.verdict.win{border-color:var(--ok)}
-.sol p+p{margin-top:10px}
-.sol ul{margin:8px 0 0;padding-left:20px}
-
-/* aggiunte: ricerca nella foto, indietro, cronologia, tabella dell'accusa */
-.top{flex-wrap:nowrap}
-.top .left{display:flex;gap:8px;align-items:center;min-width:0}
-.top .case{white-space:nowrap}
-.status{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:10px 12px;font-size:.92rem}
-.status b{font-family:var(--f-mono);color:var(--tag);font-variant-numeric:tabular-nums}
-.lens{background:none;border:1px solid var(--line);border-radius:3px;min-height:40px;padding:0 12px;font-family:var(--f-disp);cursor:pointer;white-space:nowrap}
-.lens[aria-pressed="true"]{border-color:var(--tag);color:var(--tag)}
-.zw{overflow:auto;-webkit-overflow-scrolling:touch;max-width:100%}
-.zw.z .scene{width:230%}
-.scene{cursor:crosshair}
-.found{position:absolute;border:2px dashed rgba(243,194,52,.9);border-radius:6px;pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
-.found i{position:absolute;right:-9px;top:-9px;width:20px;height:20px;border-radius:50%;background:var(--tag);color:var(--tagink);font:700 .7rem/20px var(--f-mono);text-align:center;font-style:normal}
-.miss{position:absolute;transform:translate(-50%,-50%);pointer-events:none;width:46px;height:46px;border:2px solid var(--text);border-radius:50%;opacity:0}
-@media (prefers-reduced-motion:no-preference){.miss{animation:miss .7s ease-out}@keyframes miss{0%{opacity:.9;transform:translate(-50%,-50%) scale(.4)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.4)}}}
-@media (prefers-reduced-motion:reduce){.miss{opacity:.6}}
-.sheet .hdr .back2{background:none;border:1px solid var(--line);border-radius:3px;min-height:44px;padding:0 14px;font-family:var(--f-disp);cursor:pointer;white-space:nowrap}
-.tl li.new .h{color:var(--text)}
-.tbl{display:grid;gap:12px}
-.tr{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px}
-.tr .q{font-family:var(--f-disp);margin-bottom:8px;display:flex;gap:10px;align-items:baseline}
-.tr .q span{font-family:var(--f-mono);color:var(--tag);font-size:.85rem}
-.tr select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:3px;padding:12px;min-height:48px;font:inherit;font-size:.95rem}
-.tries{font-family:var(--f-mono);font-size:.85rem;color:var(--mut)}
-.vic2{font-family:var(--f-mono);font-size:.85rem;color:var(--mut)}
-.byline{position:absolute;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));font-family:var(--f-disp);font-size:.8rem;color:var(--text);opacity:.8;background:rgba(11,12,15,.7);padding:4px 10px;border-radius:3px}
-.reset{background:none;border:0;color:var(--mut);text-decoration:underline;font:inherit;font-size:.85rem;min-height:44px;cursor:pointer;align-self:flex-start}
-.rc .row{grid-template-columns:46px 1fr auto}
-.tess{position:relative;container-type:inline-size;line-height:0;box-shadow:0 8px 22px rgba(0,0,0,.5)}
-.tess img{width:100%;display:block}
-.nmw{position:absolute;left:30%;top:37.2%;transform:translateY(-50%);font-family:"Architects Daughter",var(--f-hand);color:#2b2b35;letter-spacing:.1em;white-space:nowrap;line-height:1;font-weight:400}
-.tess .nmw{font-size:4.1cqw}
-.pzg{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:#0b0c0f;padding:3px;border-radius:3px}
-.pt{position:relative;aspect-ratio:290/260;overflow:hidden;padding:0;border:0;cursor:pointer;container-type:inline-size;background:#ccc;line-height:0}
-.pt .cf{position:absolute;width:400%;height:300%}
-.pt .cf img{width:100%;height:100%;display:block}
-.pt .nmw{font-size:16.4cqw}
-.pt.sel{outline:3px solid var(--tag);outline-offset:-3px;z-index:1}
-.pt.ok{cursor:default}
-.hs.shut{background:rgba(11,12,15,.8)}
-.rooms button.shut{opacity:.55}
-.conf{--note:#fff39a;--h:min(300px,64vw);--band:calc(var(--h)*.33);position:relative;isolation:isolate;padding:0 16px 18px 0}
-.conf::before{content:"";position:absolute;left:0;right:0;top:var(--band);bottom:0;background:var(--note);z-index:-1;box-shadow:0 10px 24px rgba(0,0,0,.5)}
-.conf::after{content:"";display:block;clear:both}
-.conf .fig{float:left;height:var(--h);width:auto;max-width:none;margin:0 4px 0 -6px;shape-margin:12px;shape-image-threshold:.35;filter:drop-shadow(0 8px 14px rgba(0,0,0,.6))}
-.conf .who{padding-top:calc(var(--band) + 14px);font-family:var(--f-mono);font-size:.74rem;color:#5d5326;margin-bottom:4px}
-.conf .tx2{font-family:var(--f-disp);font-size:1rem;line-height:1.45;color:#16130c;padding-left:12px}
-.tx2 .rest{visibility:hidden}
-.tx2 .car{display:inline-block;width:.55em;height:1.05em;margin:0 -.55em -.15em 0;background:#16130c;vertical-align:baseline}
-@media (prefers-reduced-motion:no-preference){.tx2 .car{animation:blink .8s steps(1) infinite}@keyframes blink{50%{opacity:0}}}
-.cf-hd{display:flex;justify-content:space-between;gap:12px}
-.cf-hd span{color:var(--mut);font-family:var(--f-mono);font-size:.8rem}
-@media (prefers-reduced-motion:no-preference){
- .enter{animation:vin .32s cubic-bezier(.2,.7,.2,1)}@keyframes vin{from{opacity:0;transform:translateY(10px)}}
- .sheet:not([hidden]){animation:fade .2s ease-out}.sheet:not([hidden]) .in{animation:up .32s cubic-bezier(.2,.8,.2,1)}
- @keyframes up{from{transform:translateY(40px);opacity:.3}}@keyframes fade{from{opacity:0}}
- .lb:not([hidden]){animation:fade .2s ease-out}
- .cf-wrap:not([hidden]){animation:fade .35s ease-out}
- .toast:not([hidden]){animation:drop .35s cubic-bezier(.2,.8,.2,1)}@keyframes drop{from{opacity:0;transform:translate(-50%,-14px)}}
- .found.pop{animation:pop .55s cubic-bezier(.2,1.6,.4,1)}@keyframes pop{0%{transform:scale(1.6);opacity:0}100%{transform:none;opacity:1}}
- .flash{position:absolute;inset:0;background:#fff;pointer-events:none;animation:flash .35s ease-out forwards;z-index:3}@keyframes flash{from{opacity:.75}to{opacity:0}}
- .pt{transition:transform .15s,filter .15s}.pt.sel{transform:scale(.94);filter:brightness(1.15)}
- .pzg.done{animation:glow2 .6s ease-out}@keyframes glow2{50%{box-shadow:0 0 0 4px var(--tag)}}
- button{transition:transform .08s ease-out,background-color .15s,border-color .15s,color .15s}
- button:active{transform:scale(.97)}
- .mk,.hs,.scene{transition:none}
+@media (min-width:700px){
+  .top{--pw:min(100vw,760px);--gw:200px}
+  .pont{--h:520px;--d1:240px;--d2:500px;max-width:900px}
+  .v-assi{width:240px;left:36%;top:calc(var(--d1) - 240px * 1.066 + 3px)}
+  .v-cazz{width:190px;top:calc(var(--d2) - 190px * 1.138 + 3px)}
+  .stucco,.casi{left:calc(7% + 140px);top:calc(var(--d2) - 260px);width:360px}
+  .casi h2{font-size:3rem}
+  .trap{zoom:1.3}
+  .demo,.coperto{zoom:1.3}
+  .finale{flex-direction:row;justify-content:center;align-items:flex-end;gap:60px}
+  .demo{width:400px}
 }
-.pinph{text-align:center}.dots{display:flex;gap:14px;justify-content:center;margin:10px 0 6px}.dots i{width:13px;height:13px;border-radius:50%;border:2px solid #f2f2f2}.dots i.on{background:#f2f2f2}
-.pmsg{font-size:.85rem;margin:4px 0 10px}.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:240px;margin:0 auto}
-.kp button{aspect-ratio:1;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font:400 1.5rem system-ui,sans-serif;cursor:pointer;min-height:56px}
-.kp button:active{background:rgba(255,255,255,.35)}
-@media (prefers-reduced-motion:no-preference){.shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
-.pick{position:relative;background:var(--panel);border:2px solid var(--line);border-radius:4px;padding:6px 6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:44px}
-.pick img{width:100%;aspect-ratio:3/4;object-fit:contain;object-position:bottom;display:block}
-.pick.wpn img{aspect-ratio:1;object-fit:cover}
-.pick span{font-family:var(--f-disp);font-size:.85rem;text-align:center;line-height:1.2}
-.pick.sel{border-color:var(--tag);background:#2b2715;box-shadow:0 0 0 2px var(--tag)}
-.pick.sel::after{content:"✓";position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:var(--tag);color:var(--tagink);font:700 .85rem/24px var(--f-mono);text-align:center}
-.btn[disabled]{opacity:.4;cursor:not-allowed}
-.md{position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.mdin{background:var(--bg);border:2px solid var(--red);max-width:520px;width:100%;padding:18px;display:flex;flex-direction:column;gap:16px}
-.mdimg{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}.mdimg img{width:100%;max-height:220px;object-fit:contain}
-.mdtx{font-family:var(--f-disp);font-size:1.05rem;line-height:1.5}
-.row2 .btn{flex:1;min-width:140px}
-.finv{position:fixed;inset:0;z-index:20;overflow:auto;background:#0b0b0d center/cover no-repeat;display:flex;justify-content:center;padding-block:calc(28px + env(safe-area-inset-top,0px)) calc(28px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.fin-in{width:100%;max-width:720px;display:flex;flex-direction:column;gap:18px;margin:auto 0}
-.fh{font-size:2.2rem}.fh.ok{color:var(--tag)}.fh.ko{color:#ff7d74}
-.blackv{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
-.bl1{font-family:var(--f-disp);font-size:1.6rem}.bl2{max-width:30ch;color:var(--mut);font-size:1.1rem}
-.blackv .btn{max-width:220px;margin-inline:auto}
-.thx .stack{margin-inline:auto;align-items:stretch}.thx .btn{max-width:none}
-@media (prefers-reduced-motion:no-preference){.bl1{animation:fade 1.6s ease-out both}.bl2{animation:fade 1.6s 1.2s ease-out both}.blackv .btn{animation:fade 1s 3s ease-out both}}
-.film{position:fixed;inset:0;z-index:20;background:#000;overflow:hidden}
-.fbg{position:absolute;inset:0;background:var(--bg) center 30%/cover no-repeat;filter:brightness(.6)}
-@media (prefers-reduced-motion:no-preference){.fbg{animation:kb 60s linear infinite alternate}@keyframes kb{to{transform:scale(1.15)}}}
-.lineup{position:absolute;left:0;right:0;bottom:30%;display:flex;justify-content:center;gap:0;filter:brightness(.42) saturate(.7);pointer-events:none}
-.lineup img{height:min(24vh,190px);width:auto;margin:0 -2.4%}
-.luc{position:absolute;left:max(-10px,calc(50% - 360px));bottom:calc(var(--fbh,170px) - 50px);height:min(44vh,460px);width:auto;z-index:2;filter:drop-shadow(0 10px 18px rgba(0,0,0,.7))}
-@media (prefers-reduced-motion:no-preference){.luc.in{animation:lin .7s cubic-bezier(.2,.8,.2,1)}@keyframes lin{from{opacity:0;transform:translateX(-40px)}}
- .ev.in{animation:evin .6s cubic-bezier(.2,.8,.2,1)}@keyframes evin{from{opacity:0;transform:rotate(6deg) translateY(-20px)}}}
-.ev{position:absolute;right:max(14px,calc(50% - 360px));top:calc(64px + env(safe-area-inset-top,0px));width:min(40vw,250px);z-index:2;--rot:3deg;padding:7px 7px 22px}
-.ev img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.lname{position:absolute;left:max(16px,calc(50% - 340px));top:calc(64px + env(safe-area-inset-top,0px));z-index:3;font-family:var(--f-disp);font-size:2.2rem;color:var(--tag);text-shadow:0 2px 10px #000}
-.lname small{display:block;font-size:.9rem;color:var(--text)}
-@media (prefers-reduced-motion:no-preference){.lname:not([hidden]){animation:fade 1.2s .6s both}}
-.fbox{position:absolute;left:0;right:0;bottom:0;z-index:4;background:var(--note,#fff39a);background:#fff39a;padding:16px max(18px,env(safe-area-inset-right,0px)) calc(64px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));min-height:170px}
-.fbox .ftx{max-width:720px;margin:0 auto;padding:0;font-family:var(--f-disp);font-size:1.08rem;line-height:1.5;color:#16130c}
-.fctl{position:absolute;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;padding-inline:16px}
-.fctl button{background:#16130c;color:#fff39a;border:0;border-radius:3px;min-height:40px;padding:0 14px;font-family:var(--f-disp);cursor:pointer}
-.fdots{display:flex;gap:4px;margin-right:auto}.fdot{width:8px;height:8px;border-radius:50%;background:rgba(22,19,12,.25)}.fdot.on{background:#16130c}
-@media (max-width:420px){.fdots{display:none}.fctl{justify-content:flex-end}}
-.ffull{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;z-index:3;max-width:none}
-.film.isfull .luc,.film.isfull .ev,.film.isfull .lname{display:none}
-@media (prefers-reduced-motion:no-preference){.ffull.in{animation:fade 1.2s ease-out}.thx .ttl2{animation:fade 1.6s .8s both}.thx .by2{animation:fade 1.6s 2.2s both}.thx .stack{animation:fade 1s 3s both}}
-.ttl2{font-family:var(--f-disp);font-size:1.3rem;color:var(--tag);max-width:22ch}.by2{font-family:var(--f-disp);color:var(--mut)}
-.tz{position:relative;background:#1f3b2c radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/6px 6px;border:6px solid #3b2a1c;border-radius:6px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
-.tp{position:absolute;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55));cursor:grab;touch-action:none}
-.tp.drag{cursor:grabbing;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6))}
-.tp.sel .tq{outline:3px solid var(--tag)}
-.tq{position:absolute;inset:0;overflow:hidden}
-.tc{position:absolute;line-height:0}.tc img{width:100%;height:100%;display:block;max-width:none;pointer-events:none}
-.tc .nmw{pointer-events:none}
-@media (prefers-reduced-motion:no-preference){.tp.snap{transition:left .18s ease-out,top .18s ease-out}.tz.done{animation:glow2 .8s ease-out}}
-.hintz{position:absolute;border:3px solid #3fd16b;border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 14px #3fd16b;pointer-events:none;transform:scale(1.15)}
-@media (prefers-reduced-motion:no-preference){.hintz{animation:hz 1.8s ease-in-out infinite}@keyframes hz{50%{opacity:.45}}
- .flipin{animation:flip .7s cubic-bezier(.2,.8,.2,1)}@keyframes flip{from{transform:perspective(900px) rotateY(-90deg);opacity:.2}}}
-.fasc{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1800px;padding-block:calc(16px + env(safe-area-inset-top,0px)) calc(16px + env(safe-area-inset-bottom,0px))}
-.fasc{background:#0b0c0f}
-.fasc{perspective:1400px;background:radial-gradient(ellipse at 50% 40%,rgba(255,210,150,.18),transparent 65%),repeating-linear-gradient(92deg,#3a2416 0 3px,#2f1d11 3px 9px,#432a19 9px 12px,#2c1b10 12px 22px),#2a1a10!important}
-.fcov{position:relative;display:block;will-change:transform;transform-origin:50% 0;background:none;border:0;padding:0;cursor:pointer;height:min(84vh,calc(90vw * 1.667));aspect-ratio:931/1552;max-width:90vw}
-.fcov img{width:100%;height:100%;display:block;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.75)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
-.fhint{margin-top:10px;font-family:var(--f-disp);color:var(--text);font-size:.95rem}
-@media (prefers-reduced-motion:no-preference){.fhint{animation:pulse 2.4s ease-in-out infinite}}
-.fasc.opening .fhint{opacity:0;animation:none;transition:opacity .25s}.fasc.opening{pointer-events:none}
-.lockz{position:absolute;border:2px dashed rgba(235,228,212,.85);border-radius:6px;pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
-@media (prefers-reduced-motion:no-preference){.lockz{animation:lz 1.3s ease-out forwards}@keyframes lz{0%{opacity:0;transform:scale(.9)}20%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}}
-@media (prefers-reduced-motion:no-preference){
- .hs.fresh{animation:unveil 1.6s ease-out .2s both}@keyframes unveil{from{background:rgba(11,12,15,.8)}60%{background:rgba(243,194,52,.25);border-color:var(--tag)}to{background:transparent}}
- .rooms button.fresh{animation:rglow 1.6s ease-out}@keyframes rglow{0%,40%{box-shadow:0 0 0 2px var(--tag)}100%{box-shadow:0 0 0 0 transparent}}
- .sheet:not([hidden]) .in>.paper,.sheet:not([hidden]) .in>.rc,.sheet:not([hidden]) .in>.note,.sheet:not([hidden]) .in>.phone,.sheet:not([hidden]) .in>.ph{animation:drop2 .5s cubic-bezier(.2,.8,.2,1) both}
- .sheet:not([hidden]) .in>:nth-child(4){animation-delay:.08s}.sheet:not([hidden]) .in>:nth-child(5){animation-delay:.16s}
- @keyframes drop2{from{opacity:0;transform:translateY(-14px) rotate(-1.5deg)}}
- .scard .bdg{animation:pulse 1.8s ease-in-out infinite}
- .enter .scene img{animation:kb2 1.2s ease-out}@keyframes kb2{from{transform:scale(1.04);filter:brightness(.7)}}}
-.rate{display:flex;flex-direction:column;gap:8px;align-items:stretch}
-.rq{font-family:var(--f-disp);color:var(--tag)}
-.rbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rbtns.two{grid-template-columns:1fr 1fr}.rbtns.one{grid-template-columns:1fr}
-.rbtns button{background:var(--panel);border:1px solid var(--line);border-radius:3px;min-height:48px;padding:8px 6px;font-family:var(--f-disp);font-size:.85rem;cursor:pointer;color:var(--text)}
-.rbtns button[data-v="imp"],.rbtns button[data-v$="|imp"][aria-pressed="true"]{border-color:var(--tag)}
-.rbtns button[data-v="lie"],.rbtns button[data-v$="|lie"][aria-pressed="true"]{border-color:#ff7d74}
-.rbtns.sm{margin-top:-14px}.rbtns.sm button{min-height:40px;font-size:.78rem;color:var(--mut)}
-.rbtns.sm button[aria-pressed="true"]{color:var(--text);background:#2b2715}
-.rnext{font-size:.8rem;color:var(--mut);text-align:right}
-.tnote{display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--tag);border-radius:3px;padding:10px 12px;cursor:pointer}
-.tnote.lie{border-left-color:#ff7d74}
-.tn{display:flex;justify-content:space-between;gap:10px;font-family:var(--f-disp)}.tv{font-family:var(--f-mono);font-size:.75rem;color:var(--mut)}
-.tnote.lie .tv{color:#ff9a92}.tnote.imp .tv{color:var(--tag)}
-.tt{font-size:.92rem;color:var(--mut)}
-.bulb{display:inline-flex;align-items:center;justify-content:center;color:var(--tag);border-color:#5a4d1f}
-.vl{position:fixed;inset:0;z-index:58;background:rgba(6,6,8,.88);display:flex;align-items:flex-end;justify-content:center;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:calc(12px + env(safe-area-inset-top,0px)) calc(14px + env(safe-area-inset-bottom,0px))}
-.vl.spot{background:transparent}.vl.top{align-items:flex-start}
-.vlring{position:fixed;border:3px solid var(--tag);border-radius:8px;box-shadow:0 0 0 9999px rgba(6,6,8,.82);pointer-events:none}
-.vlin{position:relative;width:100%;max-width:620px;display:flex;flex-direction:column}
-.vlin.side-l{align-items:flex-start}.vlin.side-r{align-items:flex-end}
-.vl.top .vlin{flex-direction:column-reverse}
-.vlimg{height:min(30vh,250px);width:auto;max-width:78%;margin-bottom:-6px;position:relative;z-index:2;filter:drop-shadow(0 8px 14px rgba(0,0,0,.7))}
-.vl.top .vlimg{margin:-6px 0 0}
-.vl.spot .vlimg{height:min(22vh,190px)}
-.vlpt{position:fixed;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.7))}
-@media (prefers-reduced-motion:no-preference){.vlpt{animation:fade .45s ease-out}}
-.vlin.nofig .vlbox{margin-top:0}
-.vlbox{align-self:stretch;background:#fff39a;color:#16130c;padding:16px 18px 14px;position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,.5)}
-.vlbox .who{font-family:var(--f-mono);font-size:.74rem;color:#5d5326}
-.vlbox .tx2{font-family:var(--f-disp);font-size:1.02rem;line-height:1.5;min-height:3em}
-.vlbox .btn{align-self:flex-end;width:auto;min-width:150px}
-@media (prefers-reduced-motion:no-preference){.vl:not([hidden]){animation:fade .3s ease-out}.vl:not([hidden]) .vlimg{animation:vlin .55s cubic-bezier(.2,.8,.2,1)}@keyframes vlin{from{opacity:0;transform:translateY(24px) scale(.96)}}}
-.vlbye{height:170px;width:auto;margin:4px auto 0}
-@media (prefers-reduced-motion:no-preference){.thx .vlbye{animation:fade 1.4s 1.6s both}}
-.mus{background:none;border:1px solid var(--line);border-radius:3px;min-height:44px;padding:0 12px;font-family:var(--f-disp);font-size:.85rem;cursor:pointer;color:var(--mut);white-space:nowrap}
-.mus[aria-pressed="true"]{color:var(--text)}
-.mus[aria-pressed="false"]{text-decoration:line-through}
-.top .mus{padding:0 9px}.top .case{padding:8px 10px}.top .count{white-space:nowrap;margin-left:8px}@media (max-width:400px){.top .lbl{display:none}.top .mus,.top .case{font-size:.8rem}.top .count b{font-size:1.05rem}}.top .left{gap:6px}
-@media (min-width:600px){.conf{--h:380px}.conf .tx2{font-size:1.15rem}}
-.cf-wrap{position:fixed;inset:0;z-index:50;background:#060608;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.cf-in{width:100%;max-width:720px;display:flex;flex-direction:column;gap:18px}
-.cf-hd{font-family:var(--f-disp);color:var(--tag);font-size:1rem}
-@media (prefers-reduced-motion:no-preference){.cf-wrap .conf .fig{animation:cfin .5s ease-out}@keyframes cfin{from{opacity:0;transform:translateX(-30px)}}}
-.cf-in .btn{max-width:320px;align-self:flex-end}
-.confirm{border:1px solid var(--red);padding:12px;border-radius:3px;display:flex;flex-direction:column;gap:10px}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header class="top">
+    <img class="vernice" src="vernice.webp" alt="">
+    <div class="title">
+      <div class="sign" role="img" aria-label="Circolo Il Fortino"><small>Circolo</small>Il Fortino</div>
+      <div class="neonbox"><div class="neon" aria-hidden="true">Games</div></div>
+      <p class="tagline">Sito in costruzione.<br>I casi però sono già aperti.</p>
+    </div>
+    <img class="vl v-scala" src="vlady_scala.webp" alt="">
+  </header>
 
+  <section class="pont" aria-label="I casi">
+    <img class="stucco" src="stucco.webp" alt="">
+    <div class="casi"><h2>I casi</h2><span id="count"></span></div>
+    <div class="tube std a"></div><div class="tube std b"></div><div class="tube std c"></div>
+    <div class="base" style="left:calc(3% + 5px)"></div><div class="base" style="left:calc(50% + 5px)"></div><div class="base" style="right:calc(3% - 7px)"></div>
+    <div class="brace" id="br1"></div><div class="brace" id="br2"></div>
+    <div class="tube h" style="top:calc(var(--d1) + 14px)"></div>
+    <div class="tube h" style="top:calc(var(--d2) + 14px)"></div>
+    <div class="plank" style="top:var(--d1)"></div>
+    <div class="plank" style="top:var(--d2)"></div>
+    <img class="vl v-assi" src="vlady_assi.webp" alt="">
+    <img class="vl v-cazz" src="vlady_cazzuola.webp" alt="">
+    <div class="tube h rail" style="top:calc(var(--d1) - 64px)"></div>
+    <div class="tube h rail" style="top:calc(var(--d2) - 64px)"></div>
+    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d1) - 64px)"></i><i class="cpl" style="left:calc(50% + 5px);top:calc(var(--d1) - 64px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d1) - 64px)"></i>
+    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d2) - 64px)"></i><i class="cpl" style="left:calc(50% + 5px);top:calc(var(--d2) - 64px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d2) - 64px)"></i>
+    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d1) + 16px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d1) + 16px)"></i>
+    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d2) + 16px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d2) + 16px)"></i>
+  </section>
 
-<div id="app"></div>
-<nav id="nav" hidden></nav>
-<div id="sheet" class="sheet" hidden></div>
-<div id="lb" class="lb" hidden><button id="lbx" data-a="lbclose">Indietro</button><img id="lbi" alt="" data-a="lbzoom"></div>
-<div id="cf" class="cf-wrap" hidden role="dialog" aria-modal="true" aria-label="Nuova dichiarazione"></div>
-<div id="md" class="md" hidden></div>
-<div id="vl" class="vl" hidden role="dialog" aria-modal="true" aria-label="Vlady"></div>
-<div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+  <main class="grid" id="grid"></main>
 
+  <section class="finale" id="finale">
+    <div class="demo">
+      <img class="breccia" src="breccia.webp" alt="">
+      <img class="calc" src="calcinacci.webp" alt="">
+      <img class="vl v-mazza" src="vlady_mazza.webp" alt="">
+    </div>
+  </section>
+</div>
+<footer class="floor"><p>Created by Vlady</p></footer>
+
+<script src="giochi.js"></script>
 <script>
-/* ===================== CONTENUTI ===================== */
-const IM=k=>""+k+".jpg";
-const ph=(k,cap)=>`<figure class="ph framed"><img src="${IM(k)}" alt="${cap||"Foto"}" data-a="zoom" data-v="${k}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:""}</figure>`;
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LIV=["","Facile","Abbastanza facile","Media","Difficile","Difficilissima"];
+function leggi(k){try{const r=localStorage.getItem(k);return r?JSON.parse(r):null}catch(e){return null}}
 
-const TESS=()=>`<img src="${IM("tessera_retro")}" alt="Retro della tessera"><span class="nmw">ORLANDO CECCARELLI</span>`;
-const DOC={
-verbale:`<div class="paper"><h4>Verbale di intervento</h4><div class="hd">Polizia Scientifica · Squadra rilievi · documento di gioco</div><dl>
-<dt>Luogo</dt><dd>Circolo Il Fortino, Marina di Pisa</dd>
-<dt>Chiamata</dt><dd>ore 00:22, da Danila, consigliera del direttivo</dd>
-<dt>Vittima</dt><dd>Fabiano Corsini, presidente del circolo</dd>
-<dt>Ritrovamento</dt><dd>congelatore a pozzetto del «Magazzino Oro»</dd>
-<dt>Presenti</dt><dd>Josef, Danila, Luca con gli amici, l'Architetto con l'amico Roberto, Ceccarelli con la nipote Marta, Giulia, Rolando, i giocatori di bridge Guido, Giovanni e Franco</dd>
-<dt>Note</dt><dd>Partita trasmessa al bar, finita ai rigori alle 23:50. Nessuno dichiara di aver visto il presidente dopo le 22:05.</dd></dl>
-<div class="ft">Fatti e persone di questo caso sono inventati.</div></div>`,
-referto:`<div class="paper"><span class="stampr">Riservato</span><h4>Esame esterno preliminare</h4><div class="hd">Medico legale di turno · ore 01:40</div>
-<p>Prima ferita, alla nuca: lacero-contusa, con microframmenti di vetro verde. Non mortale, compatibile con uno stordimento.</p>
-<p style="margin-top:8px">Seconda ferita, alla tempia: colpo violento con un oggetto pesante e arrotondato, di qualche chilo. Bordi netti, nessun frammento. Questa è la causa della morte.</p>
-<p style="margin-top:8px">Il corpo è stato chiuso nel congelatore dopo la morte: l'ora esatta non si può stabilire, tra le 22:15 e le 23:30. Il freddo ha alterato i tessuti intorno alle ferite.</p>
-<p style="margin-top:8px">Sulla spalla sinistra: polvere azzurra di gesso da biliardo. Nel cappuccio: un frammento di tessera ARCI.</p>
-<p style="margin-top:8px">Impronte sul coperchio: fresche quelle di Danila; altre parziali, non identificabili. Nelle tasche: chiavi, accendino. Nessun portafoglio.</p></div>`,
-lab:`<div class="paper"><span class="stampr">Laboratorio</span><h4>Analisi dei reperti</h4><div class="hd">Polizia Scientifica · esiti preliminari</div>
-<table><tr><th>Reperto</th><th>Esito</th></tr>
-<tr><td>Base del Guerriero Pisano</td><td>macchia di vino rosso. Nessuna traccia biologica</td></tr>
-<tr><td>Sacchetto del ghiaccio squarciato</td><td>tracce di sangue della vittima, diluite nell'acqua di scioglimento</td></tr></table></div>`,
-vetro:`<div class="paper"><h4>Comparazione dei vetri</h4><div class="hd">Laboratorio · frammento del disimpegno, bottiglie della serata</div>
-<table><tr><th>Campione</th><th>Esito</th></tr>
-<tr><td>Bottiglia di Beck's rotta in giardino</td><td>spessore e colore diversi</td></tr>
-<tr><td>Tennent's Super tra i vuoti del magazzino bar</td><td>combacia con la scheggiatura del collo</td></tr></table>
-<p style="margin-top:8px">Sul frammento: sangue della vittima.</p></div>`,
-telefono:`<div class="phone"><div class="tm">00:34</div><div class="dt">domenica · batteria 4% · torcia accesa</div>
-<div class="nf"><small><span>Chiamate perse</span><span>00:25</span></small>Numero non salvato (3)</div></div>`,
-cassa:`<div class="rc"><div class="c"><b>CIRCOLO IL FORTINO</b><br>Giornale di cassa · sabato<br>Operatore: Giulia</div><hr>
-<div class="row"><span>20:38</span><span>Caffè</span><span>1,10</span></div>
-<div class="row"><span>21:30</span><span>2 caffè</span><span>2,20</span></div>
-<div class="row"><span>21:58</span><span>Tennent's Super</span><span>3,70</span></div>
-<div class="row"><span>22:04</span><span>Amaro per il presidente, omaggio</span><span>0,00</span></div>
-<div class="row"><span>22:20</span><span>Giro per il bancone, 9 caffè corretti. Paga l'Architetto, banconota da 50</span><span>13,50</span></div>
-<div class="row"><span>22:24</span><span>2 Spritz</span><span>7,00</span></div>
-<div class="row"><span>22:41</span><span>3 Spritz senza ghiaccio</span><span>10,50</span></div>
-<div class="row"><span>22:44</span><span>Amaro</span><span>2,20</span></div>
-<div class="row"><span>23:51</span><span>Tennent's Super</span><span>3,70</span></div>
-<hr><div class="c">Grazie e arrivederci</div></div>`,
-ordine:`<div class="paper"><h4>Valdera</h4><div class="hd">Distribuzione bevande · ordine n. 418 · Cliente: Circolo Il Fortino · confermato per telefono sabato ore 22:08</div>
-<table><tr><th>Articolo</th><th class="r">Q.tà</th></tr>
-<tr><td>Tennent's Super 33 cl</td><td class="r"><s>24</s> <span class="ins">48</span></td></tr>
-<tr><td>Beck's 33 cl</td><td class="r"><span class="ins">annullato</span></td></tr>
-<tr><td>Acqua naturale 50 cl</td><td class="r">72</td></tr></table>
-<div class="hw">Togli le Beck's. La Tennent's lasciala, anzi raddoppia. — F.</div></div>`,
-avvisi:`<div class="stack"><div class="paper"><h4>Avviso ai soci</h4><div class="hd">Bacheca del bar</div><p>Dal 1° dicembre il circolo disdice l'abbonamento alle partite.</p><div class="hw">Il presidente</div></div>
-<div class="paper" style="transform:rotate(1deg)"><h4>Avviso ai soci</h4><div class="hd">Bacheca del bar</div><p>Chi occupa un tavolo deve consumare. Non si sta quattro ore seduti con un bicchiere d'acqua del rubinetto.</p><div class="hw">Il presidente. Sapete a chi mi riferisco.</div></div>
-<div class="paper" style="transform:rotate(-1deg)"><h4>Ultimo avviso al socio Josef</h4><div class="hd">Bacheca del bar</div><p>Alla prossima sbronza molesta la tessera viene sospesa.</p><div class="hw">Il presidente</div></div></div>`,
-bridge:`<div class="paper"><h4>Bridge · tavolo 3</h4><div class="hd">Nord: Danila · Sud: Guido · Est: Giovanni · Ovest: Franco</div>
-<table><tr><th>Mano</th><th>Ora</th><th>Morto</th><th class="r">N-S</th><th class="r">E-O</th></tr>
-<tr><td>4</td><td>21:52</td><td>Franco</td><td class="r"></td><td class="r">50</td></tr>
-<tr><td>5</td><td>22:08</td><td>Guido</td><td class="r">420</td><td class="r"></td></tr>
-<tr><td>6</td><td>22:24</td><td>Danila</td><td class="r"></td><td class="r">100</td></tr>
-<tr><td>7</td><td>22:41</td><td>Danila</td><td class="r">420</td><td class="r"></td></tr>
-<tr><td>8</td><td>22:57</td><td>Giovanni</td><td class="r">50</td><td class="r"></td></tr>
-<tr><td>9</td><td>23:14</td><td>Guido</td><td class="r"></td><td class="r">250</td></tr></table>
-<div class="hw">Alla 6 e alla 7 Danila faceva il morto e si è alzata «per un amaro». — Guido</div></div>`,
-discorso:`<div class="paper"><h4>Discorso di insediamento</h4><div class="hd">Bozza n. 7, accartocciata</div>
-<p>Care socie, cari soci,</p><p style="margin-top:6px">è con <s>immenso dolore</s> <span class="ins">grande emozione</span> che accetto la presidenza del Circolo Il Fortino.</p>
-<p style="margin-top:6px">Il mio predecessore <s>ci ha lasciati</s> <span class="ins">ha fatto quel che ha potuto</span>.</p><p style="margin-top:6px">Da oggi si cambia.</p></div>`,
-delibera:`<div class="paper"><h4>Verbale del direttivo</h4><div class="hd">Punto 3 all'ordine del giorno</div>
-<p>Rimozione del biliardo dal bar. Al suo posto, tre tavoli da burraco.</p>
-<dl style="margin-top:10px"><dt>Favorevoli</dt><dd>il presidente</dd><dt>Contrari</dt><dd>tutti gli altri presenti</dd><dt>Esito</dt><dd>approvato</dd></dl>
-<div class="hw">Decido io. — F.</div></div>`,
-turni:`<div class="paper"><h4>Orari del bar</h4><div class="hd">Appesi nello spogliatoio · settimana della partita</div><div style="overflow-x:auto"><table style="font-size:.78rem;min-width:430px"><tr><th></th><th>7–13</th><th>12:30–18:30</th><th>18–00:30</th><th>Evento</th><th>Dalle 18</th></tr>
-<tr><td>Lun</td><td>Greta</td><td>Sofia</td><td>Vladimir</td><td></td><td></td></tr>
-<tr><td>Mar</td><td>Camilla</td><td>Ramona</td><td>Sofia</td><td></td><td></td></tr>
-<tr><td>Mer</td><td>Greta</td><td>Giulia</td><td>Margherita</td><td></td><td></td></tr>
-<tr><td>Gio</td><td>Vladimir</td><td>Margherita</td><td>Greta</td><td></td><td></td></tr>
-<tr><td>Ven</td><td>Giulia</td><td>Greta</td><td>Sofia</td><td>Cena</td><td>Valeria</td></tr>
-<tr><td>Sab</td><td>Margherita</td><td>Sofia</td><td><b>Giulia</b></td><td>Partita</td><td></td></tr>
-<tr><td>Dom</td><td><b>Giulia</b></td><td>Vladimir</td><td>Margherita</td><td></td><td></td></tr></table></div>
-<div class="hw" style="font-size:1.15rem">Compleanni del personale: Giulia 18/03 · Sofia 09/04 · Vladimir 11/02 · Margherita 29/09 · Valeria 07/01</div>
-<dl style="margin-top:10px"><dt>Chiavi Magazzino Oro</dt><dd>chi chiude il bar la sera, e il direttivo (Danila)</dd><dt>Chiavi da restituire</dt><dd>Luca, ex dipendente: mai restituite</dd></dl></div>`,
-quaderno:`<div class="note"><p>12 marzo. Davanti a tutti: «Il caffè lo sai fare o chiamo una barista vera?»</p><p>4 aprile. Turno doppio a Pasqua. «Le donne al bar portano clienti.»</p><p>18 agosto. Mi ha tolto le mance «per il circolo».</p><p>2 ottobre. «Sorridi di più, sennò chi ti paga?»</p><p>Sabato. Basta.</p></div>`,
-schedina:`<div class="rc"><div class="c"><b>RICEVITORIA</b><br>Scommessa sportiva</div><hr>
-<div>Ora giocata: 20:45</div><div>Partita della serata · esito 1</div><div>Importo: 20,00 € (pagati in monete)</div><div>Vincita potenziale: 42,00 €</div>
-<hr><div class="c"><span class="st">Non vincente</span></div></div>`,
-tele:`<div class="paper"><h4>Fotogrammi delle telecamere</h4><div class="hd">Bar, giardino e piazzetta. Il disimpegno non è coperto.</div>
-<table><tr><th>Ora</th><th>Cosa si vede</th></tr>
-<tr><td>22:04</td><td>Bancone: Fabiano prende l'amaro e parla con Giulia</td></tr>
-<tr><td>22:06</td><td>Fabiano esce dal bar verso il disimpegno, al telefono</td></tr>
-<tr><td>22:08</td><td>Josef si alza con la birra in mano, verso i bagni</td></tr>
-<tr><td>22:12</td><td>Piazzetta: Luca esce da solo, accende una sigaretta</td></tr>
-<tr><td>22:14</td><td>Bancone: Josef di nuovo seduto</td></tr>
-<tr><td>22:17</td><td>Giardino: Ceccarelli fuma da solo sotto il tendone</td></tr>
-<tr><td>22:19</td><td>Bar: l'Architetto entra dalla porta del disimpegno</td></tr>
-<tr><td>22:26</td><td>Giulia esce da dietro il banco con un secchiello</td></tr>
-<tr><td>22:41</td><td>Giulia torna dietro il banco. Il secchiello è vuoto</td></tr>
-<tr><td>22:44</td><td>L'Architetto lascia il bar verso il disimpegno</td></tr>
-<tr><td>22:46</td><td>Danila lascia la sala carte, verso il corridoio dei magazzini</td></tr>
-<tr><td>22:50</td><td>Piazzetta: Luca rientra dalla porta di servizio, verso i magazzini</td></tr>
-<tr><td>22:52</td><td>L'Architetto rientra nel bar dalla sala carte tenendosi il polsino della camicia, rimasto aperto</td></tr>
-<tr><td>22:53</td><td>Danila torna al tavolo del bridge</td></tr>
-<tr><td>22:58</td><td>Piazzetta: Luca esce di nuovo, con il giubbotto gonfio</td></tr></table></div>`,
-asta:`<div class="paper" style="max-width:360px;margin:0 auto;transform:rotate(-1deg)"><h4>Asta di beneficenza</h4><div class="hd">Cartellino incollato sul retro del quadro</div><dl><dt>Opera</dt><dd>«Figure in posa», donata da un socio</dd><dt>Asta</dt><dd>domenica, dopo pranzo</dd><dt>Base d'asta</dt><dd>1,00 €</dd></dl><table style="margin-top:8px"><tr><th>Offerente</th><th class="r">Offerta</th></tr><tr><td><span class="ins">L'Architetto</span></td><td class="r"><span class="ins">1,00 €</span></td></tr></table><div class="ft">Unica offerta.</div></div>`,
-cartello:`<div class="paper" style="max-width:340px;margin:0 auto"><h4>Avviso</h4><div class="hd">Targhetta sopra il portastecche</div><p>Il biliardo è stato tolto per fare posto ai nuovi tavoli da burraco.</p><div class="hw">Il presidente</div></div>`,
-ghiaccio:`<div class="paper" style="max-width:340px;margin:0 auto;transform:rotate(-1.5deg)"><h4>GUASTO</h4><div class="hd">Foglio attaccato con lo scotch sulla macchina del ghiaccio</div><p>Fabbricatore di ghiaccio rotto da giovedì. Il tecnico viene lunedì.</p><div class="hw">Ghiaccio → pozzetto del Magazzino Oro</div></div>`
-};
-
-const ROOMS=[
-{id:"bar",n:"Bar",d:"Il cuore del circolo. Banco lungo, la vetrina delle paste, gli scaffali dei liquori, i frigoriferi e la TV sulla parete. Stasera supplementari e rigori: tutti con gli occhi sullo schermo.",sc:["s_bar","s_caffe"]},
-{id:"carte",n:"Sala carte",d:"Tavoli scuri, portatovaglioli rossi e il silenzio del bridge. Al tavolo 3 Danila gioca con Guido, Giovanni e Franco dalle nove.",sc:["s_carte"],u:["danila:0"]},
-{id:"saletta",n:"Saletta piccola",d:"Un tavolo verde a cinque lati, sedie di plastica impilate, un ventilatore che gira piano e, sul muro, un portastecche vuoto. Qui un tempo si giocava a biliardo.",sc:["s_saletta"],u:["luca:1"]},
-{id:"disimpegno",n:"Disimpegno",d:"Il corridoio tra la sala carte, i bagni e i magazzini. È l'unico tratto del circolo senza telecamere, e lo sanno tutti.",sc:["s_disimp"],u:["josef:0"]},
-{id:"oro",n:"Magazzino Oro",d:"La porta di metallo ha i profili dorati, per questo lo chiamano Magazzino Oro. Scaffali pieni, il frigo dei gelati, una scaletta rossa e un congelatore a pozzetto. Qui, dopo mezzanotte, Danila ha trovato il presidente.",sc:["s_oro"],top:[["s_porta","La porta d'oro"],["r_oro","Vista dall'alto"]]},
-{id:"magbar",n:"Magazzino bar",d:"Scaffali di bibite, casse d'acqua, i vuoti da rendere e in fondo un bagnetto di servizio.",sc:["s_magbar"],u:["danila:2"]},
-{id:"bagni",n:"Bagni",d:"Lavandini, tre WC e in fondo lo spogliatoio dei dipendenti. Stasera il bagno degli uomini ha vissuto un altro tipo di tragedia.",sc:["s_bagno"],u:["rolando:0","cec:1"],top:[["r_bagni","Vista dall'alto"]]},
-{id:"spogl",n:"Spogliatoio",d:"Una panca di legno, le giacche appese e gli orari del bar sul muro.",sc:["s_spogl"],u:["ba_porta"]},
-{id:"cucina",n:"Cucina",d:"Acciaio ovunque, fornelli spenti, la cappa che ronza. Stasera la cucina era chiusa.",sc:["s_cucina"],u:["b_gruppo","giulia:3"]},
-{id:"grande",n:"Sala grande",d:"Chiusa e al buio stasera: il palco, le sedie in fila contro i muri, le bandiere. Al centro la scientifica ha montato un tavolo per esaminare i reperti.",sc:["s_grande"],u:["arch:1"]},
-{id:"giardino",n:"Giardino",d:"Pergolati, tavoli di plastica verde e il tendone a righe. All'intervallo si riempie di fumatori.",sc:["s_giardino"],u:["cec:3"]},
-{id:"piazzetta",n:"Piazzetta",d:"Il murale, i tavolini bianchi, l'oleandro e il bidone verde accanto alla porta di servizio. Stanotte ci sono le auto della polizia.",sc:["s_piazzetta"],u:["rolando:1","danila:1"]}
-];
-
-/* zone: [id, x1,y1,x2,y2] in frazioni dell'immagine */
-const ZONES={
-s_bar:[["b_wallet",.14,.58,.31,.71],["b_scontrino",.68,.42,.80,.52],["b_cassa",.63,.25,.74,.34],["b_frigo",.70,.11,.81,.28],["b_bacheca",.86,.08,.97,.22]],
-s_caffe:[["b_gruppo",.50,.36,.70,.58]],
-s_carte:[["c_bridge",.49,.55,.66,.71],["c_quadro",.12,.35,.26,.48],["c_sacco",.82,.33,.92,.45]],
-s_saletta:[["s_tessera",.22,.69,.33,.81],["s_stecca",.66,.46,.88,.56],["s_gancio",.71,.21,.84,.42]],
-s_disimp:[["d_pozza",.50,.37,.93,.60],["d_frammento",.76,.61,.86,.69],["d_cartello",.86,.17,1,.34],["d_porta",.13,0,.58,.30]],
-s_oro:[["o_pozzetto",.10,.53,.42,.85],["o_scaletta",.23,.40,.36,.53],["o_scaletta",.41,.55,.50,.63],["o_porta",.40,.21,.56,.47],["o_pavimento",.31,.17,.43,.40]],
-s_bagno:[["ba_wc",.21,.38,.40,.82],["ba_lavandino",.69,.69,.81,.84],["ba_porta",.61,.16,.79,.56]],
-s_spogl:[["sp_armadietto",.62,.61,.78,.75],["sp_turni",.40,.16,.57,.38]],
-s_magbar:[["m_mocio",.40,.39,.50,.51],["m_vuoti",.24,.55,.41,.83],["m_casse",.61,.38,.71,.53]],
-s_cucina:[["k_lavello",.79,.51,.92,.67],["k_frigo",.36,.38,.49,.52]],
-s_grande:[["x_guerriero",.56,.44,.71,.56],["x_sedie",.04,.48,.28,.61]],
-s_giardino:[["g_posacenere",.43,.57,.55,.68],["g_bidone",.84,.43,.95,.59]],
-s_piazzetta:[["p_bidone",.55,.47,.81,.67],["p_gratta",.43,.43,.54,.51],["p_vaso",.65,.41,.78,.50]]
-};
-
-/* r stanza (f = fascicolo), t titolo, x testo, p prove, q requisiti, tl orari */
-const CL={
-f_verbale:{r:"f",t:"Verbale di intervento",p:[DOC.verbale],x:"Il primo foglio del fascicolo."},
-f_lab:{r:"f",t:"Analisi dei reperti",q:["x_guerriero","o_scaletta"],p:[DOC.lab],x:"La scientifica ha confrontato i due oggetti pesanti trovati nel circolo."},
-f_referto:{r:"f",t:"Referto del medico legale",q:["o_pozzetto"],p:[DOC.referto],x:"Il medico legale ha finito l'esame del corpo.",tl:[["22:15–23:30","Ora stimata della morte di Fabiano"]]},
-f_vetro:{r:"f",t:"Comparazione dei vetri",q:["d_frammento","m_vuoti","g_bidone"],p:[DOC.vetro],x:"Il laboratorio ha confrontato il frammento del disimpegno con le bottiglie rotte trovate nel circolo."},
-f_tele:{r:"f",t:"Fotogrammi delle telecamere",q:["d_porta"],p:[DOC.tele],x:"Le telecamere coprono bar, giardino e piazzetta. La scientifica ha estratto i fotogrammi tra le 22:00 e le 22:45.",tl:[["22:04","Fabiano umilia Giulia al banco"],["22:06","Fabiano va verso il disimpegno, al telefono"],["22:08","Josef va verso i bagni con la birra"],["22:12","Luca esce da solo in piazzetta"],["22:14","Josef torna al bancone, senza birra e bagnato"],["22:17","Ceccarelli fuma da solo in giardino"],["22:19","L'Architetto rientra al bar dal disimpegno"],["22:26–22:41","Giulia lontana dal banco, con un secchiello"],["22:44–22:52","L'Architetto via dal bar, rientra dalla sala carte"],["22:46–22:53","Danila lontana dal bridge"],["22:50–22:58","Luca entra dal retro ed esce col giubbotto gonfio"]]},
-
-b_wallet:{r:"bar",q:["josef:1"],t:"Un portafoglio",x:"Sul tavolo dove l'Architetto ha passato la serata con l'amico Roberto c'è un portafoglio di pelle nera. È vuoto. Dentro resta solo la tessera ARCI di Fabiano Corsini."},
-b_scontrino:{r:"bar",t:"Uno scontrino",x:"Sul tavolo vicino, uno scontrino delle 22:20: nove caffè corretti, offerti a tutto il bancone. Ha pagato l'Architetto, con una banconota da cinquanta. Roberto giura che in vent'anni non l'aveva mai visto offrire niente.",tl:[["22:20","L'Architetto offre un giro a tutto il bancone"]]},
-b_cassa:{r:"bar",t:"Il giornale di cassa",p:[DOC.cassa],x:"Il registro della serata, con l'ora di ogni scontrino. Il presidente la cassa non la tocca mai.",tl:[["22:04","Fabiano prende al banco il suo amaro omaggio"]]},
-b_frigo:{r:"bar",q:["josef:0"],t:"Il frigo delle birre",p:[DOC.ordine],x:"Due file di Beck's e una di Tennent's Super. Attaccato con la calamita c'è l'ordine al fornitore, con la grafia del presidente.",tl:[["22:08","Fabiano conferma l'ordine al fornitore per telefono"]]},
-b_bacheca:{r:"bar",t:"La bacheca",p:[DOC.avvisi],x:"Tre avvisi firmati dal presidente, uno sopra l'altro."},
-b_gruppo:{r:"bar",t:"La macchina del caffè",p:[ph("s_caffe")],x:"Una Sanremo a tre gruppi, l'orgoglio del bar. Le tazzine sopra sono ancora tiepide."},
-
-c_bridge:{r:"carte",t:"Il foglio dei punti",p:[DOC.bridge],x:"Segnato dalla scientifica con il cartellino 8.",tl:[["22:24–22:57","Danila fa il morto al bridge e si alza dal tavolo"]]},
-c_quadro:{r:"carte",t:"Il quadro a terra",p:[ph("w7")],flip:1,x:"Il quadro brutto è appoggiato al muro, vicino al posto di Danila. Sulla parete c'è un chiodo nuovo, pronto per il ritratto del presidente. Il cartone sul retro è scollato in un angolo, come se qualcuno lo avesse aperto da poco."},
-c_retro:{r:"carte",q:["c_quadro"],t:"Il retro del quadro",p:[DOC.asta],x:"Giri il quadro. Dietro il cartone, infilate di fretta, ci sono banconote per 140 euro. Il portafoglio del presidente era vuoto. E sul retro c'è un cartellino."},
-c_sacco:{r:"carte",q:["danila:2"],t:"Il sacco della carta",p:[DOC.discorso],x:"In cima al sacco della raccolta c'è un foglio accartocciato, scritto con la grafia di Danila."},
-
-s_tessera:{r:"saletta",t:"La tessera strappata",p:[`<div class="tess">${TESS()}</div>`],x:"Ricomposta, è una tessera ARCI 2026/2027, «Come lucciole nelle tenebre». Sul retro c'è il nome: Orlando Ceccarelli. Manca un angolino: strappato via, non è sul tavolo."},
-s_stecca:{r:"saletta",t:"La stecca",p:[ph("w5")],x:"Una stecca da biliardo spezzata in due. Sulla punta rotta c'è una macchia scura, appiccicosa."},
-s_gancio:{r:"saletta",t:"Il portastecche",p:[DOC.cartello,DOC.delibera],x:"Il portastecche è vuoto. Sopra c'è una targhetta, e infilato tra i ganci qualcuno ha lasciato la copia di un verbale."},
-
-d_pozza:{r:"disimpegno",t:"La pozza",x:"Birra, appiccicosa, con ancora un filo di schiuma. Una bottiglia intera, persa in un colpo. In mezzo alla pozza c'è la strisciata lunga di una suola che è scivolata, e accanto l'impronta di una scarpa da ginnastica numero 45."},
-d_frammento:{r:"disimpegno",q:["f_referto"],t:"I vetri",x:"Accanto al cartellino 2, schegge di vetro verde e un lembo di etichetta. Su una scheggia c'è del sangue."},
-
-d_cartello:{r:"disimpegno",t:"Il cartello giallo",x:"«Pavimento bagnato». Qualcuno l'ha messo qui stasera. Ai bordi della pozza qualcuno ha passato un mocio di fretta, senza pulire davvero: ha solo allargato la birra."},
-d_porta:{r:"disimpegno",t:"La porta a vetri",x:"Il vetro è trasparente: dalla sala carte si vede il corridoio, se qualcuno si gira a guardare. Ma durante il bridge nessuno si gira. E sopra la porta non c'è nessuna telecamera: questo pezzo non lo riprende nessuno."},
-
-o_pozzetto:{r:"oro",t:"Il congelatore a pozzetto",p:[ph("s_corpo")],x:"Sollevi il coperchio. Fabiano è rannicchiato sul fondo, il giaccone coperto di brina. Sulla nuca ha un taglio, sulla tempia un livido profondo. Impigliato nella guarnizione del coperchio c'è un bottoncino bianco da camicia."},
-o_scaletta:{r:"oro",q:["f_referto"],t:"La scaletta rossa",p:[ph("w9")],x:"Sopra la scaletta rossa, due sacchi di ghiaccio mezzi sciolti. Uno è squarciato su un lato e l'acqua cola fino a terra, in una pozza accanto al congelatore. Il ghiaccio, di solito, sta nel pozzetto."},
-o_porta:{r:"oro",t:"La porta d'oro",p:[ph("s_porta")],x:"Si chiude solo a chiave, ma stasera nessuno l'aveva chiusa: nessun segno di scasso. La lampadina del magazzino è fulminata: qui dentro, di sera, non si vede niente. A terra, davanti alla soglia, c'è un gratta e vinci grattato a metà."},
-o_tel:{r:"oro",q:["o_tel"],t:"Il telefono sbloccato",p:[`<div id="pinbox"></div>`],x:"Il PIN è una data di compleanno: 18/03. Sul foglio dello spogliatoio corrisponde a una sola persona.",tl:[["20:58","Giulia scrive alla sorella: «Ho fatto una cosa»"],["22:13","Sul telefono di Giulia si accende la torcia"],["22:14–22:31","Sei tentativi di sblocco sbagliati sul telefono di Giulia"],["22:28","Il telefono di Giulia scatta una foto buia nel Magazzino Oro"]]},
-o_pavimento:{r:"oro",q:["giulia:0"],t:"Sopra il frigo",p:[DOC.telefono,`<div id="pinbox"></div>`],x:"In cima al frigo a colonna, appoggiato tra gli scatoloni, c'è un telefono: il laccetto penzola giù lungo lo sportello. La torcia è ancora accesa."},
-
-ba_wc:{r:"bagni",t:"Il WC degli uomini",x:"Un disastro, segnato con quattro cartellini. Appoggiato al muro c'è il mocio che manca dal magazzino del bar: oltre al resto, ha birra e qualche macchia rossa. Chi aspettava fuori lo conferma: la porta è rimasta chiusa dalle 21:55 alle 22:25.",tl:[["21:55–22:25","Il bagno degli uomini resta chiuso"]]},
-ba_lavandino:{r:"bagni",t:"Il cestino",x:"Sotto il lavandino, nel cestino, guanti di lattice e uno straccio da buttare. Sul bordo del lavandino c'è un anello di birra."},
-ba_porta:{r:"bagni",t:"La porta in fondo",go:"spogl",x:"La porta dello spogliatoio dei dipendenti. È socchiusa."},
-
-sp_armadietto:{r:"spogl",t:"Sulla panca",q:["o_tel","sp_turni"],p:[DOC.quaderno],x:"Sulla panca, accanto al cartellino 7, c'è un quaderno con la copertina di pelle. Dentro la copertina, a penna: Giulia."},
-sp_turni:{r:"spogl",t:"Gli orari del bar",p:[DOC.turni],x:"Il foglio degli orari, fermato al muro con lo scotch."},
-
-m_mocio:{r:"magbar",t:"Il carrello del mocio",x:"In fondo, nel bagnetto di servizio, c'è il carrello giallo con il secchio. Il mocio non c'è. Manca anche il cartello giallo del pavimento bagnato."},
-m_vuoti:{r:"magbar",q:["d_frammento"],t:"Le casse dei vuoti",p:[ph("w2")],x:"Due casse di Beck's vuote da rendere. In mezzo alle bottiglie verdi ce n'è una diversa: una Tennent's Super, ancora bagnata. Al collo manca un pezzo."},
-m_casse:{r:"magbar",t:"La grappa",x:"Sullo scaffale, tra le bibite, una bottiglia di grappa mezza vuota. Al collo ha un cartellino: «Rolando, non toccare»."},
-
-k_lavello:{r:"cucina",q:["b_gruppo"],t:"La lavabicchieri",p:[ph("w1")],x:"Nella lavabicchieri, tra i bicchieri, c'è il portafiltro che manca alla macchina del caffè. Metallo pesante, lavato di fresco. Chi lava un portafiltro a metà serata, in cucina?"},
-k_frigo:{r:"cucina",t:"La macchina del ghiaccio",p:[DOC.ghiaccio],x:"Spenta. Sopra c'è un foglio attaccato con lo scotch."},
-
-x_guerriero:{r:"grande",t:"Il tavolo della scientifica",p:[ph("w4")],x:"Sotto la torcia della scientifica c'è il Guerriero Pisano, il trofeo del presidente, preso dalla credenza. La statuina è staccata. La base è di marmo, pesante e arrotondata, e sopra c'è una macchia scura."},
-x_sedie:{r:"grande",q:["s_stecca"],t:"Le sedie in fila",x:"Sulla prima sedia c'è una custodia da stecca, vuota. Dentro, un biglietto da visita: Biliardi Ceccarelli, Pisa."},
-
-g_posacenere:{r:"giardino",q:["cec:3"],t:"Il posacenere",x:"Pieno di mozziconi dell'intervallo, ma due sono più recenti: ancora tiepidi alle 22:20, dicono quelli della scientifica. Della stessa marca che fuma Ceccarelli."},
-g_bidone:{r:"giardino",t:"Il bidone",x:"Dentro c'è una bottiglia di Beck's rotta, vetro verde, il collo spaccato. La Beck's stasera la bevevano Luca e i suoi amici."},
-
-p_bidone:{r:"piazzetta",t:"Il bidone verde",p:[ph("w6")],x:"Dentro c'è il barattolo delle mance del bar: vuoto, il fondo staccato e un lato tutto ammaccato, come se avesse picchiato contro qualcosa di duro. O contro qualcuno."},
-p_gratta:{r:"piazzetta",q:["luca:0"],t:"Sotto il tavolino",p:[DOC.schedina],x:"Tre gratta e vinci grattati, tutti perdenti, e una schedina appallottolata.",tl:[["20:45","Giocata una schedina pagata in monete"]]},
-p_vaso:{r:"piazzetta",q:["danila:1"],t:"Il vaso",x:"Nella terra del vaso c'è un mazzo di chiavi con il portachiavi del circolo. Una ha il profilo dorato: apre il Magazzino Oro."}
-};
-
-const SUS=[
-{k:"josef",n:"Josef",nk:"l'ubriacone",
- chi:"Socio con lo sgabello fisso al bancone, sempre sbronzo e fedele a una sola birra: la Tennent's Super. Quando beve troppo se la prende con qualcuno e il giorno dopo non ricorda niente. Il presidente gli aveva appeso in bacheca l'ultimo avviso: un'altra sbronza e fuori dal circolo. Stasera era così ubriaco che a tratti non stava in piedi, e Roberto giura di averlo dovuto sorreggere.",
- d:[{po:"sem",x:"Io? Sempre sul mio sgabello, con la mia Tennent's. Hic. Il presidente l'ho sentito al telefono, verso le dieci, nel corridoio dei magazzini. Diceva di togliere la Tennent's. A me! Poi sono tornato a sedere, eh.",tl:[["22:06","Josef sente Fabiano al telefono nel corridoio"]]},
-    {po:"acc",q:["b_scontrino"],x:"L'Architetto che offre un giro? In vent'anni non l'ho mai visto pagare un caffè. Quei soldi non erano suoi, ve lo dico io. Uno così, per un euro, ammazza."},
-    {po:"dif",q:["b_frigo"],x:"La Tennent's non la tolgono? E allora cosa ho sentito... Ero ubriaco, mica sordo. E comunque stasera in piedi non ci stavo nemmeno: chiedete a Roberto, mi ha tenuto su lui."},
-    {po:"amm",q:["f_tele"],x:"Va bene, sono andato verso il bagno con la birra. Per terra c'era della birra, la mia credo. Sono scivolato... e la bottiglia ha preso qualcosa. O qualcuno. Mi sono spaventato, l'ho nascosta e sono tornato a sedere. Non volevo fare niente a nessuno, giuro.",tl:[["22:10","Josef scivola sulla birra nel disimpegno"]]}]},
-{k:"danila",n:"Danila",nk:"la consigliera",
- chi:"Consigliera del direttivo. Vuole comandare tutti, risponde sempre male e non si fa mai gli affari suoi. Con Fabiano era tutta sorrisi, ma alle riunioni lui la umiliava davanti a tutti. Aspetta la presidenza da anni, ha le chiavi del Magazzino Oro ed è stata lei ad aprire il congelatore. Per caso, dice.",
- d:[{po:"dif",x:"Al bridge non mi sono mossa: chiedete a Guido, Giovanni e Franco, al tavolo 3 della sala carte. Il presidente l'ho trovato io, a mezzanotte e venti. Qualcuno doveva pur controllare il magazzino."},
-    {po:"acc",q:["o_pozzetto"],x:"Se cercate un ladro, cercate Luca. Le chiavi del magazzino non le ha mai restituite, e stasera girava in piazzetta come un'anima in pena."},
-    {po:"amm",q:["c_bridge"],x:"Facevo il morto, va bene: mi sono alzata a prendere un amaro. Due minuti, sette, che importa. Nel corridoio ho incrociato qualcuno che tornava dai magazzini, di fretta. Senza occhiali, al buio, non ho visto chi.",tl:[["22:46–22:53","Danila lontana dal bridge"]]},
-    {po:"sem",q:["c_sacco"],x:"Il discorso? Una presidente seria si prepara. Morto un presidente se ne fa un altro: lo dicono tutti, io l'ho solo scritto. E sì, quei minuti lontano dal tavolo li ho passati in bagno, a provarlo davanti allo specchio. Il quadro l'ho tolto per appenderci il ritratto di Fabiano. Altro che odio."}]},
-{k:"luca",n:"Luca",nk:"l'ex barista",
- chi:"Ex barista, licenziato da Fabiano per i soldi spariti dalla cassa. Gratta e vinci in tasca e una schedina sempre aperta; in giro dicono anche che si droghi, ma è una voce falsa. Stasera è tornato a chiedere il posto e si è sentito dire di no davanti a tutti. Le chiavi del circolo non le ha mai restituite.",
- d:[{po:"sem",x:"Ho chiesto a Fabiano di riprendermi al bar e mi ha detto di no, davanti a tutti. Va bene così. Poi sono rimasto coi miei amici a guardare la partita."},
-    {po:"acc",q:["o_pozzetto"],x:"Volete sapere chi lo odiava davvero? Ceccarelli. Stasera girava con quella stecca rotta come fosse un manganello e diceva che prima o poi gliela dava in testa. Andate a vedere in saletta."},
-    {po:"dif",q:["g_bidone"],x:"La Beck's rotta l'hanno rotta i miei amici all'intervallo, facendo i cretini. Io verso le dieci e un quarto sono uscito in piazzetta a fumare. Da solo, sì. Embè?"},
-    {po:"amm",q:["p_vaso"],x:"Le chiavi sono mie, non le ho mai ridate: le ho buttate nel vaso quando ho visto la polizia. E il barattolo delle mance l'ho preso io, prima della partita, per la schedina. L'ho sbattuto sul bidone per far uscire le monete, da lì l'ammaccatura. Alle undici meno dieci sono rientrato dal retro per due birre dal magazzino del bar, e lì mi sarà caduto il gratta e vinci. Vecchie abitudini."}]},
-{k:"arch",n:"L'Architetto",nk:"lo spilorcio",
- chi:"Socio di lunga data, ucciderebbe per un euro. Conosce a memoria il listino e non prende mai niente, perché costa tutto troppo: di solito paga il suo amico Roberto. Il presidente aveva appeso in bacheca un avviso contro chi occupa i tavoli senza consumare, e tutti hanno capito per chi era. Stasera, per la prima volta in vent'anni, ha offerto un giro a tutto il bancone.",
- d:[{po:"dif",x:"Ho guardato la partita con Roberto, come sempre. Non ho preso niente perché non c'era niente che valesse il prezzo. Mi sono alzato solo per sgranchirmi le gambe."},
-    {po:"acc",q:["o_pozzetto"],x:"Guardate Luca. Alle undici meno dieci l'ho visto rientrare dal retro con il giubbotto vuoto e uscire con il giubbotto pieno. E le chiavi del magazzino, guarda caso, ce le ha ancora lui. E già che ci siete, passate dalla sala grande: oggi pomeriggio il presidente ci ha fatto una scenata col suo Guerriero Pisano."},
-    {po:"sem",q:["b_scontrino"],x:"Ho offerto un giro. Una volta nella vita. Avevo vinto... una piccola cosa. Non sono affari vostri."},
-    {po:"amm",q:["b_wallet"],x:"Il portafoglio l'ho trovato per terra nel corridoio, verso le dieci e un quarto. Non ho guardato di chi fosse, ho guardato quanto c'era. Dal magazzino veniva un lamento: ho pensato a Rolando, con quel che aveva mangiato.",tl:[["22:15","L'Architetto trova il portafoglio e sente un lamento dal magazzino"]]}]},
-{k:"cec",n:"Ceccarelli",nk:"il nostalgico del biliardo",
- chi:"Orlando Ceccarelli, giocatore di biliardo. Da quando hanno rifatto il bar il biliardo non c'è più, e il presidente ha detto di no ogni volta che chiedeva di rimetterlo. Quando se ne ricorda giura vendetta, e se ne ricorda spesso. Oggi pomeriggio a Pisa ha spaccato la sua stecca, e stasera è arrivato al circolo già nero.",
- d:[{po:"sem",x:"Ero al bar con mia nipote Marta, un caffè e due chiacchiere. Del biliardo parlo con tutti, lo sanno anche i muri. Ma il presidente lo volevo vivo, a sentire le mie lamentele.",tl:[["21:30","Ceccarelli prende un caffè al bar con la nipote Marta"]]},
-    {po:"acc",q:["o_pozzetto"],x:"Guardate Rolando, piuttosto: mezz'ora chiuso nel bagno accanto al corridoio dei magazzini, proprio quando il presidente è sparito. Mezz'ora! Chi ci crede?"},
-    {po:"dif",q:["s_stecca"],x:"La stecca l'ho rotta oggi pomeriggio a Pisa, contro un tavolo. La macchia è gesso e chinotto. La custodia è vuota perché quella nuova non l'ho trovata. Contenti?"},
-    {po:"amm",q:["s_tessera"],x:"La tessera l'ho strappata io, alle nove meno dieci, e i pezzi glieli ho tirati addosso. Il gesso sulla spalla? L'ho preso per la giacca, una volta sola. E verso le dieci e un quarto sono uscito a fumare in giardino: Marta guardava il telefono, non se n'è accorta.",tl:[["20:50","Ceccarelli strappa la tessera e la tira addosso a Fabiano"]]}]},
-{k:"giulia",n:"Giulia",nk:"la barista",
- chi:"Barista del circolo, stasera da sola al banco con la partita e i rigori. Distratta come nessuno: perde il telefono dopo un secondo e lascia le cose dove capita. Gentile con tutti, anche con chi non se lo merita. Il presidente la trattava male davanti ai clienti, e lei sorrideva sempre. Chi lavora al banco ha anche le chiavi del Magazzino Oro.",
- d:[{po:"sem",x:"Ho servito al banco tutta la sera, da sola, con la partita e i rigori. Non mi sono fermata un minuto. Il telefono? L'ho perso verso le nove, come sempre."},
-    {po:"acc",q:["o_pozzetto"],x:"Danila stasera era strana. Le chiavi del magazzino ce le ha anche lei, e l'ho vista girarsele tra le dita tutta la sera. E al presidente sorrideva troppo."},
-    {po:"dif",q:["o_tel"],x:"Sì, è il mio telefono. L'avevo dimenticato in magazzino verso le nove, quando sono andata a prendere i limoni. E il messaggio a Francesca... ho firmato con un altro bar. Domani mi licenziavo. Volevo dirglielo in faccia, al presidente. E la porta del magazzino l'avrò lasciata aperta io, come sempre."},
-    {po:"amm",q:["f_tele","k_lavello"],x:"Va bene: il ghiaccio non l'ho preso. Alle dieci il presidente mi ha umiliata davanti a tutti, per l'amaro. Mi sono chiusa nello spogliatoio a piangere per un quarto d'ora. E il portafiltro l'ho lavato io e me lo sono scordato in cucina. Io dimentico tutto, lo sapete."}]},
-{k:"rolando",n:"Rolando",nk:"il cagone",
- chi:"Cliente fisso, dalla mattina alla sera davanti alla TV. Fabiano aveva annunciato la disdetta dell'abbonamento alle partite: dal 1° dicembre niente calcio al bar, e per Rolando è stato peggio di un lutto. Stasera ha passato mezz'ora chiuso nel bagno accanto al corridoio dei magazzini, proprio quando il presidente è sparito.",
- d:[{po:"amm",x:"Ero in bagno. Avevo un problema serio, ve lo risparmio. Dalle dieci meno cinque alle dieci e mezza, più o meno. Non è stata una bella serata, per nessuno.",tl:[["21:55–22:25","Rolando chiuso nel bagno degli uomini"]]},
-    {po:"acc",q:["o_pozzetto"],x:"Quando sono uscito dal bagno, Luca rientrava dalla piazzetta tutto agitato, con le mani in tasca. Uno che ruba dalla cassa ruba anche altro."},
-    {po:"dif",q:["d_cartello"],x:"Il cartello l'ho messo io e il mocio l'ho preso io. E va bene: una passata nel corridoio l'ho data, ci ero scivolato. Le macchie rosse? Al buio pensavo fosse sugo. L'impronta nella birra è la mia, il 45. Non l'ho detto perché sembrava brutto."},
-    {po:"sem",q:["d_frammento"],x:"E va bene: verso le dieci e dieci ho sentito un vetro rompersi qui fuori e uno che scivolava bestemmiando. Poi passi lenti, strascicati, verso il fondo del corridoio. Non sono uscito, ero... impegnato.",tl:[["22:10","Rolando sente un vetro rompersi e qualcuno scivolare"]]}]}
-];
-
-const CAR={"p_cec_acc": 0.8514, "p_cec_dif": 0.8042, "p_cec_sem": 0.8583, "p_cec_amm": 1.05, "p_danila_acc": 0.6833, "p_danila_sem": 0.6639, "p_danila_amm": 0.8236, "p_danila_dif": 0.6056, "p_luca_amm": 0.9417, "p_luca_sem": 0.8097, "p_luca_dif": 0.7556, "p_luca_acc": 0.7056, "p_arch_dif": 0.6472, "p_arch_sem": 0.6556, "p_arch_acc": 0.6958, "p_arch_amm": 0.8569, "p_rolando_sem": 0.7278, "p_rolando_amm": 0.9458, "p_rolando_dif": 0.7222, "p_rolando_acc": 0.8403, "p_giulia_acc": 0.6764, "p_giulia_sem": 0.6681, "p_giulia_dif": 0.6639, "p_giulia_amm": 0.7514, "p_josef_sem": 0.7056, "p_josef_acc": 0.7167, "p_josef_dif": 0.7694, "p_josef_amm": 0.6875};
-function confHTML(s,i){const d=s.d[i],src="c_"+s.k+"_"+d.po+".webp";return `<div class="conf" id="d${i}"><img class="fig" src="${src}" alt="${s.n}" style="shape-outside:url(${src})"><div class="who">${s.n} · dichiarazione ${i+1}</div><p class="tx2">«${d.x}»</p></div>`}
-const WEAPS=[["w1","il portafiltro","k_lavello"],["w2","la bottiglia di Tennent's","m_vuoti"],["w4","il Guerriero Pisano","x_guerriero"],["w5","la stecca da biliardo","s_stecca"],["w6","il salvadanaio delle mance","p_bidone"],["w7","il quadro","c_quadro"],["w9","il sacco di ghiaccio","o_scaletta"]];
-const SOL={s:"arch",w:"w9"};
-const REACT={josef:"Io?! Mi tremano le mani anche per alzare il bicchiere. Hic. Andate a disturbare qualcun altro.",danila:"Questa sarebbe la vostra indagine? Io ho un circolo da mandare avanti, non tempo da perdere con voi.",luca:"Ecco, il solito Luca. Quando sparisce qualcosa, o qualcuno, è sempre colpa mia.",arch:"Io non spendo un euro, figuriamoci una vita. Avete sbagliato conto, detective.",cec:"Se avessi voluto farlo fuori, l'avrei fatto davanti a tutti, con una stecca intera. Sbagliato.",giulia:"Io? Io stavo servendo spritz mentre voi giocavate ai detective. Riprovate.",rolando:"Ero chiuso in bagno! Volete i dettagli? No, fidatevi, non li volete."};
-const CONFESS="Era lì per terra, con il ghiaccio in testa, e mi ha detto: lunedì sei fuori dal circolo e ti denuncio. Per centoquaranta euro. Avevo in mano il sacco di ghiaccio. È stato un attimo. E il ghiaccio, si sa, si scioglie.";
-const BAGOF={o_scaletta:"w9",k_lavello:"w1",m_vuoti:"w2",x_guerriero:"w4",s_stecca:"w5",p_bidone:"w6",c_quadro:"w7"};
-const BAGS=[["w1","Portafiltro"],["w2","Bottiglia di Tennent's"],["w4","Il Guerriero Pisano"],["w5","Stecca da biliardo"],["w6","Salvadanaio delle mance"],["w7","Il quadro"],["w9","Sacchetto del ghiaccio"]];
-const HS=[["giardino",40,85,580,465],["grande",595,85,1185,650],["grande",595,650,1185,745],["bar",55,485,320,1020],["carte",340,485,580,765],["saletta",340,785,495,1010],["oro",510,780,600,1025],["magbar",620,780,712,1025],["bagni",725,745,910,1025],["cucina",945,745,1180,1030],["piazzetta",500,1040,1165,1225,1],["disimpegno",586,742,722,790]];
-
-/* ===================== STATO ===================== */
-const KEY="fortino-v5";
-const FRESH=()=>({f:[],star:[],bag:[],heard:[],tz:null,pk:{},fin:null,intro:false});
-let S=FRESH();
-try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(FRESH(),JSON.parse(r))}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-let V={tab:"cover",room:null,sus:null,pt:"ind",only:false,zoom:false};
-const STACK=[];
-
-const has=id=>S.f.includes(id);
-const ok=q=>!q||q.every(c=>c.includes(":")?S.heard.includes(c):has(c));
-const RN=Object.fromEntries(ROOMS.map(r=>[r.id,r.n]));
-const IDS=Object.keys(CL);
-const visible=id=>ok(CL[id].q);
-const visSet=()=>new Set(IDS.filter(id=>CL[id].r!=="f"&&!has(id)&&visible(id)));
-function newDetails(v0){const r=[...new Set([...visSet()].filter(id=>!v0.has(id)).map(id=>RN[CL[id].r]))];return r.length?"Ora noterai qualcosa di nuovo: "+r.join(", "):""}
-let VIS0=new Set();const NEWOPEN=new Set();
-const condOk=c=>c.includes(":")?S.heard.includes(c):has(c);
-const isOpen=rid=>{const r=ROOMS.find(x=>x.id===rid);return !r.u||r.u.some(condOk)};
-const openRooms=()=>ROOMS.filter(r=>isOpen(r.id)).map(r=>r.id);
-const roomIds=rid=>[...new Set(ROOMS.find(r=>r.id===rid).sc.flatMap(img=>(ZONES[img]||[]).map(z=>z[0])))];
-const dkey=(s,i)=>s.k+":"+i;
-function availDecl(){const o=[];SUS.forEach(s=>s.d.forEach((d,i)=>{if(ok(d.q))o.push(dkey(s,i))}));return o}
-
-function discover(id){
-  if(has(id))return;
-  const d0=new Set(availDecl()),r0=new Set(openRooms()),v0=visSet();v0.delete(id);
-  S.f.push(id);
-  const auto=[];let more=true;
-  while(more){more=false;IDS.forEach(k=>{if(CL[k].r==="f"&&!has(k)&&ok(CL[k].q)){S.f.push(k);auto.push(k);more=true}})}
-  save();
-  const m=[];
-  auto.forEach(k=>m.push("Nel fascicolo: "+CL[k].t));
-  availDecl().filter(k=>!d0.has(k)&&!S.heard.includes(k)).forEach(k=>{if(!PEND.includes(k))PEND.push(k)});
-  const nro=openRooms().filter(r=>!r0.has(r));nro.forEach(r=>NEWOPEN.add(r));const nr=nro.map(r=>RN[r]);
-  if(nr.length)m.push("Si apre: "+nr.join(", "));
-  const nd=newDetails(v0);if(nd)m.push(nd);
-  if(m.length)toast(m.join(" · "));
+function scheda(g,i){
+  const save=g.salvataggio?leggi(g.salvataggio):null;
+  let ok=false;try{ok=!!(save&&g.risolto&&g.risolto(save))}catch(e){}
+  const iniziato=!!save&&!ok;
+  let nuovo=false;
+  if(g.uscita){const d=new Date(g.uscita+"T00:00:00");nuovo=!isNaN(d)&&(Date.now()-d)/864e5<30&&Date.now()>=d-864e5}
+  const diff=Math.max(0,Math.min(5,+g.difficolta||0));
+  const dots=diff?`<span>Difficoltà: ${LIV[diff]}<span class="dots" aria-hidden="true">${[1,2,3,4,5].map(n=>`<i class="${n<=diff?"on":""}"></i>`).join("")}</span></span>`:"";
+  const durata=g.durata?`<span>⏱ ${esc(g.durata)}</span>`:"";
+  const uscita=g.uscita?`<span>Uscito il ${new Date(g.uscita+"T00:00:00").toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"})}</span>`:"";
+  const trap=i===0?`<div class="trap" aria-hidden="true"><img class="fori" src="fori.webp" alt=""><img class="vl v-trap" src="vlady_trapano.webp" alt=""></div>`:"";
+  return `<div class="slot"><a class="game" href="${esc(g.pagina)}">
+    <i class="screw tl"></i><i class="screw tr"></i><i class="screw bl"></i><i class="screw br"></i>
+    <div class="cv">
+      <img src="${esc(g.copertina)}" alt="" loading="lazy">
+      <div class="badges">${nuovo?`<span class="b new">Nuovo</span>`:""}<span class="b st ${ok?"ok":"todo"}">${ok?"✓ Caso risolto":"Caso da risolvere"}</span></div>
+    </div>
+    <div class="body">
+      ${g.genere?`<div class="genre">${esc(g.genere)}</div>`:""}
+      <h3>${esc(g.titolo)}</h3>
+      ${g.ambientazione?`<p class="where">${esc(g.ambientazione)}</p>`:""}
+      ${g.descrizione?`<p class="desc">${esc(g.descrizione)}</p>`:""}
+      <div class="meta">${dots}${durata}${uscita}</div>
+      <span class="play">${ok?"Rigioca":iniziato?"Continua l'indagine":"Gioca"} <span aria-hidden="true">›</span></span>
+    </div>
+  </a>${trap}</div>`;
 }
-let tt;function toast(m){if(/Si apre|Ora noterai/.test(m))sfx("tap");const t=document.getElementById("toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,4500)}
+const G=Array.isArray(window.GIOCHI)?window.GIOCHI:[];
+$("grid").innerHTML=G.map(scheda).join("");
+$("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" aperti, altri in arrivo";
 
-/* ===================== SUONI ===================== */
-let NOISE=null,SFXG=null;
-function acx(){try{if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)();GN=AC.createGain();GN.gain.value=0;GN.connect(AC.destination)}
-  if(AC.state==="suspended")AC.resume();
-  if(!SFXG){SFXG=AC.createGain();SFXG.gain.value=.9;SFXG.connect(AC.destination);const n=AC.sampleRate;NOISE=AC.createBuffer(1,n,n);const d=NOISE.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1}
-  return AC}catch(e){return null}}
-function nz(t,dur,type,f,q,g,f2){const a=AC,src=a.createBufferSource();src.buffer=NOISE;const bf=a.createBiquadFilter();bf.type=type;bf.frequency.setValueAtTime(f,t);if(f2)bf.frequency.exponentialRampToValueAtTime(f2,t+dur);bf.Q.value=q;const gg=a.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(g,t+.004);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);src.connect(bf).connect(gg).connect(SFXG);src.start(t,Math.random()*.5);src.stop(t+dur+.05)}
-function tn(t,f,dur,g,type,f2){const a=AC,o=a.createOscillator();o.type=type||"sine";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);const gg=a.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(g,t+.01);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(gg).connect(SFXG);o.start(t);o.stop(t+dur+.05)}
-let LASTTICK=0;
-const SFX={
- tap(){const t=AC.currentTime;nz(t,.012,"highpass",3500,.7,.28);nz(t+.004,.02,"bandpass",1800,4,.12)},
- busta(){const t=AC.currentTime;for(let i=0;i<7;i++)nz(t+i*.045+Math.random()*.02,.05+Math.random()*.04,"bandpass",2500+Math.random()*3000,.8,.11+Math.random()*.06);nz(t+.3,.22,"highpass",1500,.6,.13,6000)},
- key(){const t=AC.currentTime;if(t-LASTTICK<.03)return;LASTTICK=t;const r=Math.random();
-   nz(t,.009,"bandpass",3800+r*1400,1.4,.13+r*.05);nz(t+.006,.026,"bandpass",900+r*300,1.6,.07)},
- pagina(){const t=AC.currentTime;nz(t,.09,"bandpass",1800,.7,.10,4200);nz(t+.07,.32,"bandpass",2400,.6,.16,900);nz(t+.33,.06,"lowpass",900,1,.12)},
- bell(){const t=AC.currentTime;tn(t,2093,.9,.05);tn(t,4186,.5,.02)},
- page(){const t=AC.currentTime;nz(t,.22,"bandpass",700,.8,.16,3200)},
- back(){const t=AC.currentTime;nz(t,.18,"bandpass",2600,.8,.12,700)},
- door(){const t=AC.currentTime;nz(t,.35,"lowpass",900,1,.18,200);tn(t,90,.25,.12,"sine",55)},
- shutter(){const t=AC.currentTime;nz(t,.04,"bandpass",1800,2,.4);nz(t+.07,.05,"bandpass",1300,2,.32);tn(t+.15,880,.9,.06);tn(t+.15,1320,.7,.04)},
- reread(){const t=AC.currentTime;nz(t,.16,"bandpass",1500,.9,.12,2600)},
- miss(){const t=AC.currentTime;tn(t,140,.14,.12,"sine",90);nz(t,.05,"lowpass",500,1,.08)},
- reveal(){const t=AC.currentTime;tn(t,98,1.6,.14,"sine");tn(t,147,1.4,.07,"triangle");nz(t,.5,"lowpass",400,1,.1,1800)},
- unlock(){const t=AC.currentTime;nz(t,.05,"bandpass",3200,3,.15);tn(t+.04,660,.6,.07);tn(t+.16,990,.7,.06)},
- slide(){const t=AC.currentTime;nz(t,.09,"lowpass",1400,1,.14,600)},
- pick(){const t=AC.currentTime;tn(t,520,.07,.06,"triangle")},
- solved(){const t=AC.currentTime;[523,659,784].forEach((f,i)=>tn(t+i*.09,f,.7,.07))},
- win(){const t=AC.currentTime;[392,523,659,784,1047].forEach((f,i)=>tn(t+i*.12,f,1.3,.08,"triangle"))},
- lose(){const t=AC.currentTime;tn(t,180,.7,.12,"sawtooth",85);nz(t,.4,"lowpass",300,1,.1)},
- star(){const t=AC.currentTime;tn(t,1046,.25,.05);tn(t+.06,1568,.3,.04)},
- cover(){const t=AC.currentTime;nz(t,.6,"lowpass",600,1,.2,150);tn(t,73,1.2,.16,"sine",55)}
-};
-function sfx(n){if(S.sfx===false)return;if(!acx())return;try{SFX[n]()}catch(e){}}
+// il prossimo caso, coperto dal telo
+const P=window.PROSSIMAMENTE;
+if(P){const d=document.createElement("div");d.className="coperto";d.setAttribute("role","img");d.setAttribute("aria-label","Il prossimo caso, ancora coperto da un telo");
+  d.innerHTML=`<div class="next"><i class="screw tl"></i><i class="screw tr"></i><span class="b">Prossimo caso</span><h3>${esc(P.titolo||"")}</h3><div class="q">?</div></div><img class="vl v-telo" src="vlady_lenzuolo.webp" alt="">`;
+  $("finale").appendChild(d)}
 
-/* ===================== MUSICA ===================== */
-const VOL=.16;let AC=null,GN=null,SRC=null,MUS_LOADING=false,TRACK="tema";const BUFS={};
-async function loadTrack(n){if(BUFS[n])return BUFS[n];const buf=await AC.decodeAudioData(await (await fetch(""+n+".mp3")).arrayBuffer());const d=buf.getChannelData(0),sr=buf.sampleRate;let a=0,b=d.length-1;while(a<sr&&Math.abs(d[a])<1e-4)a++;while(b>d.length-sr&&Math.abs(d[b])<1e-4)b--;BUFS[n]={buf,ls:a/sr,le:(b+1)/sr};return BUFS[n]}
-async function musicStart(){
-  if(S.music===false)return;
-  try{
-    acx();if(AC.state==="suspended")await AC.resume();
-    if(SRC||MUS_LOADING){fadeTo(VOL,2);return}
-    MUS_LOADING=true;const T=await loadTrack(TRACK);
-    SRC=AC.createBufferSource();SRC.buffer=T.buf;SRC.loop=true;SRC.loopStart=T.ls;SRC.loopEnd=T.le;SRC.connect(GN);SRC.start(0,T.ls);
-    MUS_LOADING=false;fadeTo(VOL,8);
-  }catch(e){MUS_LOADING=false}
-}
-async function switchTrack(n){
-  if(TRACK===n)return;TRACK=n;if(!AC||!SRC||S.music===false){SRC=null;return}
-  try{const old=SRC,og=GN;const t=AC.currentTime;og.gain.cancelScheduledValues(t);og.gain.setValueAtTime(og.gain.value,t);og.gain.linearRampToValueAtTime(0,t+2.5);setTimeout(()=>{try{old.stop()}catch(e){}},2700);
-    GN=AC.createGain();GN.gain.value=0;GN.connect(AC.destination);SRC=null;MUS_LOADING=false;await musicStart()}catch(e){}
-}
-function fadeTo(v,sec){if(!GN)return;const t=AC.currentTime;GN.gain.cancelScheduledValues(t);GN.gain.setValueAtTime(GN.gain.value,t);GN.gain.linearRampToValueAtTime(v,t+sec)}
-function musicToggle(){S.music=S.music===false;save();if(S.music)musicStart();else fadeTo(0,.6)}
-document.addEventListener("visibilitychange",()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
-document.addEventListener("pointerdown",()=>{if(S.intro&&!SRC&&S.music!==false)musicStart()},{once:false});
+// diagonali del ponteggio, calcolate sulla larghezza reale
+function braces(){const p=document.querySelector(".pont");if(!p)return;const w=p.clientWidth,cs=getComputedStyle(p);
+  const d1=parseFloat(cs.getPropertyValue("--d1")),d2=parseFloat(cs.getPropertyValue("--d2"));
+  const x0=w*.03+5,x1=w*.5+5,x2=w*.97-5;
+  [["br1",x0,d2+14,x1,d1+14],["br2",x1,d2+14,x2,d1+14]].forEach(([id,ax,ay,bx,by])=>{const e=$(id);const L=Math.hypot(bx-ax,by-ay);
+    e.style.left=ax+"px";e.style.top=ay+"px";e.style.width=L+"px";e.style.transform=`rotate(${Math.atan2(by-ay,bx-ax)}rad)`})}
+braces();addEventListener("resize",braces);
 
-/* ===================== POPUP DICHIARAZIONI ===================== */
-const PEND=[];let CF_R0=null,CF_T,CF_CUR=null;
-function maybeConf(){if(!PEND.length||!document.getElementById("cf").hidden)return;CF_R0=new Set(openRooms());VIS0=visSet();showConf()}
-let TY=null;
-function typeStop(){if(!TY)return;clearTimeout(TY.t);TY.p.textContent=TY.full;TY=null}
-function typeStart(p){
-  if(TY){clearTimeout(TY.t);TY=null}
-  const full=p.textContent;if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
-  p.innerHTML='<span class="ty"></span><span class="car" aria-hidden="true"></span><span class="rest"></span>';
-  const ty=p.firstChild,rest=p.lastChild;rest.textContent=full;let n=0;
-  const me={p,full,t:0};TY=me;
-  const step=()=>{if(TY!==me)return;n++;const ch=full[n-1];if(ch&&ch!==" ")sfx("key");ty.textContent=full.slice(0,n);rest.textContent=full.slice(n);
-    if(n>=full.length){TY=null;p.textContent=full;return}
-    TY.t=setTimeout(step,/[.,?!;:»]/.test(ch)?(/[.?!]/.test(ch)?260:140):24+Math.random()*22)};
-  TY.t=setTimeout(step,450);
-}
-function showConf(){
-  sfx("tap");
-  const k=PEND.shift();CF_CUR=k;const [sk,ii]=k.split(":");const s=SUS.find(x=>x.k===sk),i=+ii;
-  if(!S.heard.includes(k)){S.heard.push(k);save()}
-  const cf=document.getElementById("cf");
-  const intro=V.firsts,last=!PEND.length;
-  const hd=intro?`<div class="cf-hd">Le prime dichiarazioni<span>${7-PEND.length} di 7</span></div>`:`<div class="cf-hd">Nuova dichiarazione</div>`;
-  cf.innerHTML=`<div class="cf-in">${hd}${confHTML(s,i)}<div class="rbtns two"><button data-a="rate" data-v="imp">Segna come importante</button><button data-a="rate" data-v="no">${last?"Indietro":"Avanti"}</button></div></div>`;
-  cf.hidden=false;cf.scrollTop=0;cf.querySelector(".rbtns button").focus({preventScroll:true});
-  typeStart(cf.querySelector(".tx2"));
-}
-function nextConf(){
-  if(TY){typeStop();return}
-  if(PEND.length){showConf();return}
-  document.getElementById("cf").hidden=true;
-  if(V.firsts){V.firsts=false;S.intro=true;save();STACK.length=0;V.tab="map";pushH();render();window.scrollTo(0,0);if(!S.tut){S.tut=true;save();setTimeout(()=>vlOpen(TUT),400)}}else render();
-  const nro=openRooms().filter(r=>!CF_R0.has(r));nro.forEach(r=>NEWOPEN.add(r));const nr=nro.map(r=>RN[r]);const m=[];if(nr.length)m.push("Si apre: "+nr.join(", "));const nd=newDetails(VIS0);if(nd)m.push(nd);if(m.length)toast(m.join(" · "));
-}
-
-/* ===================== VISTE ===================== */
-const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
-function topbar(){
-  const back=STACK.length&&!(V.tab==="map"&&!V.room)?`<button class="case" data-a="back">‹ Indietro</button>`:`<button class="case" data-a="intro">Il caso</button>`;
-  return `<div class="top"><div class="left">${back}<button class="mus" data-a="mus" aria-pressed="${S.music!==false}" aria-label="Musica">Musica</button><button class="mus bulb" data-a="vlady" aria-label="Chiedi un consiglio a Vlady"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V17h5.2v-1.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="mus" data-a="sfx" aria-pressed="${S.sfx!==false}" aria-label="Effetti sonori">Suoni</button></div><span class="count" aria-label="Indizi trovati"><b>${S.f.length}</b><span class="lbl"> indizi</span></span></div>`;
-}
-
-function vCover(){const st=S.f.length>1||S.fin;return `<div class="cover"><div class="cvbox"><img src="${IM("cover")}" alt="Morto un presidente se ne fa un altro"><button class="ttl" data-a="start" aria-label="${st?"Continua l'indagine":"Inizia l'indagine"}"></button><div class="hint">${st?"Tocca il titolo per continuare":"Tocca il titolo per iniziare"}</div></div><div class="byline">Created by Vlady</div></div>`}
-
-function vIntro(){return `<div class="stack" style="padding-top:22px;gap:22px">${STACK.length?`<button class="back" data-a="back" style="align-self:flex-start">‹ Indietro</button>`:""}
-<h2>Sabato notte, Marina di Pisa</h2>
-<p>La partita è finita ai rigori da mezz'ora. Al Circolo Il Fortino qualcuno festeggia, qualcuno impreca. Poi Danila apre il congelatore del Magazzino Oro.</p>
-${ph("s_notte","00:40, arriva la polizia")}
-${DOC.verbale}
-<p>Fabiano Corsini aveva un talento: farsi odiare da tutti. Ognuno dei presenti aveva un motivo per volerlo morto, e nessuno ha un alibi solido.</p>
-<p>Attenzione: tutti hanno qualcosa da nascondere, e qualcuno mente.</p>
-<button class="btn" data-a="open">Ascolta i presenti</button></div>`}
-
-function vMap(){
-  setTimeout(()=>NEWOPEN.clear(),50);prefetch();
-  const map=`<div class="pol framed"><div class="rmap"><img src="${IM("mapfull")}" alt="Piantina del piano terra">`+HS.map(h=>`<button class="hs${isOpen(h[0])?(NEWOPEN.has(h[0])?" fresh":""):" shut"}" data-a="room" data-v="${h[0]}" aria-label="${RN[h[0]]}" style="left:${h[1]/12.3}%;top:${h[2]/12.8}%;width:${(h[3]-h[1])/12.3}%;height:${(h[4]-h[2])/12.8}%${h[5]?";clip-path:polygon(0 0,100% 0,100% 100%,0 48%)":""}"></button>`).join("")+`</div></div>`;
-  const list=ROOMS.map(r=>{if(!isOpen(r.id))return `<button data-a="room" data-v="${r.id}" class="shut"><span>${r.n}</span><span class="c">chiusa</span></button>`;const ids=roomIds(r.id),miss=ids.filter(id=>!has(id)).length;return `<button data-a="room" data-v="${r.id}"${NEWOPEN.has(r.id)?' class="fresh"':""}><span>${r.n}</span><span class="c ${miss?"nw":"all"}">${miss?(miss===1?"ne manca 1":"ne mancano "+miss):"completa"}</span></button>`}).join("");
-  return topbar()+`<div class="stack" style="gap:18px"><h2>Piano terra</h2><p class="mut">Le stanze scure sono ancora chiuse: si aprono quando un sospettato le nomina. Sotto ogni stanza vedi quanti indizi mancano ancora.</p>${map}<div class="rooms">${list}</div>${S.rev?`<p class="mut small">Gli indizi mancanti sono cerchiati di verde nelle foto.</p>`:(S.code?`<button class="btn ghost" data-a="revask">Rivela gli indizi mancanti</button><p class="mut small" style="margin-top:-8px">Inserisci il codice che ti ha dato Vlady.</p>`:"")}</div>`;
-}
-
-function vRoom(){
-  const r=ROOMS.find(x=>x.id===V.room);
-  const ids=roomIds(r.id),vis=ids.filter(visible),f=vis.filter(has).length,locked=ids.length-vis.length;
-  const scenes=r.sc.map(img=>{
-    const marks=(ZONES[img]||[]).filter(z=>has(z[0])).map(z=>`<span class="found${z[0]===LASTFOUND?" pop":""}" style="left:${z[1]*100}%;top:${z[2]*100}%;width:${(z[3]-z[1])*100}%;height:${(z[4]-z[2])*100}%"><i>✓</i></span>`).join("");
-    const hints=S.rev?(ZONES[img]||[]).filter(z=>!has(z[0])&&visible(z[0])).map(z=>`<span class="hintz" style="left:${z[1]*100}%;top:${z[2]*100}%;width:${(z[3]-z[1])*100}%;height:${(z[4]-z[2])*100}%"></span>`).join(""):"";
-    return `<div class="pol framed"><div class="zw ${V.zoom?"z":""}"><div class="scene" data-scene="${img}"><img src="${IM(img)}" alt="${r.n}" draggable="false">${marks}${hints}</div></div></div>`}).join("");
-  const msg=f<vis.length?`Qui c'è ancora qualcosa da notare.`:locked?`Per ora hai visto tutto. Qualche dettaglio potrebbe avere senso più avanti.`:`Hai trovato tutto quello che c'era.`;
-  const top=r.top?`<div class="stack" style="gap:8px"><h3 class="mut" style="font-size:.95rem">Altre foto</h3><div class="thumbs">${r.top.map(t=>`<button data-a="zoom" data-v="${t[0]}"><img src="${IM(t[0])}" alt="${t[1]}" loading="lazy"><span>${t[1]}</span></button>`).join("")}</div></div>`:"";
-  const foundList=vis.filter(has).map(id=>`<button class="mkrow done" data-a="clue" data-v="${id}"><span class="t">${esc(CL[id].t)}</span><span class="s">rileggi</span></button>`).join("");
-  return topbar()+`<div class="stack" style="gap:16px"><h2>${r.n}</h2><p>${r.d}</p>
-  <div class="status"><span>Indizi trovati qui: <b>${f}</b></span><button class="lens" data-a="lens" aria-pressed="${V.zoom}">${V.zoom?"Riduci":"Lente"}</button></div>
-  <p class="mut small">${msg} Tocca nella foto ciò che ti sembra strano.</p>
-  ${scenes}${foundList?`<div class="mklist">${foundList}</div>`:""}${top}</div>`;
-}
-
-function vSus(){
-  if(V.sus)return vSusOne();
-  const nw=s=>s.d.some((d,i)=>ok(d.q)&&!S.heard.includes(dkey(s,i)));
-  const card=(k,n,nk,b,vic)=>`<button class="scard ${vic?"vic":""}" data-a="sus" data-v="${k}"><div class="pol" style="--rot:${(k.length%3-1)*1.2}deg"><img src="${IM(k)}" alt="${n}"><div class="nm">${n}</div><div class="nk">${nk}</div>${b?`<span class="bdg">${b}</span>`:""}</div></button>`;
-  return topbar()+`<div class="stack" style="gap:18px"><h2>Sospettati</h2><p class="mut">Tutti odiavano il presidente. Le nuove dichiarazioni arrivano quando trovi le prove giuste.</p><div class="sgrid">${card("fabiano","Fabiano","la vittima","",1)}${SUS.map(s=>card(s.k,s.n,s.nk,nw(s)?"nuova dichiarazione":"")).join("")}</div></div>`;
-}
-function vSusOne(){
-  if(V.sus==="fabiano")return topbar()+`<div class="stack" style="gap:18px"><div class="shead vic"><div class="pol"><img src="${IM("fabiano")}" alt="Fabiano"></div><div><h2>Fabiano Corsini</h2><p class="mut">il presidente, la vittima</p></div></div>
-  <p>Presidente del circolo. Decideva tutto lui e lo faceva sapere a tutti: il biliardo tolto, le partite disdette, gli avvisi in bacheca con nome e cognome. Non toccava mai la cassa, ma sapeva sempre quanto c'era dentro. Alle 22:04 ha preso al banco il suo amaro omaggio, alle 22:06 le telecamere lo vedono andare verso il corridoio dei magazzini col telefono all'orecchio. Poi più niente. Lo odiavano tutti, ognuno per una ragione diversa.</p></div>`;
-  const s=SUS.find(x=>x.k===V.sus);
-  const r0=new Set(openRooms());let fresh=-1;
-  s.d.forEach((d,i)=>{const k=dkey(s,i);if(ok(d.q)&&!S.heard.includes(k)){S.heard.push(k);if(fresh<0)fresh=i}});
-  if(fresh>=0){save();const nr=openRooms().filter(r=>!r0.has(r)).map(r=>RN[r]);if(nr.length)setTimeout(()=>toast("Si apre: "+nr.join(", ")),300)}
-  V.fresh=fresh;
-  const ds=s.d.map((d,i)=>{if(!ok(d.q))return `<div class="quote locked">${s.n} ha altro da dire, ma serve la prova giusta.</div>`;
-    const k=dkey(s,i),dv=(S.dv||{})[k];
-    return confHTML(s,i)+`<div class="rbtns sm one"><button data-a="rate2" data-v="${k}|imp" aria-pressed="${dv==="imp"}">${dv==="imp"?"Segnata come importante":"Segna come importante"}</button></div>`}).join("");
-  return topbar()+`<div class="stack" style="gap:18px">
-  <div class="shead"><div class="pol"><img src="${IM(s.k)}" alt="${s.n}"></div><div><h2>${s.n}</h2><p class="mut">${s.nk}</p></div></div>
-  <p>${s.chi}</p>
-  <h3>Dichiarazioni</h3><div class="stack" style="gap:28px">${ds}</div></div>`;
-}
-
-function vProve(){
-  let body;
-  if(V.pt==="bag"){const bb=BAGS.filter(b=>(S.bag||[]).includes(b[0]));body=bb.length?`<p class="mut">Gli oggetti che hai deciso di sigillare come possibili armi.</p><div class="bags">${bb.map(b=>`<button data-a="zoom" data-v="${b[0]}"><img src="${IM(b[0])}" alt="${b[1]}" loading="lazy"><span>${b[1]}</span></button>`).join("")}</div>`:`<p class="mut">Nessun reperto sigillato. Quando trovi un oggetto che potrebbe essere l'arma, aprilo e tocca «Metti in busta».</p>`}
-  else{
-    const grp=[["f","Fascicolo"],...ROOMS.map(r=>[r.id,r.n])].map(([rid,rn])=>{const ids=IDS.filter(id=>CL[id].r===rid&&has(id)&&(!V.only||S.star.includes(id)));if(!ids.length)return"";
-      return `<div class="grp"><h3>${rn}</h3><div class="mklist">${ids.map(id=>`<button class="mkrow" data-a="clue" data-v="${id}"><span class="t">${esc(CL[id].t)}</span><span class="s">${S.star.includes(id)?"importante":""}</span></button>`).join("")}</div></div>`}).join("");
-    body=`<label class="chk"><input type="checkbox" id="onlystar" ${V.only?"checked":""}> Solo quelli segnati come importanti</label>${grp||`<p class="mut">${V.only?"Non hai ancora segnato niente. Apri un indizio e tocca «Segna come importante».":"Ancora niente: esplora le stanze."}</p>`}`;
-  }
-  return topbar()+`<div class="stack" style="gap:16px"><h2>Prove</h2><div class="seg"><button data-a="pt" data-v="ind" aria-pressed="${V.pt==="ind"}">Indizi trovati</button><button data-a="pt" data-v="bag" aria-pressed="${V.pt==="bag"}">Reperti</button></div>${body}</div>`;
-}
-
-function hm(h){const m=h.match(/(\d\d):(\d\d)/);let x=+m[1]*60+ +m[2];if(+m[1]<6)x+=1440;return x}
-function timeline(){
-  const o=[["21:00","Inizia la partita al bar"],["23:50","Finiscono i rigori"],["00:20","Danila trova Fabiano nel congelatore"]];
-  S.f.forEach(id=>(CL[id].tl||[]).forEach(t=>o.push(t)));
-  SUS.forEach(s=>s.d.forEach((d,i)=>{if(S.heard.includes(dkey(s,i)))(d.tl||[]).forEach(t=>o.push(t))}));
-  return o.sort((a,b)=>hm(a[0])-hm(b[0]));
-}
-function vTime(){
-  const dv=S.dv||{},L={imp:"Importante"};
-  const ds=[];SUS.forEach(x=>x.d.forEach((d,i)=>{const k=dkey(x,i);if(S.heard.includes(k)&&dv[k]==="imp")ds.push({x,d,i,k,v:dv[k]})}));
-  const st=IDS.filter(id=>S.star.includes(id)&&has(id));
-  const dl=ds.length?`<div class="stack" style="gap:10px">${ds.map(o=>`<button class="tnote ${o.v}" data-a="sus" data-v="${o.x.k}"><span class="tn">${o.x.n}<span class="tv">${L[o.v]}</span></span><span class="tt">«${esc(o.d.x.length>150?o.d.x.slice(0,150).replace(/\s\S*$/,"")+"…":o.d.x)}»</span></button>`).join("")}</div>`:`<p class="mut">Ancora niente. Quando un sospettato parla, tocca «Segna come importante» se ti sembra che conti: finisce qui.</p>`;
-  const cl=st.length?`<div class="mklist">${st.map(id=>`<button class="mkrow" data-a="clue" data-v="${id}"><span class="t">${esc(CL[id].t)}</span><span class="s">${CL[id].r==="f"?"Fascicolo":RN[CL[id].r]}</span></button>`).join("")}</div>`:`<p class="mut">Nessun indizio segnato. Apri un indizio e tocca «Segna come importante».</p>`;
-  return topbar()+`<div class="stack" style="gap:18px"><h2>Taccuino</h2><p class="mut">Qui c'è solo quello che hai deciso tu che conta. Le dichiarazioni le puoi rivalutare dalla scheda di ogni sospettato.</p>
-  <h3>Dichiarazioni</h3>${dl}<h3>Indizi segnati</h3>${cl}
-  ${V.confirm?`<div class="confirm"><p>Cancellare tutti gli indizi trovati e ricominciare?</p><div class="row2" style="display:flex;gap:10px"><button class="btn" data-a="reset2">Sì, ricomincia</button><button class="btn ghost" data-a="reset0">No</button></div></div>`:`<button class="reset" data-a="reset1">Ricomincia la partita da capo</button>`}</div>`;
-}
-
-function vAcc(){
-  if(S.fin)return vFin();
-  const pk=S.pk||{},ws=WEAPS.filter(w=>has(w[2])&&(S.bag||[]).includes(w[0]));if(pk.w&&!ws.some(w=>w[0]===pk.w))pk.w=null;
-  const sus=SUS.map(x=>`<button class="pick${pk.s===x.k?" sel":""}" data-a="pks" data-v="${x.k}" aria-pressed="${pk.s===x.k}"><img src="c_${x.k}_dif.webp" alt=""><span>${x.n}</span></button>`).join("");
-  const wp=ws.length?ws.map(w=>`<button class="pick wpn${pk.w===w[0]?" sel":""}" data-a="pkw" data-v="${w[0]}" aria-pressed="${pk.w===w[0]}"><img src="${IM(w[0])}" alt=""><span>${w[1][0].toUpperCase()+w[1].slice(1)}</span></button>`).join(""):`<p class="mut">Non hai ancora sigillato nessun reperto. Quando trovi un oggetto che potrebbe essere l'arma, aprilo e tocca «Metti in busta».</p>`;
-  return topbar()+`<div class="stack acc2" style="gap:18px"><h2>Accusa finale</h2><p class="mut">Scegli chi ha ucciso il presidente Fabiano e con che cosa. Puoi cambiare idea finché non confermi.</p>
-  <h3>1 · Il colpevole o la colpevole</h3><div class="pgrid">${sus}</div>
-  <h3>2 · L'arma</h3><p class="mut small">Solo i reperti che hai messo in busta.</p><div class="pgrid">${wp}</div>
-  <button class="btn" data-a="formula" ${pk.s&&pk.w?"":"disabled"}>Formula l'accusa</button></div>`;
-}
-
-/* ===================== VLADY ===================== */
-const HT={
-b_scontrino:"Al bar guarda bene i tavoli: c'è uno scontrino che racconta qualcosa di strano.",b_cassa:"Dietro il banco del bar c'è la cassa. I numeri non mentono.",b_frigo:"Il frigo delle birre al bar ha attaccato qualcosa con la calamita.",b_bacheca:"In fondo al bar, sulla parete, il presidente lasciava i suoi messaggi.",b_gruppo:"Guarda bene la macchina del caffè: conta quello che c'è.",b_wallet:"Al bar, sul tavolo dove sedeva l'Architetto, c'è qualcosa che non è suo.",
-c_bridge:"In sala carte, sul tavolo del bridge, c'è un foglio con i punti.",c_quadro:"In sala carte c'è un quadro che non è al suo posto.",c_sacco:"In sala carte, nel sacco della carta, qualcuno ha buttato via un foglio.",
-s_tessera:"In saletta, sul tavolo blu, ci sono dei pezzi di carta.",s_stecca:"In saletta, in un angolo, c'è qualcosa di rotto.",s_gancio:"In saletta guarda il muro: un tempo lì ci stavano le stecche.",
-d_pozza:"Nel disimpegno guarda per terra, vicino al cartellino 1.",d_frammento:"Nel disimpegno, vicino al cartellino 2, c'è del vetro.",d_cartello:"Nel disimpegno c'è un cartello giallo.",d_porta:"Nel disimpegno guarda la porta a vetri.",
-o_pozzetto:"Nel Magazzino Oro apri il congelatore.",o_scaletta:"Nel Magazzino Oro c'è una scaletta rossa con sopra qualcosa che si scioglie.",o_porta:"Nel Magazzino Oro guarda la porta e la soglia.",o_pavimento:"Nel Magazzino Oro guarda in alto, sopra il frigo: penzola qualcosa.",
-ba_wc:"Nei bagni, il WC degli uomini è un disastro.",ba_lavandino:"Nei bagni, sotto il lavandino, c'è un cestino.",ba_porta:"Nei bagni, in fondo, c'è una porta socchiusa.",
-sp_armadietto:"Nello spogliatoio, sulla panca, c'è un quaderno.",sp_turni:"Nello spogliatoio, sul muro, c'è un foglio con gli orari e i compleanni.",
-m_mocio:"Nel magazzino del bar manca qualcosa al carrello giallo.",m_vuoti:"Nel magazzino del bar guarda le casse dei vuoti: una bottiglia è diversa.",m_casse:"Nel magazzino del bar, sugli scaffali, c'è una bottiglia con un cartellino.",
-k_lavello:"In cucina guarda nella lavabicchieri.",k_frigo:"In cucina, la macchina del ghiaccio ha un foglio attaccato.",
-x_guerriero:"In sala grande la scientifica sta esaminando qualcosa sul tavolo.",x_sedie:"In sala grande, sulle sedie, qualcuno ha lasciato qualcosa.",
-g_posacenere:"In giardino, sul tavolo in primo piano, c'è un posacenere.",g_bidone:"In giardino controlla il bidone.",
-p_bidone:"In piazzetta controlla il bidone verde.",p_gratta:"In piazzetta, sotto i tavolini, c'è qualcosa per terra.",p_vaso:"In piazzetta, nel vaso, qualcuno ha nascosto qualcosa."};
-function zoneIds(){return ROOMS.flatMap(r=>roomIds(r.id))}
-function vladyHint(){
-  S.hn=(S.hn||0)+1;save();
-  const vis=zoneIds().filter(id=>!has(id)&&visible(id)&&isOpen(CL[id].r));
-  if(V.tab==="room"){const here=vis.filter(id=>CL[id].r===V.room);if(here.length)return ["vl_sussurra",HT[here[0]]||"Guarda meglio questa stanza: c'è ancora qualcosa."]}
-  if(vis.length){const id=vis[0];return ["vl_dx",(V.tab==="room"?"Qui hai visto tutto per ora. ":"")+(HT[id]||"In "+RN[CL[id].r]+" c'è ancora qualcosa da notare.")]}
-  const unheard=SUS.find(x=>x.d.some((d,i)=>ok(d.q)&&!S.heard.includes(dkey(x,i))));
-  if(unheard)return ["vl_spiega",unheard.n+" ha ancora qualcosa da dirti. Vai nella scheda dei sospettati."];
-  const shut=ROOMS.find(r=>!isOpen(r.id));
-  if(shut)return ["vl_pensa","C'è ancora una stanza chiusa: "+shut.n+". Rileggi le dichiarazioni, qualcuno prima o poi la nomina."];
-  const left=zoneIds().filter(id=>!has(id));
-  if(left.length&&!S.code)return ["vl_pensa","Ci sono indizi che ancora non hai trovato, ma per capirli ti serve prima qualcos'altro. Rileggi i documenti che hai raccolto e guarda cosa non torna."];
-  if(left.length)return ["vl_ok","Hai già il codice: usalo dalla mappa e ti cerchio in verde quello che manca."];
-  if(!(S.bag||[]).length)return ["vl_idea","Hai trovato tutto. Ora metti in busta gli oggetti che secondo te possono essere l'arma: li troverai nell'accusa."];
-  return ["vl_ok","Hai tutto quello che serve. Ora tocca a te: chi è stato, e con cosa?"];
-}
-const TIP={"vl_su_sx": [0, 0.379, 0.987], "vl_giu_sx": [0, 0.758, 1.087], "vl_sus_giu": [0, 0.913, 0.96]};
-function vlOpen(pages,done){
-  const md=document.getElementById("vl");let i=0;
-  const show=()=>{
-    const pg=pages[i],pose=pg[0],t=pg[1],tg=pg[2]?document.querySelector(pg[2]):null;
-    let ring="",top=false;
-    if(tg){tg.scrollIntoView({block:"center"});const r=tg.getBoundingClientRect();top=r.top+r.height/2>innerHeight*.5;ring=`<span class="vlring" style="left:${r.left-6}px;top:${r.top-6}px;width:${r.width+12}px;height:${r.height+12}px"></span>`}
-    const side=pg[3]||"l";
-    md.className="vl"+(tg?" spot":"")+(top?" top":"");
-    let fig=`<img class="vlimg" src="${pose}.webp" alt="Vlady">`;
-    if(tg&&TIP[pose]&&pg[4]){const r=tg.getBoundingClientRect(),[ax,ay]=pg[4],px=r.left+r.width*ax,py=r.top+r.height*ay,h=Math.min(innerHeight*.26,210),w=h*TIP[pose][2];
-      fig="";ring+=`<img class="vlpt" src="${pose}.webp" alt="Vlady" style="height:${h}px;left:${Math.min(px-TIP[pose][0]*w,innerWidth-w*.6)}px;top:${py-TIP[pose][1]*h}px">`}
-    md.innerHTML=`${ring}<div class="vlin side-${side}${fig?"":" nofig"}">${fig}<div class="vlbox"><div class="who">Vlady</div><p class="tx2" id="vltx">${t}</p><button class="btn" data-a="vlnext">${i<pages.length-1?"Avanti":"Ho capito"}</button></div></div>`;
-    md.hidden=false;typeStart(document.getElementById("vltx"))};
-  VLNEXT=()=>{if(TY){typeStop();return}i++;if(i<pages.length)show();else{md.hidden=true;md.className="vl";VLNEXT=null;if(done)done()}};
-  show();
-}
-let VLNEXT=null;
-function vladyTap(){
-  if(!S.intro){toast("Vlady arriva dopo le prime dichiarazioni.");return}
-  const pages=[vladyHint()];
-  const left=zoneIds().filter(id=>!has(id)).length;
-  if(!S.code&&left&&(S.hn>=6||!zoneIds().some(id=>!has(id)&&visible(id)&&isOpen(CL[id].r)))){S.code=true;save();pages.push(["vl_sussurra","Va bene, ti do una mano più grossa. Il codice del caso è CIF-1951. Torna alla mappa: sotto l'elenco delle stanze c'è il tasto per rivelare gli indizi mancanti."])}
-  vlOpen(pages,()=>render());
-}
-const TUT=[
-["vl_bye","Ciao! Se ti perdi, ci sono io: ti spiego come muoverti e, quando serve, ti dico dove guardare."],
-["vl_su_sx","Questa è la piantina del circolo. Tocca una stanza per entrarci. Quelle scure sono chiuse: si aprono quando qualcuno le nomina nelle sue dichiarazioni.",".rmap","r",[.5,.62]],
-["vl_giu_sx","Qui sotto trovi tutte le stanze, con quanti indizi mancano ancora in ognuna.",".rooms","r",[.62,.08]],
-["vl_mostra","Nelle foto gli indizi non sono segnati: tocca quello che ti sembra strano. Se c'è qualcosa ma non è ancora il momento, il gioco te lo dice. La Lente serve a ingrandire."],
-["vl_pensa2","Quando trovi l'indizio giusto, qualcuno parlerà di nuovo. Tutti hanno qualcosa da nascondere, e qualcuno mente: segna come importante solo quello che ti convince."],
-["vl_sus_giu","Qui in basso: Sospettati per rileggere le dichiarazioni, Prove per indizi e reperti, Taccuino per quello che hai segnato, Accusa quando hai capito.","nav","r",[.32,.05]],
-["vl_idea","Se un oggetto può essere l'arma, mettilo in busta: solo quelli potrai scegliere nell'accusa. E l'accusa si fa una volta sola."],
-["vl_su_sx","Se ti blocchi, tocca questa lampadina e ti dico dove guardare.","[data-a=vlady]","r",[.7,.95]],
-["vl_ok","Buona indagine."]];
-
-/* ===================== PRECARICAMENTO ===================== */
-const PRE=new Set();
-function prefetch(){const go=()=>{ROOMS.filter(r=>isOpen(r.id)).forEach(r=>r.sc.forEach(k=>{if(!PRE.has(k)){PRE.add(k);const i=new Image();i.decoding="async";i.src=IM(k)}}))};if(window.requestIdleCallback)requestIdleCallback(go,{timeout:1000});else setTimeout(go,300)}
-
-/* ===================== FASCICOLO ===================== */
-function showFasc(){
-  let f=document.getElementById("fasc");if(f)f.remove();
-  f=document.createElement("div");f.id="fasc";f.className="fasc";
-  f.innerHTML=`<button class="fcov" data-a="fasc" aria-label="Apri il fascicolo CIF-1951"><img src="fascicolo.webp" alt="Fascicolo d'indagine CIF-1951, Circolo Il Fortino, riservato"></button><p class="fhint">Tocca il fascicolo per aprirlo</p>`;
-  document.body.appendChild(f);
-}
-function openFasc(){
-  const f=document.getElementById("fasc");if(!f||f.classList.contains("opening"))return;
-  sfx("pagina");
-  if(matchMedia("(prefers-reduced-motion:reduce)").matches||!f.animate){f.remove();return}
-  f.classList.add("opening");const cov=f.querySelector(".fcov");
-  const T=1100,E="cubic-bezier(.35,.0,.25,1)";
-  cov.animate([
-    {transform:"translateY(0) rotateX(0deg) scale(1)",opacity:1,offset:0},
-    {transform:"translateY(-2%) rotateX(4deg) scale(1.01)",opacity:1,offset:.18},
-    {transform:"translateY(-28%) rotateX(14deg) scale(1)",opacity:1,offset:.5},
-    {transform:"translateY(-70%) rotateX(24deg) scale(.97)",opacity:.6,offset:.8},
-    {transform:"translateY(-115%) rotateX(30deg) scale(.95)",opacity:0,offset:1}],{duration:T,easing:E,fill:"forwards"});
-  f.animate([{opacity:1},{opacity:1,offset:.45},{opacity:0}],{duration:T+250,easing:"ease-in-out",fill:"forwards"});
-  setTimeout(()=>f.remove(),T+280);
-}
-
-/* ===================== FINALE ===================== */
-const nameOf=k=>SUS.find(x=>x.k===k).n;const wOf=w=>WEAPS.find(x=>x[0]===w);
-function openRev(){const md=document.getElementById("md");md.innerHTML=`<div class="mdin" role="dialog" aria-modal="true" aria-labelledby="revt"><h3 id="revt">Rivela gli indizi mancanti</h3><p class="mut">Inserisci il codice che ti ha dato Vlady.</p><label for="revc" class="small mut">Codice</label><input id="revc" autocapitalize="characters" autocomplete="off" style="font:1.4rem var(--f-mono);padding:12px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:3px;min-height:48px"><p class="err" id="reverr" role="alert"></p><div class="row2"><button class="btn ghost" data-a="mdno">Annulla</button><button class="btn" data-a="revgo">Conferma</button></div></div>`;md.hidden=false;document.getElementById("revc").focus()}
-function openModal(){
-  const pk=S.pk,s=SUS.find(x=>x.k===pk.s),w=wOf(pk.w);
-  const md=document.getElementById("md");
-  md.innerHTML=`<div class="mdin" role="dialog" aria-modal="true" aria-labelledby="mdt"><div class="mdimg"><img src="c_${s.k}_dif.webp" alt="${s.n}"><img src="${IM(w[0])}" alt="${w[1]}"></div>
-  <p id="mdt" class="mdtx">Stai accusando <b>${s.n}</b> di aver ucciso il presidente Fabiano con <b>${w[1]}</b>. Sei sicuro? Confermando concluderai l'indagine e scoprirai l'esito.</p>
-  <div class="row2"><button class="btn ghost" data-a="mdno">Torna a indagare</button><button class="btn" data-a="mdyes">Conferma l'accusa</button></div></div>`;
-  md.hidden=false;md.querySelector("[data-a=mdno]").focus();
-}
-function vFin(){
-  const f=S.fin,ok=f.ok,bg=`style="background-image:linear-gradient(rgba(8,8,10,.55),rgba(8,8,10,.92)),url(${IM("s_salone")})"`;
-  if(V.truthAsk==="new")return `<div class="finv" ${bg}><div class="fin-in"><h2>Ricominciare da capo?</h2><p>Perderai indizi, dichiarazioni e accusa, e la partita ripartirà dalla copertina.</p><div class="row2"><button class="btn ghost" data-a="truthno">No, torna indietro</button><button class="btn" data-a="newgame">Sì, ricomincia</button></div></div></div>`;
-  if(V.truthAsk)return `<div class="finv" ${bg}><div class="fin-in"><h2>Mostrare la verità?</h2><p>La verità chiude il caso per sempre: scoprirai chi è stato e come.</p><div class="row2"><button class="btn ghost" data-a="truthno">No, torna indietro</button><button class="btn" data-a="truthgo">Sì, mostrala</button></div></div></div>`;
-  const who=ok?SOL.s:f.s,s=SUS.find(x=>x.k===who),pose=ok?"amm":"acc",txt=ok?CONFESS:REACT[who];
-  return `<div class="finv" ${bg}><div class="fin-in"><h2 class="fh ${ok?"ok":"ko"}">${ok?"Caso risolto":"Accusa errata"}</h2>
-  ${ok?`<p class="mut">Hai accusato ${s.n}, con ${wOf(f.w)[1]}.</p>`:""}
-  <div class="conf fin-conf"><img class="fig" src="c_${s.k}_${pose}.webp" alt="${s.n}" style="shape-outside:url(c_${s.k}_${pose}.webp)"><div class="who">${s.n}</div><p class="tx2" id="fintx">«${txt}»</p></div>
-  ${ok?`<button class="btn" data-a="blackgo">Scopri come è andata</button>`:`<button class="btn" data-a="blackgo">Ascolta come sono andati i fatti</button>`}</div></div>`;
-}
-function vBlack(){return `<div class="blackv"><p class="bl1">Il caso è chiuso.</p><p class="bl2">Che tu abbia visto giusto oppure no, ora chi ha seguito l'indagine dall'inizio ti racconterà come sono andati davvero i fatti.</p><button class="btn ghost" data-a="film">Ascolta</button></div>`}
-const FILM=[
-{p:null,t:"Sala grande, le due di notte. Le luci sono accese e le sedie sono in fila. Tutti i presenti sono stati riuniti qui."},
-{p:"luc_sem",name:1,t:"Buonasera. Mi chiamo Luciano. Mentre voi guardavate i rigori, io guardavo voi. E stasera avete fatto parecchio rumore."},
-{p:"luc_up",i:"s_disimp",t:"Alle 22:08 il presidente è nel disimpegno, al telefono con Valdera. Josef arriva barcollando, scivola sulla birra che ha versato lui stesso e la sua Tennent's finisce sulla nuca di Fabiano."},
-{p:"luc_cnt",i:"w2",t:"Un incidente. Il colpo stordisce, non uccide. Josef si spaventa, nasconde la bottiglia tra i vuoti delle Beck's e alle 22:14 è di nuovo sul suo sgabello, con i pantaloni bagnati."},
-{p:"luc_sem",i:"tel_foto",t:"Fabiano si trascina nel Magazzino Oro, al buio. Prende del ghiaccio per la testa e trova il telefono che Giulia aveva dimenticato lì alle nove. Accende la torcia, prova a sbloccarlo sei volte. Non conosce il compleanno di nessuno, il presidente."},
-{p:"luc_book",i:"s_bar",t:"Alle 22:15 passa l'Architetto. Trova il portafoglio caduto al presidente, lo svuota e sente un lamento dal magazzino. Alle 22:20 offre il primo giro della sua vita."},
-{p:"luc_up",i:"s_oro",t:"Alle 22:44 torna nel magazzino. Fabiano lo riconosce: «Ti ho visto col mio portafoglio. Lunedì sei fuori e ti denuncio». L'Architetto ha in mano l'unica cosa a portata: un sacco di ghiaccio."},
-{p:"luc_cnt",i:"w9",t:"Un colpo alla tempia. Pesante, liscio, senza spigoli. Nella colluttazione un bottone della camicia resta impigliato nel coperchio. Poi l'Architetto toglie i sacchi dal pozzetto, ci mette il presidente e chiude il coperchio. L'arma, intanto, si scioglie sulla scaletta."},
-{p:"luc_book",i:"w7",t:"Tornando passa dalla sala carte, mentre Danila è in bagno, e infila il resto dei soldi dietro il quadro brutto. Domenica c'era l'asta di beneficenza: base d'asta un euro, un solo offerente. Lui."},
-{p:"luc_up",t:"Le prove: il giro offerto da chi non paga mai, il portafoglio vuoto sul suo tavolo, l'uscita delle 22:44, la manica sistemata alle 22:52, il bottone della sua camicia nel coperchio, il sangue sul sacchetto del ghiaccio e un cartellino con un'offerta da un euro."},
-{full:"arresto",t:"Alle tre di notte l'Architetto esce dal Fortino in manette. Per una volta, il conto lo paga lui."},
-{p:"luc_book",t:"E gli altri? Giulia aveva perso il telefono e lavato il portafiltro, e quella sera piangeva nello spogliatoio: domani si licenziava. Danila provava il discorso allo specchio. Le impronte sul coperchio sono sue perché a mezzanotte l'ha aperto lei."},
-{p:"luc_cnt",t:"Il Guerriero Pisano aveva solo vino sulla base. Il gesso e il pezzo di tessera sono di Ceccarelli, che alle nove meno dieci gliel'aveva tirata addosso. Il barattolo ammaccato è di Luca, che lo ha sbattuto sul bidone per le monete. L'impronta e le macchie sul mocio sono di Rolando, scivolato nel corridoio."},
-{p:"luc_sem",t:"Ognuno di voi aveva un motivo, e quasi tutti qualcosa da nascondere. Ma uno solo, per un euro, avrebbe fatto qualsiasi cosa. E l'ha fatta."},
-{p:"luc_up",t:"Un'ultima cosa. Quello che avete sentito stanotte resta tra queste mura. Al bar non si fanno nomi: chi deve ancora giocare, l'assassino se lo trova da solo. Intesi?"},
-{p:"luc_bye",t:"Morto un presidente se ne fa un altro. Buonanotte a tutti. E stavolta qualcuno mi offra una Spuma."}];
-let FI=0,FT=null,FP=false,FTY=null;
-function filmOpen(){V.tab="film";FI=0;FP=false;render();filmScene()}
-function filmScene(){
-  clearTimeout(FT);const sc=FILM[FI],box=document.getElementById("film");if(!box)return;
-  const lu=box.querySelector(".luc"),ev=box.querySelector(".ev"),tx=box.querySelector(".ftx"),nm=box.querySelector(".lname");
-  box.querySelectorAll(".fdot").forEach((d,i)=>d.classList.toggle("on",i<=FI));
-  const ff=box.querySelector(".ffull");box.classList.toggle("isfull",!!sc.full);if(sc.full){ff.classList.remove("in");void ff.offsetWidth;ff.src=IM(sc.full);ff.hidden=false;ff.classList.add("in")}else ff.hidden=true;
-  if(sc.p&&!sc.full){if(lu.dataset.p!==sc.p){lu.classList.remove("in");void lu.offsetWidth;lu.src=""+sc.p+".webp";lu.dataset.p=sc.p;lu.classList.add("in")}lu.hidden=false}else lu.hidden=true;
-  nm.hidden=!sc.name;
-  if(sc.i){ev.classList.remove("in");void ev.offsetWidth;ev.querySelector("img").src=IM(sc.i);ev.hidden=false;ev.classList.add("in")}else ev.hidden=true;
-  tx.textContent=sc.t;typeStart(tx);
-  const wait=()=>{if(TY){FT=setTimeout(wait,200);return}FT=setTimeout(()=>{if(!FP)filmNext()},2200+sc.t.length*28)};wait();
-}
-function filmNext(){typeStop();if(FI<FILM.length-1){FI++;filmScene()}else{clearTimeout(FT);V.tab="end";render()}}
-function vFilm(){return `<div class="film" id="film" style="--bg:url(${IM("s_salone")})"><div class="fbg"></div>
-  <div class="lineup">${SUS.map(x=>`<img src="c_${x.k}_dif.webp" alt="">`).join("")}</div>
-  <figure class="ev pol" hidden><img alt="Prova"></figure>
-  <img class="ffull" alt="L'Architetto portato via in manette" hidden>
-  <img class="luc" alt="L'investigatore" hidden>
-  <div class="lname" hidden>Luciano<small>l'investigatore</small></div>
-  <div class="fbox"><p class="ftx tx2"></p></div>
-  <div class="fctl"><div class="fdots">${FILM.map(()=>`<i class="fdot"></i>`).join("")}</div><button data-a="fpause">${FP?"Riprendi":"Pausa"}</button><button data-a="fnext">Avanti</button><button data-a="fskip">Salta</button></div></div>`}
-function vEnd(){const ok=S.fin&&S.fin.ok;return `<div class="blackv thx"><p class="bl1">Grazie per aver giocato</p><p class="ttl2">Morto un presidente se ne fa un altro</p><p class="bl2">${ok?"Hai risolto il caso: l'Architetto, con il sacchetto del ghiaccio.":"Il caso è chiuso. Questa volta la verità l'ha raccontata Luciano."}</p><p class="bl2" style="font-size:.95rem">Acqua in bocca: non svelare a nessuno chi è l'assassino.</p><img class="vlbye" src="vl_bye.webp" alt="Vlady che saluta"><p class="by2">Created by Vlady</p>
-  <div class="stack" style="gap:10px;width:100%;max-width:300px"><button class="btn ghost" data-a="film">Rivedi il racconto</button><button class="btn ghost" data-a="cover">Torna alla copertina</button><button class="btn ghost" data-a="newgame">Ricomincia da capo</button></div></div>`}
-
-/* ===================== FOGLIO INDIZIO ===================== */
-function openClue(id){
-  const c=CL[id];discover(id);
-  const sh=document.getElementById("sheet"),st=S.star.includes(id);
-  sh.innerHTML=`<div class="in" role="dialog" aria-modal="true" aria-labelledby="sht"><div class="hdr"><button class="back2" data-a="close">‹ Indietro</button><div class="small mut" style="font-family:var(--f-mono);text-align:right">${c.r==="f"?"Fascicolo":RN[c.r]}</div></div>
-  <h2 id="sht" style="font-size:1.4rem">${c.t}</h2>${(c.p||[]).join("")}<p class="tx">${c.x}</p>
-  ${c.flip?`<button class="btn" data-a="flip">Gira il quadro</button>`:""}<div class="row2">${c.go?`<button class="btn ghost" data-a="goroom" data-v="${c.go}">Entra nella stanza</button>`:""}${BAGOF[id]?`<button class="btn ghost star" data-a="bag" data-v="${id}" aria-pressed="${(S.bag||[]).includes(BAGOF[id])}">${(S.bag||[]).includes(BAGOF[id])?"Sigillato tra i reperti":"Metti in busta"}</button>`:""}<button class="btn ghost star" data-a="star" data-v="${id}" aria-pressed="${st}">${st?"Segnato come importante":"Segna come importante"}</button></div>
-  <button class="btn ghost" data-a="close">Indietro</button></div>`;
-  const pb=document.getElementById("pinbox");if(pb)pb.innerHTML=phoneHTML();
-  sh.hidden=false;sh.querySelector(".in").scrollTop=0;sh.querySelector(".back2").focus();
-  pushH();
-}
-function closeSheet(){document.getElementById("sheet").hidden=true;render();setTimeout(()=>{LASTFOUND=null},700);maybeConf()}
-
-/* ===================== TELEFONO CON PIN ===================== */
-let PIN="";
-function phoneHTML(){
-  if(has("o_tel"))return phoneOpen();
-  if(!has("sp_turni"))return `<div class="phone pinph"><div class="dt" style="margin:0 0 10px">Telefono bloccato</div><div class="dots">${[0,1,2,3].map(()=>"<i></i>").join("")}</div><p class="pmsg">Serve un PIN di 4 cifre.</p><p class="pmsg" style="opacity:.75;font-size:.75rem">Sfondo: una torta di compleanno.</p><p class="pmsg" style="opacity:.9">Non hai idea di quale possa essere. Prima di provare a caso, cerca nel circolo qualcosa che ti dia un'idea.</p></div>`;
-  return `<div class="phone pinph"><div class="dt" style="margin:0 0 6px">Telefono bloccato</div><div class="dots" id="pdots">${[0,1,2,3].map(i=>`<i class="${i<PIN.length?"on":""}"></i>`).join("")}</div><p class="pmsg" id="pmsg">Inserisci il PIN</p>
-  <div class="kp">${[1,2,3,4,5,6,7,8,9,"",0,"⌫"].map(k=>k===""?"<span></span>":`<button data-a="pin" data-v="${k}" aria-label="${k==="⌫"?"Cancella":k}">${k}</button>`).join("")}</div>
-  <p class="pmsg" style="opacity:.75;font-size:.75rem">Sfondo: una torta di compleanno.</p></div>`;
-}
-function phoneOpen(){return `<div class="phone"><div class="dt" style="margin:0 0 10px">Sbloccato</div>
-  <div class="nf"><small><span>Sicurezza</span><span>22:14–22:31</span></small>6 tentativi di sblocco errati</div>
-  <div class="nf"><small><span>Torcia</span><span>22:13</span></small>Accesa da oltre due ore</div>
-  <div class="nf"><small><span>Galleria · ultima foto</span><span>22:28</span></small><img src="${IM("tel_foto")}" alt="Foto buia e mossa di scaffali" data-a="zoom" data-v="tel_foto" style="width:100%;margin-top:6px;border-radius:8px"></div>
-  <div class="nf"><small><span>Messaggio inviato · a Francesca (sorella)</span><span>20:58</span></small>Ho fatto una cosa. Domani ti racconto. Non dire niente a nessuno.</div>
-  <div class="nf"><small><span>Francesca</span><span>21:02</span></small>??? Giuli che hai combinato. Chiamami</div></div>`}
-function pinTap(k){if(!has("sp_turni"))return;
-  if(k==="⌫")PIN=PIN.slice(0,-1);else if(PIN.length<4)PIN+=k;
-  const b=document.getElementById("pinbox");
-  if(PIN.length===4){if(PIN==="1803"){PIN="";sfx("bell");discover("o_tel");b.innerHTML=phoneHTML();return}
-    b.innerHTML=phoneHTML();const m=document.getElementById("pmsg");m.textContent="PIN errato";b.querySelector(".pinph").classList.add("shake");PIN="";setTimeout(()=>{b.innerHTML=phoneHTML()},700);return}
-  b.innerHTML=phoneHTML();
-}
-
-/* ===================== PUZZLE DELLA TESSERA ===================== */
-const TC=4,TR=2,TW=1000,TH=672,TCW=TW/TC,TRH=TH/TR,TM=34;
-let TZG=null,TZSEL=null;
-function tzRand(seed){return()=>{seed=(seed*16807)%2147483647;return seed/2147483647}}
-function tzGeom(){
-  if(TZG)return TZG;const rnd=tzRand(4242);const V={},H={};
-  for(let c=1;c<TC;c++){const pts=[];for(let r=0;r<TR;r++){const n=4;for(let i=0;i<n;i++){const y=r*TRH+i*TRH/n;pts.push([c*TCW+(i===0?0:(rnd()-.5)*2*TM*.8),y])}}pts.push([c*TCW,TH]);V[c]=pts}
-  for(let r=1;r<TR;r++){const pts=[];for(let c=0;c<TC;c++){const n=5;for(let i=0;i<n;i++){const x=c*TCW+i*TCW/n;pts.push([x,r*TRH+(i===0?0:(rnd()-.5)*2*TM*.8)])}}pts.push([TW,r*TRH]);H[r]=pts}
-  const P=[];
-  for(let r=0;r<TR;r++)for(let c=0;c<TC;c++){
-    const x0=c*TCW,x1=x0+TCW,y0=r*TRH,y1=y0+TRH,poly=[];
-    if(r===0)poly.push([x0,0],[x1,0]);else poly.push(...H[r].filter(p=>p[0]>=x0-.01&&p[0]<=x1+.01));
-    if(c===TC-1)poly.push([TW,y0],[TW,y1]);else poly.push(...V[c+1].filter(p=>p[1]>=y0-.01&&p[1]<=y1+.01));
-    if(r===TR-1)poly.push([x1,TH],[x0,TH]);else poly.push(...H[r+1].filter(p=>p[0]>=x0-.01&&p[0]<=x1+.01).reverse());
-    if(c===0)poly.push([0,y1],[0,y0]);else poly.push(...V[c].filter(p=>p[1]>=y0-.01&&p[1]<=y1+.01).reverse());
-    const bx=Math.max(0,x0-TM),by=Math.max(0,y0-TM),bw=Math.min(TW,x1+TM)-bx,bh=Math.min(TH,y1+TM)-by;
-    P.push({c,r,bx,by,bw,bh,clip:"polygon("+poly.map(p=>((p[0]-bx)/bw*100).toFixed(2)+"% "+((p[1]-by)/bh*100).toFixed(2)+"%").join(",")+")"})}
-  return TZG=P;
-}
-function tzInit(tw,th,sc){
-  if(S.tz&&S.tz.o&&S.tz.o.length===TC*TR)return;const P=tzGeom();
-  S.tz={o:P.map(p=>{const l=Math.random()*(tw-p.bw*sc),t=Math.random()*(th-p.bh*sc);return[(l-p.bx*sc)/tw,(t-p.by*sc)/tw]}),g:P.map((p,i)=>i)};save();
-}
-let TZS=1,TZW=0,TZZ=10;
-function openPuzzle(){
-  PZSEL=null;TZSEL=null;
-  const sh=document.getElementById("sheet");
-  sh.innerHTML=`<div class="in" role="dialog" aria-modal="true" aria-labelledby="sht"><div class="hdr"><button class="back2" data-a="close">‹ Indietro</button><div class="small mut" style="font-family:var(--f-mono)">Saletta piccola</div></div>
-  <h2 id="sht" style="font-size:1.4rem">Pezzi di carta</h2>
-  <p class="tx">Sul tavolo blu, accanto al cartellino 3, qualcuno ha strappato con rabbia una tessera. Trascina i pezzi e avvicinali: quando due pezzi combaciano si attaccano. Puoi anche toccare un pezzo e poi quello che gli va accanto.</p>
-  <div class="tz" id="tz"></div><p class="mut small" id="tzm" role="status"></p>
-  <button class="btn ghost" data-a="close">Lascia perdere per ora</button></div>`;
-  sh.hidden=false;sh.querySelector(".in").scrollTop=0;pushH();
-  const tz=document.getElementById("tz");TZW=tz.clientWidth;TZS=TZW*.62/TW;const th=Math.max(TH*TZS*2.1,340);tz.style.height=th+"px";
-  tzInit(TZW,th,TZS);
-  const P=tzGeom(),fs=TW*TZS*.041;
-  tz.innerHTML=P.map((p,i)=>`<div class="tp" data-i="${i}" style="width:${p.bw*TZS}px;height:${p.bh*TZS}px"><div class="tq" style="clip-path:${p.clip}"><div class="tc" style="left:${-p.bx*TZS}px;top:${-p.by*TZS}px;width:${TW*TZS}px;height:${TH*TZS}px"><img src="${IM("tessera_retro")}" alt=""><span class="nmw" style="font-size:${fs}px">ORLANDO CECCARELLI</span></div></div></div>`).join("");
-  tzPlace();
-  tz.querySelectorAll(".tp").forEach(el=>el.addEventListener("pointerdown",tzDown));
-}
-function tzPlace(anim){const P=tzGeom();document.querySelectorAll("#tz .tp").forEach(el=>{const i=+el.dataset.i,o=S.tz.o[i];el.classList.toggle("snap",!!anim);el.style.left=(o[0]*TZW+P[i].bx*TZS)+"px";el.style.top=(o[1]*TZW+P[i].by*TZS)+"px"})}
-let TZD=null;
-function tzDown(e){
-  const el=e.currentTarget,i=+el.dataset.i,g=S.tz.g[i];e.preventDefault();el.setPointerCapture(e.pointerId);
-  const mem=S.tz.g.map((x,k)=>x===g?k:-1).filter(k=>k>=0);TZZ++;
-  document.querySelectorAll("#tz .tp").forEach(t=>{if(mem.includes(+t.dataset.i)){t.style.zIndex=TZZ;t.classList.add("drag");t.classList.remove("snap")}});
-  TZD={i,mem,x:e.clientX,y:e.clientY,start:mem.map(k=>S.tz.o[k].slice()),moved:false};
-  el.onpointermove=ev=>{if(!TZD)return;const dx=(ev.clientX-TZD.x)/TZW,dy=(ev.clientY-TZD.y)/TZW;if(Math.abs(ev.clientX-TZD.x)+Math.abs(ev.clientY-TZD.y)>6)TZD.moved=true;TZD.mem.forEach((k,j)=>{S.tz.o[k]=[TZD.start[j][0]+dx,TZD.start[j][1]+dy]});tzPlace()};
-  el.onpointerup=el.onpointercancel=()=>{el.onpointermove=null;el.onpointerup=null;const d=TZD;TZD=null;document.querySelectorAll("#tz .tp.drag").forEach(t=>t.classList.remove("drag"));
-    if(!d.moved){tzTapSel(d.i);return}TZSEL=null;tzMark();tzSnap(d.i,false)}
-}
-const tzAdj=(a,b)=>{const P=tzGeom();return Math.abs(P[a].c-P[b].c)+Math.abs(P[a].r-P[b].r)===1};
-function tzMerge(ga,gb,target){const o=S.tz.o[target].slice();S.tz.g.forEach((x,k)=>{if(x===ga||x===gb){S.tz.g[k]=gb;S.tz.o[k]=o.slice()}})}
-function tzSnap(i,force,j){
-  const g=S.tz.g[i],mem=S.tz.g.map((x,k)=>x===g?k:-1).filter(k=>k>=0);let hit=null;
-  for(const a of mem)for(let b=0;b<TC*TR;b++){if(S.tz.g[b]===g||!tzAdj(a,b))continue;if(j!=null&&S.tz.g[b]!==S.tz.g[j])continue;const d=Math.hypot(S.tz.o[a][0]-S.tz.o[b][0],S.tz.o[a][1]-S.tz.o[b][1]);if(force||d<.05){hit=b;break}}
-  const m=document.getElementById("tzm");
-  if(hit==null){if(force){sfx("tap");m.textContent="Questi due pezzi non combaciano."}save();return false}
-  tzMerge(g,S.tz.g[hit],hit);sfx("busta");save();tzPlace(true);
-  const left=new Set(S.tz.g).size;m.textContent=left===1?"":`Pezzi uniti. Gruppi rimasti: ${left}.`;
-  if(left===1)tzDone();return true;
-}
-function tzTapSel(i){
-  if(TZSEL===null||S.tz.g[TZSEL]===S.tz.g[i]){TZSEL=TZSEL===i?null:i;sfx("tap");tzMark();return}
-  const a=TZSEL;TZSEL=null;tzMark();tzSnap(a,true,i);
-}
-function tzMark(){document.querySelectorAll("#tz .tp").forEach(t=>t.classList.toggle("sel",TZSEL!==null&&S.tz.g[+t.dataset.i]===S.tz.g[TZSEL]))}
-function tzDone(){
-  const tz=document.getElementById("tz"),th=tz.clientHeight,P=tzGeom();
-  S.tz.o=S.tz.o.map(()=>[(TZW-TW*TZS)/2/TZW,(th-TH*TZS)/2/TZW]);save();setTimeout(()=>tzPlace(true),200);
-  tz.classList.add("done");sfx("solved");document.getElementById("tzm").textContent="La tessera è ricomposta.";
-  setTimeout(()=>{document.getElementById("sheet").hidden=true;sfx("busta");openClue("s_tessera")},1800);
-}
-let PZSEL=null;
-
-/* ===================== NAVIGAZIONE ===================== */
-function pushH(){try{history.pushState({f:1},"")}catch(e){}}
-function snap(){return {tab:V.tab,room:V.room,sus:V.sus,pt:V.pt}}
-function go(tab,extra){animIn();STACK.push(snap());if(STACK.length>40)STACK.shift();Object.assign(V,{tab,zoom:false,confirm:false},extra||{});pushH();render();window.scrollTo(0,0);if(V.tab==="sus"&&V.fresh>0){const e=document.getElementById("d"+V.fresh);if(e)setTimeout(()=>e.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}),120)}}
-function goBack(){
-  const lb=document.getElementById("lb"),sh=document.getElementById("sheet");
-  if(!document.getElementById("cf").hidden){nextConf();return}
-  if(!document.getElementById("vl").hidden){if(VLNEXT)VLNEXT();return}
-  if(!document.getElementById("md").hidden){document.getElementById("md").hidden=true;return}
-  if(["fin","black","film","end"].includes(V.tab))return;
-  if(!lb.hidden){lb.hidden=true;return}
-  if(!sh.hidden){closeSheet();return}
-  if(STACK.length){sfx("tap");animIn();Object.assign(V,STACK.pop(),{zoom:false,confirm:false});render();window.scrollTo(0,0)}
-  else if(V.tab!=="map"&&V.tab!=="cover"){V.tab="map";V.room=null;render()}
-}
-window.addEventListener("popstate",()=>{goBack();if(V.tab!=="cover")pushH()});
-
-let ANT;function animIn(){const a=document.getElementById("app");a.classList.remove("enter");void a.offsetWidth;a.classList.add("enter");clearTimeout(ANT);ANT=setTimeout(()=>a.classList.remove("enter"),1300)}
-function render(){
-  const app=document.getElementById("app"),nav=document.getElementById("nav");
-  const full=["cover","intro","fin","black","film","end"].includes(V.tab);
-  nav.hidden=full;
-  if(!full){const T=[["map","Mappa"],["sus","Sospettati"],["prove","Prove"],["time","Taccuino"],["acc","Accusa"]];
-    nav.innerHTML=T.map(t=>`<button data-a="tab" data-v="${t[0]}" aria-current="${V.tab===t[0]||(t[0]==="map"&&V.tab==="room")}">${t[1]}</button>`).join("")}
-  app.innerHTML={cover:vCover,intro:vIntro,map:vMap,room:vRoom,sus:vSus,prove:vProve,time:vTime,acc:vAcc,fin:vFin,black:vBlack,film:vFilm,end:vEnd}[V.tab]();
-  if(V.tab==="fin"&&!V.truthAsk){const t=document.getElementById("fintx");if(t)typeStart(t)}
-  const o=document.getElementById("onlystar");if(o)o.addEventListener("change",()=>{V.only=o.checked;render()});
-}
-
-/* tocco nella foto */
-let LASTFOUND=null;
-function sceneTap(sc,e){
-  const img=sc.dataset.scene,b=sc.getBoundingClientRect();
-  const x=(e.clientX-b.left)/b.width,y=(e.clientY-b.top)/b.height,pad=.025;
-  const hit=(ZONES[img]||[]).filter(z=>visible(z[0])&&x>=z[1]-pad&&x<=z[3]+pad&&y>=z[2]-pad&&y<=z[4]+pad).sort((a,b)=>(has(a[0])-has(b[0]))||((a[3]-a[1])*(a[4]-a[2])-(b[3]-b[1])*(b[4]-b[2])))[0];
-  if(hit){const nw=!has(hit[0]);if(nw){sfx("busta");const f=document.createElement("span");f.className="flash";sc.appendChild(f);setTimeout(()=>f.remove(),400);LASTFOUND=hit[0]}else sfx("tap");
-    setTimeout(()=>{if(hit[0]==="s_tessera"&&!has("s_tessera"))openPuzzle();else openClue(hit[0])},nw?180:0);return}
-  const lk=(ZONES[img]||[]).find(z=>!visible(z[0])&&!has(z[0])&&x>=z[1]-pad&&x<=z[3]+pad&&y>=z[2]-pad&&y<=z[4]+pad);
-  if(lk){sfx("tap");toast("Qui c'è qualcosa, ma ancora non sai cosa cercare. Ti manca un indizio o una dichiarazione per capirlo.");const q=document.createElement("span");q.className="lockz";q.style.left=lk[1]*100+"%";q.style.top=lk[2]*100+"%";q.style.width=(lk[3]-lk[1])*100+"%";q.style.height=(lk[4]-lk[2])*100+"%";sc.appendChild(q);setTimeout(()=>q.remove(),1300);return}
-  sfx("tap");
-  const m=document.createElement("span");m.className="miss";m.style.left=x*100+"%";m.style.top=y*100+"%";sc.appendChild(m);setTimeout(()=>m.remove(),750);
-}
-
-document.addEventListener("click",e=>{
-  const sc=e.target.closest(".scene");
-  if(sc&&!e.target.closest("[data-a]")){sceneTap(sc,e);return}
-  const t=e.target.closest("[data-a]");
-  if(!t){if(e.target.id==="sheet"){sfx("tap");closeSheet()}return}
-  const a=t.dataset.a,v=t.dataset.v;
-  const SND=a==="vlnext"||a==="rate"||a==="rate2"||a==="bag"||a==="pz"?null:"tap";
-  if(SND)sfx(SND);
-  switch(a){
-    case"start":if(!S.intro&&!S.fin){musicStart();STACK.length=0;V.tab="intro";render();window.scrollTo(0,0);showFasc();break}if(S.fin&&S.fin.done){TRACK="finale";musicStart();V.tab="end";render();break}if(S.fin){musicStart();V.tab="fin";render();break}musicStart();go(S.intro?"map":"intro");break;
-    case"open":if(!has("f_verbale"))S.f.push("f_verbale");save();V.firsts=true;CF_R0=new Set(openRooms());VIS0=visSet();SUS.forEach(x=>PEND.push(x.k+":0"));showConf();break;
-    case"mus":musicToggle();render();break;
-    case"sfx":S.sfx=S.sfx===false;save();render();break;
-    case"intro":go("intro");break;
-    case"back":goBack();break;
-    case"tab":go(v,{room:null,sus:null});break;
-    case"room":if(!isOpen(v)){toast(RN[v]+" è ancora chiusa. Ascolta i sospettati: qualcuno la nominerà.");break}go("room",{room:v});break;
-    case"clue":openClue(v);break;
-    case"close":closeSheet();break;
-    case"goroom":if(!isOpen(v)){toast(RN[v]+" è ancora chiusa.");break}document.getElementById("sheet").hidden=true;go("room",{room:v});maybeConf();break;
-    case"cfnext":nextConf();break;
-    case"vlady":vladyTap();break;
-    case"vlnext":if(VLNEXT)VLNEXT();break;
-    case"rate":{if(TY){typeStop();break}S.dv=S.dv||{};S.dv[CF_CUR]=v;save();sfx("tap");nextConf();break}
-    case"rate2":{const [k,val]=v.split("|");S.dv=S.dv||{};S.dv[k]=S.dv[k]===val?undefined:val;if(!S.dv[k])delete S.dv[k];save();render();break}
-    case"bag":{S.bag=S.bag||[];const w=BAGOF[v],i=S.bag.indexOf(w);if(i<0){S.bag.push(w);sfx("busta");toast("Reperto sigillato: "+BAGS.find(b=>b[0]===w)[1])}else S.bag.splice(i,1);save();t.setAttribute("aria-pressed",i<0);t.textContent=i<0?"Sigillato tra i reperti":"Metti in busta";break}
-    case"star":{const i=S.star.indexOf(v);if(i<0)S.star.push(v);else S.star.splice(i,1);save();t.setAttribute("aria-pressed",i<0);t.textContent=i<0?"Segnato come importante":"Segna come importante";break}
-    case"sus":go("sus",{sus:v||null});break;
-    case"pt":V.pt=v;render();break;
-    case"lens":V.zoom=!V.zoom;render();break;
-    case"pks":S.pk=S.pk||{};S.pk.s=v;save();render();break;
-    case"pkw":S.pk=S.pk||{};S.pk.w=v;save();render();break;
-    case"formula":if(S.pk&&S.pk.s&&S.pk.w)openModal();break;
-    case"mdno":document.getElementById("md").hidden=true;break;
-    case"mdyes":{document.getElementById("md").hidden=true;S.fin={s:S.pk.s,w:S.pk.w,ok:S.pk.s===SOL.s&&S.pk.w===SOL.w};save();sfx(S.fin.ok?"win":"lose");V.truthAsk=false;STACK.length=0;V.tab="fin";render();window.scrollTo(0,0);break}
-    case"resume":typeStop();S.fin=null;save();switchTrack("tema");V.tab="map";V.room=null;render();window.scrollTo(0,0);break;
-    case"truth":typeStop();V.truthAsk=true;render();break;
-    case"newask":V.truthAsk="new";render();break;
-    case"truthno":V.truthAsk=false;render();break;
-    case"truthgo":case"blackgo":typeStop();V.truthAsk=false;S.fin.done=true;save();switchTrack("finale");V.tab="black";render();break;
-    case"film":filmOpen();break;
-    case"fpause":FP=!FP;t.textContent=FP?"Riprendi":"Pausa";if(!FP){clearTimeout(FT);FT=setTimeout(filmNext,800)}else clearTimeout(FT);break;
-    case"fnext":if(TY)typeStop();else filmNext();break;
-    case"fskip":typeStop();clearTimeout(FT);V.tab="end";render();break;
-    case"newgame":S=FRESH();save();switchTrack("tema");STACK.length=0;V={tab:"cover",room:null,sus:null,pt:"ind",only:false,zoom:false};render();break;
-    case"pin":pinTap(v);break;
-    case"flip":{discover("c_retro");const sh=document.getElementById("sheet");sh.hidden=true;openClue("c_retro");const i=sh.querySelector(".in");if(i&&!matchMedia("(prefers-reduced-motion:reduce)").matches){i.classList.add("flipin")}break}
-    case"revask":openRev();break;
-    case"revgo":{const x=(document.getElementById("revc").value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(x==="CIF1951"){S.rev=true;save();document.getElementById("md").hidden=true;sfx("busta");render();toast("Gli indizi mancanti ora sono cerchiati di verde nelle foto.")}else{document.getElementById("reverr").textContent="Codice sbagliato.";sfx("tap")}break}
-    case"fasc":openFasc();break;
-    case"cover":typeStop();clearTimeout(FT);STACK.length=0;V.tab="cover";V.room=null;render();window.scrollTo(0,0);break;
-    case"reset1":V.confirm=true;render();break;
-    case"reset0":V.confirm=false;render();break;
-    case"reset1go":V.tab="time";V.confirm=true;render();window.scrollTo(0,document.body.scrollHeight);break;
-    case"reset2":S=FRESH();save();STACK.length=0;V={tab:"cover",room:null,sus:null,pt:"ind",only:false,zoom:false};render();break;
-    case"zoom":{const lb=document.getElementById("lb");document.getElementById("lbi").src=IM(v);lb.classList.remove("z");lb.hidden=false;lb.scrollTop=0;pushH();break}
-    case"lbzoom":document.getElementById("lb").classList.toggle("z");break;
-    case"lbclose":document.getElementById("lb").hidden=true;break;
-  }
-});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")goBack()});
-
-function start(d){if(d&&d.tab)Object.assign(V,d);render()}
-window.claude?.hot?.snapshot?.(()=>snap());
-window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+})();
 </script>
-
-<script>if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script>
 </body>
 </html>

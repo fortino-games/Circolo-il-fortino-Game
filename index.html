@@ -278,7 +278,7 @@ function braces(){const p=document.querySelector(".pont");if(!p)return;const w=p
     e.style.left=ax+"px";e.style.top=ay+"px";e.style.width=L+"px";e.style.transform=`rotate(${Math.atan2(by-ay,bx-ax)}rad)`})}
 braces();addEventListener("resize",braces);
 
-if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>{document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")r.update().catch(()=>{})})}).catch(()=>{}));
 })();
 </script>
 <script>

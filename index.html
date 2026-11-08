@@ -23,7 +23,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Yellowtail&family=Special+Elite&family=Caveat:wght@700&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Yellowtail&family=Special+Elite&family=Caveat:wght@700&family=Architects+Daughter&family=Inter:wght@400;600;700&display=swap">
 <style>
 /* Un cantiere vero: muro di mattoni, una parete appena passata a rullo, un ponteggio,
    e Vlady fermo al lavoro accanto a ogni segno. Le schede dei giochi sono avvitate al muro. */
@@ -111,6 +111,19 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .play{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:10px;
   background:var(--sign);color:var(--signink);font:700 1rem/1 var(--f-sign);letter-spacing:.1em;text-transform:uppercase}
 /* Vlady col trapano sotto la prima scheda: la punta finisce sul primo foro */
+/* La tessera ARCI del giocatore: ci scrive il suo nome, che accompagna i voti */
+.socio{position:relative;z-index:3;width:min(92vw,420px);margin:0 auto 26px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.tessera{position:relative;width:100%;container-type:inline-size;line-height:0;transform:rotate(-1.5deg);box-shadow:10px 16px 22px rgba(20,8,4,.55);border-radius:3%}
+.tessera img{width:100%;height:auto;display:block;border-radius:3%}
+.tessera input{position:absolute;left:27.6%;top:30.2%;width:64%;height:10%;border:0;outline:0;background:transparent;padding:0 1%;
+  font:400 5.4cqw/1 "Architects Daughter","Caveat",cursive;color:#2b2b35;letter-spacing:.06em;text-transform:uppercase;border-radius:4px}
+.tessera .campo{position:absolute;left:28.4%;transform:translateY(-50%);font:400 4.6cqw/1 "Architects Daughter","Caveat",cursive;color:#2b2b35;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;pointer-events:none}
+.tessera input::placeholder{color:#9a8f7a;text-transform:none;letter-spacing:0;font-size:4.6cqw}
+.tessera input:focus{background:rgba(242,201,76,.22)}
+.tessera.vuota{animation:chiama 2.4s ease-in-out infinite}
+@keyframes chiama{0%,100%{box-shadow:10px 16px 22px rgba(20,8,4,.55)}50%{box-shadow:10px 16px 22px rgba(20,8,4,.55),0 0 0 6px rgba(242,201,76,.75)}}
+.firma{border:0;cursor:pointer;padding:0 26px}
+.firma[hidden]{display:none}
 /* Voto in Ponci, sotto ogni scheda: si sblocca dopo aver giocato */
 .voto{position:relative;z-index:2;margin-top:12px;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;padding:14px 14px 16px;box-shadow:10px 18px 26px rgba(20,8,4,.55)}
 .voto h4{margin:0 0 8px;text-align:center;font:700 1.05rem/1 var(--f-sign);letter-spacing:.12em;text-transform:uppercase}
@@ -208,6 +221,16 @@ html.intro-on,html.intro-on body{overflow:hidden}
     <img class="vl v-scala" src="vlady_scala.webp" alt="">
   </header>
 
+  <section class="socio" aria-label="La tua tessera del Circolo">
+    <div class="tessera" id="tessera">
+      <img src="tessera_home.webp" alt="La tua tessera ARCI del Circolo Il Fortino">
+      <span class="campo" style="top:50.6%">Pisa e Alta Val di Cecina</span>
+      <span class="campo" style="top:65.9%">Il Fortino</span>
+      <input id="nome" type="text" maxlength="30" autocomplete="nickname" enterkeyhint="done" placeholder="Scrivi qui il tuo nome" aria-label="Il tuo nome sulla tessera">
+    </div>
+    <button type="button" class="play firma" id="firma" hidden>Firma la tessera</button>
+  </section>
+
   <section class="pont" aria-label="I casi">
     <img class="stucco" src="stucco.webp" alt="">
     <div class="casi"><h2>I casi</h2><span id="count"></span></div>
@@ -288,6 +311,8 @@ function votazione(g,giocato){
     <p class="lock" aria-label="Si vota dopo aver giocato">🔒</p>
     <button type="button" class="play vota" disabled>${v?"✓ Votato":"Vota"}</button></div>`;
 }
+function nome(){try{return localStorage.getItem("fortino-nome")||""}catch(e){return ""}}
+function invia(gioco,n){return fetch(VOTI_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({gioco,voto:String(n),codice:codice(),nome:nome()})})}
 function scegli(box,n){box.dataset.scelta=n;
   box.querySelectorAll(".ponci button").forEach(b=>{const k=+b.dataset.n;b.classList.toggle("on",k<=n);b.classList.toggle("alto",k===n);b.setAttribute("aria-pressed",k===n?"true":"false")});
   const bt=box.querySelector(".vota"),v=+box.dataset.voto;bt.disabled=n===v;bt.textContent=n===v?"✓ Votato":"Vota"}
@@ -298,7 +323,7 @@ $("grid").addEventListener("click",async e=>{
   const n=+box.dataset.scelta,gioco=box.dataset.gioco;if(!n)return;
   bt.disabled=true;bt.textContent="…";
   try{
-    await fetch(VOTI_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({gioco,voto:String(n),codice:codice()})});
+    await invia(gioco,n);
     try{localStorage.setItem("fortino-voto:"+gioco,n)}catch(_){}
     box.dataset.voto=n;scegli(box,n);
   }catch(_){bt.disabled=false;bt.textContent="Riprova"}
@@ -306,6 +331,28 @@ $("grid").addEventListener("click",async e=>{
 const G=Array.isArray(window.GIOCHI)?window.GIOCHI:[];
 $("grid").innerHTML=G.map(scheda).join("");
 $("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" aperti, altri in arrivo";
+
+// la tessera: il nome resta sul telefono e accompagna i voti
+(function(){
+  const inp=$("nome"),bt=$("firma"),card=$("tessera");
+  inp.value=nome();card.classList.toggle("vuota",!nome());
+  const cambia=()=>{const v=inp.value.trim();bt.hidden=!v||v===nome();bt.textContent="Firma la tessera";bt.disabled=false};
+  async function firma(){
+    const v=inp.value.trim().slice(0,30);if(!v)return;
+    try{localStorage.setItem("fortino-nome",v)}catch(_){}
+    inp.value=v;inp.blur();card.classList.remove("vuota");
+    bt.disabled=true;bt.textContent="✓ Firmata";setTimeout(()=>{bt.hidden=true},1200);
+    // i voti già dati ricevono il nome
+    for(const g of G){const n=mioVoto(g.titolo);if(n){try{await invia(g.titolo,n)}catch(_){}}}
+  }
+  // le scritte a mano stanno sempre dentro la riga
+  const adatta=()=>card.querySelectorAll(".campo").forEach(c=>{c.style.fontSize="";const max=card.clientWidth*.63;let f=parseFloat(getComputedStyle(c).fontSize);
+    while(c.scrollWidth>max&&f>8){f-=.5;c.style.fontSize=f+"px"}});
+  adatta();if(document.fonts)document.fonts.ready.then(adatta);addEventListener("resize",adatta);
+  inp.addEventListener("input",cambia);
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();firma()}});
+  bt.addEventListener("click",firma);
+})();
 
 // il prossimo caso, coperto dal telo
 const P=window.PROSSIMAMENTE;

@@ -302,7 +302,7 @@ function scheda(g,i){
 const VOTI_URL="https://script.google.com/macros/s/AKfycbwgUHtGpeN7pPMz-jgP_c7x9kzLqZ0abaLwlX-Bu2HS6FG3einoRLQM6EGIe86xEoNa6g/exec";
 function codice(){let c=null;try{c=localStorage.getItem("fortino-codice")}catch(e){}
   if(!c){c=Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{localStorage.setItem("fortino-codice",c)}catch(e){}}return c}
-function mioVoto(t){try{return +localStorage.getItem("fortino-voto:"+t)||0}catch(e){return 0}}
+function mioVoto(t){try{return +localStorage.getItem("fortino-voto2:"+t)||0}catch(e){return 0}}
 function votazione(g,giocato){
   const v=mioVoto(g.titolo);
   const p=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" data-n="${n}" class="${n<=v?"on":""}${n===v?" alto":""}" aria-label="${n} ${n===1?"Ponce":"Ponci"}"${n===v?' aria-pressed="true"':""}><img src="ponce.webp" alt=""><span>${n}</span></button>`).join("");
@@ -327,7 +327,7 @@ $("grid").addEventListener("click",async e=>{
   bt.disabled=true;bt.textContent="…";
   try{
     await invia(gioco,n);
-    try{localStorage.setItem("fortino-voto:"+gioco,n)}catch(_){}
+    try{localStorage.setItem("fortino-voto2:"+gioco,n)}catch(_){}
     box.dataset.voto=n;scegli(box,n);
   }catch(_){bt.disabled=false;bt.textContent="Riprova"}
 });

@@ -111,6 +111,21 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .play{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:10px;
   background:var(--sign);color:var(--signink);font:700 1rem/1 var(--f-sign);letter-spacing:.1em;text-transform:uppercase}
 /* Vlady col trapano sotto la prima scheda: la punta finisce sul primo foro */
+/* Voto in Ponci, sotto ogni scheda: si sblocca dopo aver giocato */
+.voto{position:relative;z-index:2;margin-top:12px;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;padding:14px 14px 16px;box-shadow:10px 18px 26px rgba(20,8,4,.55)}
+.voto h4{margin:0 0 8px;text-align:center;font:700 1.05rem/1 var(--f-sign);letter-spacing:.12em;text-transform:uppercase}
+.ponci{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.ponci button{border:0;background:none;padding:4px 0 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--cmut);font:600 .72rem/1 var(--f-body);-webkit-tap-highlight-color:transparent}
+.ponci img{width:100%;max-width:28px;height:auto;filter:grayscale(1) brightness(.55);opacity:.45;transition:filter .15s,opacity .15s,transform .15s}
+.ponci button.on img{filter:none;opacity:1}
+.ponci button.on{color:var(--ctext)}
+.ponci button.alto img{transform:translateY(-4px) scale(1.12)}
+.vota{width:100%;margin-top:10px;border:0;cursor:pointer}
+.vota:disabled{opacity:.45;cursor:default}
+.voto .lock{display:none;margin:6px 0 0;text-align:center;font-size:1.3rem}
+.voto.chiuso .ponci{opacity:.35;pointer-events:none}
+.voto.chiuso .lock{display:block}
+.voto.chiuso .vota{display:none}
 .trap{position:relative;height:150px}
 .v-trap{width:126px;left:4px;top:4px}
 .fori{position:absolute;width:210px;height:auto;left:calc(4px + 126px * .80 - 30px);top:calc(4px + 126px * 1.16 * .66 - 30px)}
@@ -258,8 +273,36 @@ function scheda(g,i){
       <div class="meta">${dots}${durata}${uscita}</div>
       <span class="play">${ok?"Rigioca":iniziato?"Continua l'indagine":"Gioca"} <span aria-hidden="true">›</span></span>
     </div>
-  </a>${trap}</div>`;
+  </a>${votazione(g,!!save)}${trap}</div>`;
 }
+// ---------- Voto in Ponci: arriva nel Foglio Google "Fortino Games – Voti in Ponci" ----------
+const VOTI_URL="https://script.google.com/macros/s/AKfycbwgUHtGpeN7pPMz-jgP_c7x9kzLqZ0abaLwlX-Bu2HS6FG3einoRLQM6EGIe86xEoNa6g/exec";
+function codice(){let c=null;try{c=localStorage.getItem("fortino-codice")}catch(e){}
+  if(!c){c=Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{localStorage.setItem("fortino-codice",c)}catch(e){}}return c}
+function mioVoto(t){try{return +localStorage.getItem("fortino-voto:"+t)||0}catch(e){return 0}}
+function votazione(g,giocato){
+  const v=mioVoto(g.titolo);
+  const p=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" data-n="${n}" class="${n<=v?"on":""}${n===v?" alto":""}" aria-label="${n} ${n===1?"Ponce":"Ponci"}"${n===v?' aria-pressed="true"':""}><img src="ponce.webp" alt=""><span>${n}</span></button>`).join("");
+  return `<div class="voto${giocato?"":" chiuso"}" data-gioco="${esc(g.titolo)}" data-voto="${v}">
+    <h4>Vota il gioco</h4><div class="ponci">${p}</div>
+    <p class="lock" aria-label="Si vota dopo aver giocato">🔒</p>
+    <button type="button" class="play vota" disabled>${v?"✓ Votato":"Vota"}</button></div>`;
+}
+function scegli(box,n){box.dataset.scelta=n;
+  box.querySelectorAll(".ponci button").forEach(b=>{const k=+b.dataset.n;b.classList.toggle("on",k<=n);b.classList.toggle("alto",k===n);b.setAttribute("aria-pressed",k===n?"true":"false")});
+  const bt=box.querySelector(".vota"),v=+box.dataset.voto;bt.disabled=n===v;bt.textContent=n===v?"✓ Votato":"Vota"}
+$("grid").addEventListener("click",async e=>{
+  const box=e.target.closest(".voto");if(!box||box.classList.contains("chiuso"))return;
+  const p=e.target.closest(".ponci button");if(p){scegli(box,+p.dataset.n);return}
+  const bt=e.target.closest(".vota");if(!bt||bt.disabled)return;
+  const n=+box.dataset.scelta,gioco=box.dataset.gioco;if(!n)return;
+  bt.disabled=true;bt.textContent="…";
+  try{
+    await fetch(VOTI_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({gioco,voto:String(n),codice:codice()})});
+    try{localStorage.setItem("fortino-voto:"+gioco,n)}catch(_){}
+    box.dataset.voto=n;scegli(box,n);
+  }catch(_){bt.disabled=false;bt.textContent="Riprova"}
+});
 const G=Array.isArray(window.GIOCHI)?window.GIOCHI:[];
 $("grid").innerHTML=G.map(scheda).join("");
 $("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" aperti, altri in arrivo";

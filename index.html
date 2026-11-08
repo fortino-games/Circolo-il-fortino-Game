@@ -135,7 +135,7 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .ponci button.alto img{transform:translateY(-4px) scale(1.12)}
 .vota{width:100%;margin-top:10px;border:0;cursor:pointer}
 .vota:disabled{opacity:.45;cursor:default}
-.voto .lock{display:none;margin:6px 0 0;text-align:center;font-size:1.3rem}
+.voto .lock{display:none;margin:6px auto 0;border:0;background:none;cursor:pointer;font-size:1.3rem;line-height:1.2}
 .voto.chiuso .ponci{opacity:.35;pointer-events:none}
 .voto.chiuso .lock{display:block}
 .voto.chiuso .vota{display:none}
@@ -306,9 +306,9 @@ function mioVoto(t){try{return +localStorage.getItem("fortino-voto:"+t)||0}catch
 function votazione(g,giocato){
   const v=mioVoto(g.titolo);
   const p=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" data-n="${n}" class="${n<=v?"on":""}${n===v?" alto":""}" aria-label="${n} ${n===1?"Ponce":"Ponci"}"${n===v?' aria-pressed="true"':""}><img src="ponce.webp" alt=""><span>${n}</span></button>`).join("");
-  return `<div class="voto${giocato?"":" chiuso"}" data-gioco="${esc(g.titolo)}" data-voto="${v}">
+  return `<div class="voto${giocato&&nome()?"":" chiuso"}${giocato?" giocato":""}" data-gioco="${esc(g.titolo)}" data-voto="${v}">
     <h4>Vota il gioco</h4><div class="ponci">${p}</div>
-    <p class="lock" aria-label="Si vota dopo aver giocato">🔒</p>
+    <button type="button" class="lock" aria-label="Si vota dopo aver giocato e firmato la tessera">🔒</button>
     <button type="button" class="play vota" disabled>${v?"✓ Votato":"Vota"}</button></div>`;
 }
 function nome(){try{return localStorage.getItem("fortino-nome")||""}catch(e){return ""}}
@@ -317,7 +317,10 @@ function scegli(box,n){box.dataset.scelta=n;
   box.querySelectorAll(".ponci button").forEach(b=>{const k=+b.dataset.n;b.classList.toggle("on",k<=n);b.classList.toggle("alto",k===n);b.setAttribute("aria-pressed",k===n?"true":"false")});
   const bt=box.querySelector(".vota"),v=+box.dataset.voto;bt.disabled=n===v;bt.textContent=n===v?"✓ Votato":"Vota"}
 $("grid").addEventListener("click",async e=>{
-  const box=e.target.closest(".voto");if(!box||box.classList.contains("chiuso"))return;
+  const box=e.target.closest(".voto");if(!box)return;
+  if(box.classList.contains("chiuso")){
+    if(e.target.closest(".lock")&&box.classList.contains("giocato")&&!nome()){const t=$("tessera");t.scrollIntoView({behavior:"smooth",block:"center"});t.classList.add("vuota")}
+    return}
   const p=e.target.closest(".ponci button");if(p){scegli(box,+p.dataset.n);return}
   const bt=e.target.closest(".vota");if(!bt||bt.disabled)return;
   const n=+box.dataset.scelta,gioco=box.dataset.gioco;if(!n)return;
@@ -342,6 +345,7 @@ $("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" apert
     try{localStorage.setItem("fortino-nome",v)}catch(_){}
     inp.value=v;inp.blur();card.classList.remove("vuota");
     bt.disabled=true;bt.textContent="✓ Firmata";setTimeout(()=>{bt.hidden=true},1200);
+    document.querySelectorAll(".voto.giocato.chiuso").forEach(b=>b.classList.remove("chiuso"));
     // i voti già dati ricevono il nome
     for(const g of G){const n=mioVoto(g.titolo);if(n){try{await invia(g.titolo,n)}catch(_){}}}
   }

@@ -34,6 +34,6 @@ window.GIOCHI = [
 
 /* Il prossimo gioco, ancora coperto dal telo in fondo alla pagina.
    Cambia il titolo quando vuoi; metti false per togliere il riquadro.
-   copertina: l'immagine che si intravede sotto il telo (già sfocata apposta)
+   copertina: l'immagine che si intravede sotto il telo 
    targhetta: la scritta sul foglietto attaccato col nastro (metti "" per toglierlo) */
-window.PROSSIMAMENTE = { titolo: "Titolo top secret", copertina: "prossimo.webp", targhetta: "Coming soon" };
+window.PROSSIMAMENTE = { titolo: "", copertina: "prossimo.webp", targhetta: "Coming soon" };

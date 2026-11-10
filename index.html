@@ -156,8 +156,7 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .next h3{position:absolute;left:0;right:0;top:48px;margin:0;text-align:center;color:var(--ctext);font:700 1.5rem/1.1 var(--f-sign);padding:0 24px}
 .next .q{position:absolute;inset:auto 0 30px;text-align:center;font:700 6rem/1 var(--f-sign);color:rgba(255,255,255,.06)}
 .v-telo{width:340px;max-width:100%;left:0;top:44px;z-index:3}
-.next .cop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transform:scale(1.15);display:block}
-.next::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,13,18,.38),rgba(12,13,18,0) 40%,rgba(12,13,18,.2))}
+.next .cop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .next.foto .b,.next.foto h3,.next.foto .screw{z-index:2}
 .next.foto h3{text-shadow:0 2px 8px rgba(0,0,0,.8)}
 .next.foto .q{display:none}
@@ -373,7 +372,7 @@ $("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" apert
 // il prossimo caso, coperto dal telo
 const P=window.PROSSIMAMENTE;
 if(P){const d=document.createElement("div");d.className="coperto";d.setAttribute("role","img");d.setAttribute("aria-label","Il prossimo caso, ancora coperto da un telo");
-  d.innerHTML=`<div class="next${P.copertina?" foto":""}">${P.copertina?`<img class="cop" src="${esc(P.copertina)}" alt="">`:""}<i class="screw tl"></i><i class="screw tr"></i><span class="b">Prossimo caso</span><h3>${esc(P.titolo||"")}</h3><div class="q">?</div></div><img class="vl v-telo" src="vlady_lenzuolo.webp" alt="">${P.targhetta?`<div class="soon"><i class="l"></i><i class="r"></i>${esc(P.targhetta)}</div>`:""}`;
+  d.innerHTML=`<div class="next${P.copertina?" foto":""}">${P.copertina?`<img class="cop" src="${esc(P.copertina)}" alt="">`:""}<i class="screw tl"></i><i class="screw tr"></i><span class="b">Prossimo caso</span>${P.titolo?`<h3>${esc(P.titolo)}</h3>`:""}<div class="q">?</div></div><img class="vl v-telo" src="vlady_lenzuolo.webp" alt="">${P.targhetta?`<div class="soon"><i class="l"></i><i class="r"></i>${esc(P.targhetta)}</div>`:""}`;
   $("finale").appendChild(d)}
 
 // diagonali del ponteggio, calcolate sulla larghezza reale

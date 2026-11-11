@@ -35,5 +35,8 @@ window.GIOCHI = [
 /* Il prossimo gioco, ancora coperto dal telo in fondo alla pagina.
    Cambia il titolo quando vuoi; metti false per togliere il riquadro.
    copertina: l'immagine che si intravede sotto il telo 
-   targhetta: la scritta sul foglietto attaccato col nastro (metti "" per toglierlo) */
-window.PROSSIMAMENTE = { titolo: "", copertina: "prossimo.webp", targhetta: "Coming soon" };
+   targhetta: la scritta sul foglietto attaccato col nastro (metti "" per toglierlo)
+   video:     se c'è, al posto della locandina e del telo compare il trailer da guardare
+   poster:    l'immagine mostrata sul video prima di premere play */
+window.PROSSIMAMENTE = { titolo: "", copertina: "prossimo.webp", targhetta: "Coming soon",
+  video: "trailer_lultima_foto.mp4", poster: "trailer_poster.jpg" };

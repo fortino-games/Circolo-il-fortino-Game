@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Circolo Il Fortino Games</title>
-<meta name="description" content="I giochi investigativi del Circolo Il Fortino. Sito in costruzione, casi già aperti.">
+<meta name="description" content="I giochi investigativi del Circolo Il Fortino: i casi sono aperti.">
 <link rel="manifest" href="manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Circolo Il Fortino Games">
 <meta property="og:title" content="Circolo Il Fortino Games">
-<meta property="og:description" content="I giochi investigativi del Circolo Il Fortino. Sito in costruzione, casi già aperti.">
+<meta property="og:description" content="I giochi investigativi del Circolo Il Fortino: i casi sono aperti.">
 <meta property="og:url" content="https://fortino-games.github.io/Circolo-il-fortino-Game/">
 <meta property="og:image" content="https://fortino-games.github.io/Circolo-il-fortino-Game/anteprima.jpg?v=1">
 <meta property="og:image:width" content="1200">
@@ -19,14 +19,14 @@
 <meta name="twitter:image" content="https://fortino-games.github.io/Circolo-il-fortino-Game/anteprima.jpg?v=1">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="theme-color" content="#6b3e2e">
+<meta name="theme-color" content="#93a09b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Yellowtail&family=Special+Elite&family=Caveat:wght@700&family=Permanent+Marker&family=Architects+Daughter&family=Inter:wght@400;600;700&display=swap">
 <style>
-/* Un cantiere vero: muro di mattoni, una parete appena passata a rullo, un ponteggio,
-   e Vlady fermo al lavoro accanto a ogni segno. Le schede dei giochi sono avvitate al muro. */
+/* Il Circolo a lavori finiti: una parete di intonaco verde-grigio, uniforme e ben illuminata,
+   le schede dei giochi appese al muro e in fondo la firma di Vlady. */
 :root{
   color-scheme:light;
   --card:#17191f; --cline:#2c3039; --ctext:#efeae0; --cmut:#a49e92;
@@ -36,56 +36,36 @@
   --f-disp:"Special Elite","Courier New",monospace;
   --f-hand:"Caveat","Segoe Print",cursive;
   --f-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  --shadow:drop-shadow(10px 14px 9px rgba(20,8,4,.5));
 }
 *{box-sizing:border-box}
-html{background:#6b3e2e;overflow-x:clip}
+html{background:#93a09b;overflow-x:clip}
 body{margin:0;color:#2a241d;font:16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:clip;
-  background:radial-gradient(ellipse at 50% 35%,rgba(0,0,0,0) 45%,rgba(25,12,6,.35) 100%),url("muro.webp") 0 0/440px auto #6b3e2e}
+  background:url("intonaco.webp") 0 0/600px auto #93a09b}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--sign);outline-offset:3px}
 img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
-.vl{position:absolute;display:block;height:auto;pointer-events:none;filter:var(--shadow)}
 .wrap{max-width:1040px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 18px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 
-/* ---------- 1. parete passata a rullo, con l'insegna ---------- */
-.top{--pw:min(100vw,640px);--gw:110px;position:relative;width:var(--pw);left:50%;margin-left:calc(var(--pw) / -2);
-  height:calc(var(--pw) * .818 + var(--gw) * 1.659 * .62)}
-.vernice{position:absolute;left:0;top:0;width:100%;height:auto}
-.title{position:absolute;left:0;right:0;top:calc(var(--pw) * .07);display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
+/* ---------- 1. l'insegna ---------- */
+.top{padding:34px 0 30px}
+.title{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
 .sign{background:var(--sign);color:var(--signink);border:3px solid #6b5418;border-radius:4px;padding:10px 22px 8px;
-  font:700 clamp(1.45rem,6.6vw,2.5rem)/1 var(--f-sign);letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 16px rgba(60,40,10,.3)}
+  font:700 clamp(1.45rem,6.6vw,2.5rem)/1 var(--f-sign);letter-spacing:.06em;text-transform:uppercase;box-shadow:0 10px 18px rgba(22,32,30,.35)}
 .sign small{display:block;font-size:.42em;letter-spacing:.32em;font-weight:500;margin-bottom:4px}
-.neonbox{margin-top:10px;background:#1c1d22;border-radius:8px;padding:2px 18px 8px;box-shadow:0 8px 16px rgba(30,20,10,.35)}
+.neonbox{margin-top:10px;background:#1c1d22;border-radius:8px;padding:2px 18px 8px;box-shadow:0 10px 18px rgba(22,32,30,.4)}
 .neon{font:clamp(2rem,8.6vw,3rem)/1 var(--f-neon);color:#ffe9f3;text-shadow:0 0 4px #fff,0 0 12px var(--neon),0 0 26px var(--neon)}
-.tagline{margin:14px 0 0;max-width:26ch;font:1.02rem/1.35 var(--f-disp);color:#2a241d}
-/* il rullo tocca la fine della passata in corso (75% della larghezza, 81% dell'altezza della vernice) */
-.v-scala{width:var(--gw);left:calc(var(--pw) * .755 - var(--gw) * .9);top:calc(var(--pw) * .818 * .81 - var(--gw) * 1.659 * .02 - var(--gw) * .12)}
+.tagline{margin:16px 0 0;max-width:28ch;font:1.08rem/1.35 var(--f-disp);color:#1f2624}
 
-/* ---------- 2. ponteggio ---------- */
-.pont{--h:400px;--d1:178px;--d2:362px;position:relative;height:calc(var(--h) + 14px);margin:6px auto 30px;max-width:760px}
-.tube{position:absolute;background:linear-gradient(90deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43);border-radius:2px}
-.tube.h{height:9px;left:0;right:0;background:linear-gradient(180deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43)}
-.std{width:10px;top:0;bottom:14px}
-.std.a{left:3%}.std.b{left:50%}.std.c{right:3%}
-.base{position:absolute;bottom:4px;width:34px;height:10px;margin-left:-12px;background:linear-gradient(#9aa0a6,#50555a);border-radius:2px}
-.cpl{position:absolute;width:20px;height:16px;margin:-4px 0 0 -5px;border-radius:3px;background:radial-gradient(circle at 35% 35%,#d7dbe0,#6d7379 60%,#3a3e42);box-shadow:0 2px 3px rgba(0,0,0,.5);z-index:5}
-.brace{position:absolute;height:8px;transform-origin:0 50%;background:linear-gradient(180deg,#3f4347,#aeb4ba 30%,#e2e6ea 42%,#8d939a 62%,#3b3f43);border-radius:2px}
-.plank{position:absolute;left:1%;right:1%;height:16px;background:url("tavola.webp") 0 0/auto 100%;border-radius:2px;box-shadow:0 6px 8px rgba(0,0,0,.45);z-index:2}
-.rail{z-index:6;box-shadow:0 4px 6px rgba(0,0,0,.35)}
-.v-assi{width:170px;left:30%;top:calc(var(--d1) - 170px * 1.066 + 3px);z-index:3}
-.v-cazz{width:128px;left:7%;top:calc(var(--d2) - 128px * 1.138 + 3px);z-index:3}
-.stucco{position:absolute;z-index:1;left:calc(7% + 92px);top:calc(var(--d2) - 190px);width:min(250px,58%);height:auto}
-.casi{position:absolute;z-index:1;left:calc(7% + 92px);top:calc(var(--d2) - 190px);width:min(250px,58%);aspect-ratio:900/420;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#3b342c}
-.casi h2{margin:0;font:700 2.3rem/1 var(--f-hand)}
-.casi span{font:1rem/1.1 var(--f-hand);opacity:.85}
+/* ---------- 2. i casi ---------- */
+.casi{margin:8px auto 26px;text-align:center;color:#1f2624}
+.casi h2{margin:0;font:700 clamp(1.9rem,7vw,2.6rem)/1 var(--f-sign);letter-spacing:.14em;text-transform:uppercase}
+.casi span{display:block;margin-top:6px;font:1rem/1.2 var(--f-disp);color:#2f3835}
 
 /* ---------- 3. schede avvitate al muro ---------- */
 .grid{display:grid;gap:34px;grid-template-columns:1fr;align-items:start}
 @media (min-width:700px){.grid{grid-template-columns:repeat(auto-fit,minmax(300px,360px));justify-content:center}}
 .game{position:relative;z-index:2;display:flex;flex-direction:column;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;overflow:hidden;text-decoration:none;
-  box-shadow:10px 18px 26px rgba(20,8,4,.55);transition:transform .18s}
+  box-shadow:10px 18px 26px rgba(22,32,30,.55);transition:transform .18s}
 .game:hover{transform:translateY(-3px)}
 .screw{position:absolute;z-index:3;width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e8e8e8,#8c8c8c 60%,#5c5c5c);box-shadow:1px 2px 2px rgba(0,0,0,.6)}
 .screw::after{content:"";position:absolute;left:2px;right:2px;top:5.5px;height:2px;background:#4a4a4a;transform:rotate(35deg)}
@@ -110,10 +90,9 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .dots i.on{background:var(--sign)}
 .play{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:10px;
   background:var(--sign);color:var(--signink);font:700 1rem/1 var(--f-sign);letter-spacing:.1em;text-transform:uppercase}
-/* Vlady col trapano sotto la prima scheda: la punta finisce sul primo foro */
 /* La tessera ARCI del giocatore: ci scrive il suo nome, che accompagna i voti */
 .socio{position:relative;z-index:3;width:min(92vw,420px);margin:0 auto 26px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.tessera{position:relative;width:100%;container-type:inline-size;line-height:0;transform:rotate(-1.5deg);box-shadow:10px 16px 22px rgba(20,8,4,.55);border-radius:3%}
+.tessera{position:relative;width:100%;container-type:inline-size;line-height:0;transform:rotate(-1.5deg);box-shadow:10px 16px 22px rgba(22,32,30,.55);border-radius:3%}
 .tessera img{width:100%;height:auto;display:block;border-radius:3%}
 .tessera input{position:absolute;left:27.6%;top:30.2%;width:64%;height:10%;border:0;outline:0;background:transparent;padding:0 1%;
   font:400 5.4cqw/1 "Architects Daughter","Caveat",cursive;color:#2b2b35;letter-spacing:.06em;text-transform:uppercase;border-radius:4px}
@@ -121,11 +100,11 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .tessera input::placeholder{color:#9a8f7a;text-transform:none;letter-spacing:0;font-size:4.6cqw}
 .tessera input:focus{background:rgba(242,201,76,.22)}
 .tessera.vuota{animation:chiama 2.4s ease-in-out infinite}
-@keyframes chiama{0%,100%{box-shadow:10px 16px 22px rgba(20,8,4,.55)}50%{box-shadow:10px 16px 22px rgba(20,8,4,.55),0 0 0 6px rgba(242,201,76,.75)}}
+@keyframes chiama{0%,100%{box-shadow:10px 16px 22px rgba(22,32,30,.55)}50%{box-shadow:10px 16px 22px rgba(22,32,30,.55),0 0 0 6px rgba(242,201,76,.75)}}
 .firma{border:0;cursor:pointer;padding:0 26px}
 .firma[hidden]{display:none}
 /* Voto in Ponci, sotto ogni scheda: si sblocca dopo aver giocato */
-.voto{position:relative;z-index:2;margin-top:12px;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;padding:14px 14px 16px;box-shadow:10px 18px 26px rgba(20,8,4,.55)}
+.voto{position:relative;z-index:2;margin-top:12px;background:var(--card);color:var(--ctext);border:1px solid var(--cline);border-radius:12px;padding:14px 14px 16px;box-shadow:10px 18px 26px rgba(22,32,30,.55)}
 .voto h4{margin:0 0 8px;text-align:center;font:700 1.05rem/1 var(--f-sign);letter-spacing:.12em;text-transform:uppercase}
 .ponci{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
 .ponci button{border:0;background:none;padding:4px 0 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--cmut);font:600 .72rem/1 var(--f-body);-webkit-tap-highlight-color:transparent}
@@ -139,23 +118,15 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .voto.chiuso .ponci{opacity:.35;pointer-events:none}
 .voto.chiuso .lock{display:block}
 .voto.chiuso .vota{display:none}
-.trap{position:relative;height:150px}
-.v-trap{width:126px;left:4px;top:4px}
-.fori{position:absolute;width:210px;height:auto;left:calc(4px + 126px * .80 - 30px);top:calc(4px + 126px * 1.16 * .66 - 30px)}
 
-/* ---------- 4. in fondo: muro da abbattere e prossimo caso sotto il telo ---------- */
+/* ---------- 4. in fondo: il prossimo caso ---------- */
 .finale{position:relative;margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:10px}
-.demo{position:relative;width:min(100%,400px);height:270px}
-.v-mazza{width:150px;left:0;top:30px;z-index:3}
-.breccia{position:absolute;width:200px;height:auto;left:118px;top:0;z-index:1}
-.calc{position:absolute;width:210px;height:auto;left:110px;top:178px;z-index:2}
 .coperto{position:relative;width:340px;max-width:100%;height:462px}
 .next{position:absolute;left:30px;right:30px;top:0;height:370px;background:linear-gradient(160deg,#2a2d36,#15171c 60%);border:1px solid var(--cline);border-radius:12px;overflow:hidden;
-  box-shadow:10px 18px 26px rgba(20,8,4,.55)}
+  box-shadow:10px 18px 26px rgba(22,32,30,.55)}
 .next .b{position:absolute;z-index:2;top:14px;left:26px;background:var(--sign);color:var(--signink)}
 .next h3{position:absolute;left:0;right:0;top:48px;margin:0;text-align:center;color:var(--ctext);font:700 1.5rem/1.1 var(--f-sign);padding:0 24px}
 .next .q{position:absolute;inset:auto 0 30px;text-align:center;font:700 6rem/1 var(--f-sign);color:rgba(255,255,255,.06)}
-.v-telo{width:340px;max-width:100%;left:0;top:44px;z-index:3}
 .next .cop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .next.foto .b,.next.foto h3,.next.foto .screw{z-index:2}
 .next.foto h3{text-shadow:0 2px 8px rgba(0,0,0,.8)}
@@ -178,27 +149,19 @@ img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .cinema .chiudi{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.8);
   background:rgba(0,0,0,.6);color:#fff;font:400 1.9rem/1 sans-serif;cursor:pointer}
 .soon{position:absolute;z-index:2;right:16px;top:64px;width:104px;padding:8px 4px 6px;text-align:center;rotate:6deg;
-  background:linear-gradient(170deg,#fbf7ec,#ece4d0);border-radius:2px;box-shadow:0 2px 2px rgba(0,0,0,.18),3px 8px 12px rgba(40,24,8,.35);
+  background:linear-gradient(170deg,#fbf7ec,#ece4d0);border-radius:2px;box-shadow:0 2px 2px rgba(0,0,0,.18),3px 8px 12px rgba(22,32,30,.35);
   font:400 1.02rem/1.05 "Permanent Marker","Caveat","Segoe Print","Comic Sans MS",cursive;color:#161a2b;letter-spacing:.02em}
 .soon i{position:absolute;top:-7px;width:36px;height:14px;background:linear-gradient(180deg,rgba(236,226,196,.82),rgba(222,210,176,.78));
   box-shadow:0 1px 2px rgba(0,0,0,.15);clip-path:polygon(0 8%,6% 0,12% 10%,18% 2%,24% 0,100% 0,96% 12%,100% 24%,95% 38%,100% 52%,96% 66%,100% 80%,94% 100%,0 100%,4% 88%,0 76%,5% 62%,0 48%,4% 34%,0 20%)}
 .soon i.l{left:-11px;rotate:-38deg}
 .soon i.r{right:-11px;rotate:36deg}
-.floor{position:relative;height:120px;margin-top:-34px;background:url("pavimento.webp") 0 0/auto 100%;
-  box-shadow:inset 0 14px 18px -8px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
-.floor p{margin:16px 0 0;font:1.25rem/1 var(--f-disp);color:#e7e1d6;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.piede{display:flex;justify-content:center;padding:40px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.piede img{width:min(68vw,300px);height:auto;display:block}
 
 @media (min-width:700px){
-  .top{--pw:min(100vw,760px);--gw:200px}
-  .pont{--h:520px;--d1:240px;--d2:500px;max-width:900px}
-  .v-assi{width:240px;left:36%;top:calc(var(--d1) - 240px * 1.066 + 3px)}
-  .v-cazz{width:190px;top:calc(var(--d2) - 190px * 1.138 + 3px)}
-  .stucco,.casi{left:calc(7% + 140px);top:calc(var(--d2) - 260px);width:360px}
-  .casi h2{font-size:3rem}
-  .trap{zoom:1.3}
-  .demo,.coperto{zoom:1.3}
+  .top{padding:56px 0 40px}
+  .coperto{zoom:1.3}
   .finale{flex-direction:row;justify-content:center;align-items:flex-end;gap:60px}
-  .demo{width:400px}
 }
 </style>
 <link rel="preload" as="image" href="intro_on.webp">
@@ -240,13 +203,11 @@ html.intro-on,html.intro-on body{overflow:hidden}
 
 <div class="wrap">
   <header class="top">
-    <img class="vernice" src="vernice.webp" alt="">
     <div class="title">
       <div class="sign" role="img" aria-label="Circolo Il Fortino"><small>Circolo</small>Il Fortino</div>
       <div class="neonbox"><div class="neon" aria-hidden="true">Games</div></div>
-      <p class="tagline">Sito in costruzione.<br>I casi però sono già aperti.</p>
+      <p class="tagline">I casi sono aperti.<br>Tocca a te risolverli.</p>
     </div>
-    <img class="vl v-scala" src="vlady_scala.webp" alt="">
   </header>
 
   <section class="socio" aria-label="La tua tessera del Circolo">
@@ -259,37 +220,13 @@ html.intro-on,html.intro-on body{overflow:hidden}
     <button type="button" class="play firma" id="firma" hidden>Firma la tessera</button>
   </section>
 
-  <section class="pont" aria-label="I casi">
-    <img class="stucco" src="stucco.webp" alt="">
-    <div class="casi"><h2>I casi</h2><span id="count"></span></div>
-    <div class="tube std a"></div><div class="tube std b"></div><div class="tube std c"></div>
-    <div class="base" style="left:calc(3% + 5px)"></div><div class="base" style="left:calc(50% + 5px)"></div><div class="base" style="right:calc(3% - 7px)"></div>
-    <div class="brace" id="br1"></div><div class="brace" id="br2"></div>
-    <div class="tube h" style="top:calc(var(--d1) + 14px)"></div>
-    <div class="tube h" style="top:calc(var(--d2) + 14px)"></div>
-    <div class="plank" style="top:var(--d1)"></div>
-    <div class="plank" style="top:var(--d2)"></div>
-    <img class="vl v-assi" src="vlady_assi.webp" alt="">
-    <img class="vl v-cazz" src="vlady_cazzuola.webp" alt="">
-    <div class="tube h rail" style="top:calc(var(--d1) - 64px)"></div>
-    <div class="tube h rail" style="top:calc(var(--d2) - 64px)"></div>
-    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d1) - 64px)"></i><i class="cpl" style="left:calc(50% + 5px);top:calc(var(--d1) - 64px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d1) - 64px)"></i>
-    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d2) - 64px)"></i><i class="cpl" style="left:calc(50% + 5px);top:calc(var(--d2) - 64px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d2) - 64px)"></i>
-    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d1) + 16px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d1) + 16px)"></i>
-    <i class="cpl" style="left:calc(3% + 5px);top:calc(var(--d2) + 16px)"></i><i class="cpl" style="right:calc(3% - 10px);top:calc(var(--d2) + 16px)"></i>
-  </section>
+  <section class="casi" aria-label="I casi"><h2>I casi</h2><span id="count"></span></section>
 
   <main class="grid" id="grid"></main>
 
-  <section class="finale" id="finale">
-    <div class="demo">
-      <img class="breccia" src="breccia.webp" alt="">
-      <img class="calc" src="calcinacci.webp" alt="">
-      <img class="vl v-mazza" src="vlady_mazza.webp" alt="">
-    </div>
-  </section>
+  <section class="finale" id="finale"></section>
 </div>
-<footer class="floor"><p>Created by Vlady</p></footer>
+<footer class="piede"><img src="firma_vlady.webp" alt="Created by Vlady" width="569" height="695" loading="lazy"></footer>
 
 <script src="giochi.js"></script>
 <script>
@@ -309,7 +246,6 @@ function scheda(g,i){
   const dots=diff?`<span>Difficoltà: ${LIV[diff]}<span class="dots" aria-hidden="true">${[1,2,3,4,5].map(n=>`<i class="${n<=diff?"on":""}"></i>`).join("")}</span></span>`:"";
   const durata=g.durata?`<span>⏱ ${esc(g.durata)}</span>`:"";
   const uscita=g.uscita?`<span>Uscito il ${new Date(g.uscita+"T00:00:00").toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"})}</span>`:"";
-  const trap=i===0?`<div class="trap" aria-hidden="true"><img class="fori" src="fori.webp" alt=""><img class="vl v-trap" src="vlady_trapano.webp" alt=""></div>`:"";
   return `<div class="slot"><a class="game" href="${esc(g.pagina)}">
     <i class="screw tl"></i><i class="screw tr"></i><i class="screw bl"></i><i class="screw br"></i>
     <div class="cv">
@@ -324,7 +260,7 @@ function scheda(g,i){
       <div class="meta">${dots}${durata}${uscita}</div>
       <span class="play">${ok?"Rigioca":iniziato?"Continua l'indagine":"Gioca"} <span aria-hidden="true">›</span></span>
     </div>
-  </a>${votazione(g,!!save)}${trap}</div>`;
+  </a>${votazione(g,!!save)}</div>`;
 }
 // ---------- Voto in Ponci: arriva nel Foglio Google "Fortino Games – Voti in Ponci" ----------
 const VOTI_URL="https://script.google.com/macros/s/AKfycbwgUHtGpeN7pPMz-jgP_c7x9kzLqZ0abaLwlX-Bu2HS6FG3einoRLQM6EGIe86xEoNa6g/exec";
@@ -386,7 +322,7 @@ $("count").textContent=G.length===1?"1 aperto, altri in arrivo":G.length+" apert
   bt.addEventListener("click",firma);
 })();
 
-// il prossimo caso, coperto dal telo
+// il prossimo caso
 const P=window.PROSSIMAMENTE;
 if(P&&P.video){const d=document.createElement("div");d.className="coperto trailer";
   d.innerHTML=`<button class="next foto" type="button" aria-label="Guarda il trailer del prossimo caso"><img class="cop" src="${esc(P.locandina||P.copertina)}" alt=""><i class="screw tl"></i><i class="screw tr"></i><span class="guarda"><i></i>Guarda il trailer</span></button>${P.targhetta?`<div class="soon"><i class="l"></i><i class="r"></i>${esc(P.targhetta)}</div>`:""}`;
@@ -398,17 +334,10 @@ if(P&&P.video){const d=document.createElement("div");d.className="coperto traile
     document.addEventListener("keydown",esc_);v.addEventListener("ended",fine);
     document.body.appendChild(c);v.play().catch(()=>{})});
   $("finale").appendChild(d)}
-else if(P){const d=document.createElement("div");d.className="coperto";d.setAttribute("role","img");d.setAttribute("aria-label","Il prossimo caso, ancora coperto da un telo");
-  d.innerHTML=`<div class="next${P.copertina?" foto":""}">${P.copertina?`<img class="cop" src="${esc(P.copertina)}" alt="">`:""}<i class="screw tl"></i><i class="screw tr"></i><span class="b">Prossimo caso</span>${P.titolo?`<h3>${esc(P.titolo)}</h3>`:""}<div class="q">?</div>${P.targhetta?`<div class="soon"><i class="l"></i><i class="r"></i>${esc(P.targhetta)}</div>`:""}</div><img class="vl v-telo" src="vlady_lenzuolo.webp" alt="">`;
+else if(P){const d=document.createElement("div");d.className="coperto";d.setAttribute("role","img");d.setAttribute("aria-label","Il prossimo caso");
+  d.innerHTML=`<div class="next${P.copertina?" foto":""}">${P.copertina?`<img class="cop" src="${esc(P.copertina)}" alt="">`:""}<i class="screw tl"></i><i class="screw tr"></i><span class="b">Prossimo caso</span>${P.titolo?`<h3>${esc(P.titolo)}</h3>`:""}<div class="q">?</div>${P.targhetta?`<div class="soon"><i class="l"></i><i class="r"></i>${esc(P.targhetta)}</div>`:""}</div>`;
   $("finale").appendChild(d)}
 
-// diagonali del ponteggio, calcolate sulla larghezza reale
-function braces(){const p=document.querySelector(".pont");if(!p)return;const w=p.clientWidth,cs=getComputedStyle(p);
-  const d1=parseFloat(cs.getPropertyValue("--d1")),d2=parseFloat(cs.getPropertyValue("--d2"));
-  const x0=w*.03+5,x1=w*.5+5,x2=w*.97-5;
-  [["br1",x0,d2+14,x1,d1+14],["br2",x1,d2+14,x2,d1+14]].forEach(([id,ax,ay,bx,by])=>{const e=$(id);const L=Math.hypot(bx-ax,by-ay);
-    e.style.left=ax+"px";e.style.top=ay+"px";e.style.width=L+"px";e.style.transform=`rotate(${Math.atan2(by-ay,bx-ax)}rad)`})}
-braces();addEventListener("resize",braces);
 
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>{document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")r.update().catch(()=>{})})}).catch(()=>{}));
 })();
